@@ -23,7 +23,7 @@ composer lint                      # Laravel Pint + Larastan level 5
 composer test                      # testbench, sqlite in memory
 vendor/bin/testbench serve         # a bare Laravel app with the package mounted
 npm install && npm run build       # precompiled assets → public/build
-php artisan griglia:docs-build     # the documentation site
+vendor/bin/testbench griglia:docs-build --strict # the documentation site
 ```
 
 The review lifecycle regression suite is in `tests/Feature/ReviewWorkflowTest.php`. It exercises both the legacy
@@ -81,6 +81,7 @@ See also [Contributing](contributing.md) and [Building this site](docs-site.md).
 
 ## Verify before opening a change
 
-Run `composer lint`, `composer test`, and `php artisan griglia:docs-build --strict`. Expect zero Pint/PHPStan
-errors, a green PHPUnit suite, and a strict bilingual docs build. Record any missing prerequisite instead of
-reporting an unexecuted check as verified.
+Run `composer lint`, `composer test`, and `vendor/bin/testbench griglia:docs-build --strict`. Expect zero
+Pint/PHPStan errors, a green PHPUnit suite, and a strict bilingual docs build. Use an explicit SQLite connection
+if the shell inherits application `DB_*` variables, as described above. Record any missing prerequisite instead
+of reporting an unexecuted check as verified.

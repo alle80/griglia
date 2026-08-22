@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.88.12] - 2026-08-22
+
+### Documentation
+- Corrected the standalone-package documentation workflow to use Testbench instead of a nonexistent root
+  `artisan` executable, and removed a visible escaped newline from the bilingual docs-site guide.
+
 ## [0.88.11] - 2026-08-22
 
 ### Documentation

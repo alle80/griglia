@@ -23,7 +23,7 @@ composer lint                      # Laravel Pint + Larastan livello 5
 composer test                      # testbench, sqlite in memoria
 vendor/bin/testbench serve         # un'applicazione Laravel nuda con il package montato
 npm install && npm run build       # asset precompilati → public/build
-php artisan griglia:docs-build     # il sito della documentazione
+vendor/bin/testbench griglia:docs-build --strict # il sito della documentazione
 ```
 
 La suite di regressione del ciclo di revisione si trova in `tests/Feature/ReviewWorkflowTest.php`. Copre sia il
@@ -84,6 +84,7 @@ Vedi anche [Contribuire](contributing.md) e [Costruire questo sito](docs-site.md
 
 ## Verificare prima di proporre una modifica
 
-Eseguire `composer lint`, `composer test` e `php artisan griglia:docs-build --strict`. Il risultato atteso è zero
-errori Pint/PHPStan, suite PHPUnit verde e build strict bilingue. Annotare un prerequisito mancante invece di
-dichiarare verificato un controllo non eseguito.
+Eseguire `composer lint`, `composer test` e `vendor/bin/testbench griglia:docs-build --strict`. Il risultato
+atteso è zero errori Pint/PHPStan, suite PHPUnit verde e build strict bilingue. Usare una connessione SQLite
+esplicita se la shell eredita variabili `DB_*` dell’applicazione, come descritto sopra. Annotare un prerequisito
+mancante invece di dichiarare verificato un controllo non eseguito.
