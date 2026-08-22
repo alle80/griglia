@@ -16,7 +16,7 @@ The short version:
   Anything that belongs to the host application does not belong here.
 - **Before building**, open an issue for anything larger than a fix.
 - **A change carries** tests, documentation and a `CHANGELOG.md` entry, and passes CI — see
-  [CONTRIBUTING](docs/contributing/contributing.md).
+  [CONTRIBUTING.md](CONTRIBUTING.md).
 - **Supported versions**: the latest `0.x` minor only, no backports. Pre-1.0, a minor bump may break; a patch
   never does.
 - **Response times** (best effort, working days): security 3, bugs 7, proposals and pull requests 14.

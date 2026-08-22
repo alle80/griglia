@@ -145,8 +145,9 @@ composer test
 ```
 
 Tests use in-memory SQLite by default and include a guard against destructive execution on a live database.
-Read the [development guide](docs/contributing/development.md) before running Testbench or MySQL tests, and
-[contributing](docs/contributing/contributing.md) before opening a pull request.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request — what a change must carry, how a bug
+report is written and what happens after — and the [development
+guide](docs/contributing/development.md) before running Testbench or MySQL tests.
 
 Griglia is maintained by one person on personal time: what that means for issues, pull requests and
 compatibility is written down in the [governance and support policy](GOVERNANCE.md). Security reports go

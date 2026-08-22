@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.89.7] - 2026-08-23
+
+### Documentation
+- **Contribution guidelines** — a `CONTRIBUTING.md` at the root of the repository (where GitHub looks for it
+  in the issue and pull request forms) with the one-minute setup and the short version of the rules, and a
+  rewritten Contributing page (`docs/contributing/contributing.md`) in English and Italian: ways to contribute,
+  what to do before writing code, what a bug report and a proposal must contain, the code/tests/translations/
+  documentation/changelog requirements, commit and branch conventions, a pull request checklist, what CI runs
+  and what happens after the review, agent-written contributions, expected conduct, license and security. The
+  README and `GOVERNANCE.md` now link the root file, and `ContributingTest` guards the files, the links and
+  the essentials of the page.
+
 ## [0.89.6] - 2026-08-23
 
 ### Documentation
