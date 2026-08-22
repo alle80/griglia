@@ -56,6 +56,11 @@ php artisan griglia:check
 
 Expected result: the command prints behaviour settings and the open/working items for the agent list.
 
+Installing Griglia does **not** start a coding agent: choose how it will run after connecting it. For an
+interactive session, start the agent yourself in the project directory and follow [the agent-side
+workflow](../agent/index.md). For unattended operation, install a [persistent worker](../agent/workers.md),
+which watches the board and starts a new agent session when work is ready.
+
 ## Verify the installation
 
 ```bash

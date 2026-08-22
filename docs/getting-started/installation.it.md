@@ -56,6 +56,12 @@ php artisan griglia:check
 
 Risultato atteso: il comando stampa le impostazioni di comportamento e gli elementi aperti o in lavorazione.
 
+Installare Griglia **non** avvia un agente di coding: dopo averlo collegato, scegliere come eseguirlo. Per una
+sessione interattiva, avviare manualmente l’agente nella directory del progetto e seguire il [workflow lato
+agente](../agent/index.md). Per lavorare senza supervisione, installare un [worker
+persistente](../agent/workers.md), che sorveglia la board e avvia una nuova sessione dell’agente quando un task
+è pronto.
+
 ## Verificare l'installazione
 
 ```bash

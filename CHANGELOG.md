@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.1] - 2026-08-23
+
+### Documentation
+- Clarified that installing the board does not launch a coding agent, and linked the installation tutorial to
+  the interactive and persistent-worker operating modes.
+
 ## [0.89.0] - 2026-08-23
 
 ### Changed
