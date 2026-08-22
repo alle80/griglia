@@ -99,6 +99,9 @@ next release, and releases are cut when there is something worth releasing.
 | Private vulnerability reporting or e-mail | Anything with a security impact — never a public issue |
 | GitHub Discussions | Questions and open-ended ideas, once enabled; until then open an issue and say it is a question |
 
+In all of them the [code of conduct](code-of-conduct.md) applies: the Contributor Covenant 2.1, enforced by
+the maintainer, with reports read by them alone.
+
 ## Contributions written with an agent
 
 Griglia exists to make agent-assisted work observable, so pull requests written with a coding agent are

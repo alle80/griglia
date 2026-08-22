@@ -188,6 +188,10 @@ of padding. Everyone gets the same courtesy in return — no contempt, no snark 
 language, no relitigating a decision that already has a written reason. The maintainer moderates and, if it
 comes to that, closes threads that stop being technical.
 
+Written down, that is the [Contributor Covenant 2.1](code-of-conduct.md), which this project adopts as it is:
+what it covers, what it does not, and how a report is handled are on the [code of conduct](code-of-conduct.md)
+page.
+
 ## License
 
 Griglia is MIT-licensed and **what you contribute is MIT too**: no contributor licence agreement, no copyright

@@ -118,6 +118,7 @@ plugins:
             Troubleshooting: Se qualcosa non va
             Contributing: Contribuire
             Governance: Governance
+            Code of conduct: Codice di condotta
             License: Licenza
             Development: Sviluppo
             Building this site: Costruire questo sito
@@ -184,6 +185,7 @@ nav:
   - Contributing:
       - Governance: contributing/governance.md
       - Contributing: contributing/contributing.md
+      - Code of conduct: contributing/code-of-conduct.md
       - License: contributing/license.md
       - Development: contributing/development.md
       - Building this site: contributing/docs-site.md

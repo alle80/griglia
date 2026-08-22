@@ -196,6 +196,10 @@ paragrafo di imbottitura. Lo stesso rispetto vale in senso opposto: niente dispr
 sull'installazione o sulla lingua di qualcuno, niente ridiscussioni di decisioni che hanno già una ragione
 scritta. Il manutentore modera e, se serve, chiude i thread che smettono di essere tecnici.
 
+Messo per iscritto, tutto questo è il [Contributor Covenant 2.1](code-of-conduct.md), che il progetto adotta
+così com'è: che cosa copre, che cosa no e come viene gestita una segnalazione stanno nella pagina
+[Codice di condotta](code-of-conduct.md).
+
 ## Licenza
 
 Griglia è distribuita con licenza MIT e **anche quello che contribuisci è MIT**: nessun accordo di licenza da

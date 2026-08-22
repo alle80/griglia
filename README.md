@@ -150,8 +150,9 @@ report is written and what happens after — and the [development
 guide](docs/contributing/development.md) before running Testbench or MySQL tests.
 
 Griglia is maintained by one person on personal time: what that means for issues, pull requests and
-compatibility is written down in the [governance and support policy](GOVERNANCE.md). Security reports go
-through [SECURITY.md](SECURITY.md), not through public issues.
+compatibility is written down in the [governance and support policy](GOVERNANCE.md). The project follows the
+[Contributor Covenant 2.1](CODE_OF_CONDUCT.md) — direct reviews about the code, never about the person — and
+security reports go through [SECURITY.md](SECURITY.md), not through public issues.
 
 ## Credits
 

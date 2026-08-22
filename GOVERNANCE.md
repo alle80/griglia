@@ -20,6 +20,8 @@ The short version:
 - **Supported versions**: the latest `0.x` minor only, no backports. Pre-1.0, a minor bump may break; a patch
   never does.
 - **Response times** (best effort, working days): security 3, bugs 7, proposals and pull requests 14.
+- **Conduct**: the [Contributor Covenant 2.1](CODE_OF_CONDUCT.md), enforced by the maintainer in the spaces
+  of the project.
 - **License**: MIT, and what you contribute is MIT too — no agreement to sign, no copyright assignment.
   See [LICENSE](LICENSE) and the [license page](docs/contributing/license.md).
 - **Security**: never a public issue — see [SECURITY.md](SECURITY.md).

@@ -104,6 +104,9 @@ rilasciare.
 | Segnalazione privata di vulnerabilità o e-mail | Tutto ciò che ha impatto sulla sicurezza — mai una issue pubblica |
 | GitHub Discussions | Domande e idee aperte, quando saranno attive; fino ad allora apri una issue e dichiara che è una domanda |
 
+In tutti vale il [codice di condotta](code-of-conduct.md): il Contributor Covenant 2.1, applicato dal
+manutentore, con le segnalazioni lette solo da lui.
+
 ## Contributi scritti con un agente
 
 Griglia esiste per rendere osservabile il lavoro fatto con un agente, quindi le pull request scritte con un

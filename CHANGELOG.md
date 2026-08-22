@@ -6,7 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.89.9] - 2026-08-23
+
+### Documentation
+- **Code of conduct** — the project adopts the [Contributor Covenant](https://www.contributor-covenant.org)
+  2.1 verbatim: `CODE_OF_CONDUCT.md` at the root of the repository (where GitHub looks for it, with the
+  reporting address filled in and a section on what it means with a single maintainer), and a new
+  documentation page in English and Italian — why a standard text, where it applies and where it does not,
+  what is and is not a conduct problem in a review, how a report is handled and in how long, and the full
+  text included from the root file. `README.md`, `CONTRIBUTING.md`, `GOVERNANCE.md` and the Contributing and
+  Governance pages link it, and `CodeOfConductTest` guards the file, the links, the reporting contact and the
+  navigation entry.
+
 ## [0.89.8] - 2026-08-23
+
 ### Documentation
 - Removed the agent-only operating rules from the English and Italian agent overview; agents already receive
   those dynamic instructions through their context file and `griglia:check`, while the user guide stays focused

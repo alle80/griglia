@@ -37,6 +37,8 @@ guide](docs/contributing/development.md) explains the guard that stops it.
   branch, branched from an up-to-date `master`.
 - **Written with a coding agent?** Welcome, and no disclaimer needed — but the person who opens the pull
   request answers for it: read the diff.
+- **Conduct**: the [Contributor Covenant 2.1](CODE_OF_CONDUCT.md) — reviews are direct about the code, never
+  about the person. Reports go to the maintainer by e-mail.
 - **License**: MIT, and what you contribute is MIT too — no agreement to sign. See [LICENSE](LICENSE) and the
   [license page](docs/contributing/license.md).
 - **Security**: never a public issue — see [SECURITY.md](SECURITY.md).
