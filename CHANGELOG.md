@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.5] - 2026-08-23
+
+### Documentation
+- **README** — rewritten as the front page of the project: status badges (Packagist version and downloads,
+  CI, PHP version, license), a one-line description of what the board is for, screenshots of the board on
+  desktop and on a phone, a highlights section, a documentation table and sections for contributing, support,
+  credits and license.
+- **FAQ** — a new page (English and Italian) answering what comes before installing: which agents work with
+  Griglia, whether it is a separate application, whether an AI key or a Node build is needed, several agents
+  at once, running without login, where the data lives and how stable `0.x` is.
+- **Glossary** — a new page (English and Italian) defining the words used in the interface, the documentation
+  and the commands, including the historical code names (`Checklist`, `Todo`, `Ingredient`).
+
 ## [0.89.4] - 2026-08-23
 
 ### Documentation

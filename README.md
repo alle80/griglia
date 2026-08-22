@@ -5,11 +5,55 @@
   </picture>
 </p>
 
-# alle80/griglia
+<p align="center">
+  <a href="https://packagist.org/packages/alle80/griglia"><img alt="Latest version on Packagist" src="https://img.shields.io/packagist/v/alle80/griglia.svg?style=flat-square&color=2ecc71"></a>
+  <a href="https://packagist.org/packages/alle80/griglia"><img alt="Downloads on Packagist" src="https://img.shields.io/packagist/dt/alle80/griglia.svg?style=flat-square&color=2ecc71"></a>
+  <a href="https://github.com/alle80/griglia/actions/workflows/tests.yml"><img alt="Tests" src="https://img.shields.io/github/actions/workflow/status/alle80/griglia/tests.yml?branch=master&label=tests&style=flat-square"></a>
+  <a href="https://packagist.org/packages/alle80/griglia"><img alt="PHP version" src="https://img.shields.io/packagist/dependency-v/alle80/griglia/php?style=flat-square"></a>
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/packagist/l/alle80/griglia.svg?style=flat-square"></a>
+</p>
 
-Griglia is a Laravel board where people queue work and coding agents take it, report progress, ask questions
-and return a verifiable result. It supports Laravel 12/13, Livewire 4, multiple users and lists, plans,
-attachments, notifications, installable themes and more than one agent.
+<h1 align="center">Griglia</h1>
+
+<p align="center">
+  A Laravel + Livewire task board where you queue work for your coding agent and watch it happen:<br>
+  requests, questions, progress, results — in your own application, on your own database.
+</p>
+
+<p align="center">
+  <a href="https://alle80.github.io/griglia/">Documentation</a> ·
+  <a href="https://alle80.github.io/griglia/getting-started/quickstart/">Quickstart</a> ·
+  <a href="docs/faq.md">FAQ</a> ·
+  <a href="docs/glossary.md">Glossary</a> ·
+  <a href="CHANGELOG.md">Changelog</a>
+</p>
+
+<p align="center">
+  <img src="docs/images/board-desktop.png" width="900" alt="The Griglia board: a task open to work, one being worked on at 65% with its phase, one paused on a question, one closed by the agent">
+</p>
+
+## What it is
+
+You write a request as a task — a title, a note, sub-tasks, a screenshot — and mark it **open to work**. A CLI
+coding agent claims it, reports the phase it is in, asks when something is ambiguous, and closes it with a
+result you can read. Nothing is hidden in a terminal you were not watching.
+
+- **A flow you can see** — waiting → open to work → working → done, plus questions, pause, stop and resume.
+  Every state is a dot on the row, and it moves live on every open device.
+- **A CLI contract, not an integration** — `griglia:check` to read and act, `griglia:watch` to react. Any
+  agent that can run an Artisan command and read a Markdown file works: Claude Code, Codex CLI, Gemini CLI, …
+- **Several agents, several lists** — a default agent per list, an override per task, and a task claimed
+  elsewhere is reported as busy instead of being taken twice.
+- **Plans** — turn one goal into a chain of tasks, where closing one opens the next.
+- **It reaches you** — an in-app bell, Web Push, mail, and live updates through any Laravel broadcaster.
+- **It keeps the receipts** — working time measured by the board, tokens and cost reported by the agent,
+  results and answered questions kept with the task.
+- **Yours to look at** — installable themes, a settings page that tells the agent how to behave, and an
+  instructions file assembled from switchable context blocks.
+
+<p align="center">
+  <img src="docs/images/board-mobile.png" width="260" alt="The same board on a phone">
+</p>
 
 ## Requirements
 
@@ -79,7 +123,20 @@ must compile the package with Tailwind/Vite, publish the config, set `GRIGLIA_AS
 CSS and JavaScript, and include package Blade files in Tailwind's sources. The canonical commands and trade-offs
 are in [front-end assets](docs/getting-started/assets.md).
 
-## Development
+## Documentation
+
+| | |
+|---|---|
+| [Documentation site](https://alle80.github.io/griglia/) | Everything below, in English and Italian |
+| [Quickstart](docs/getting-started/quickstart.md) | The first five minutes after installing |
+| [Using the board](docs/board/usage.md) | States, modal, filters, archive |
+| [The agent side](docs/agent/index.md) | The command contract, workers, statistics |
+| [Features](docs/features/index.md) | Plans, notifications, themes, AI |
+| [FAQ](docs/faq.md) · [Glossary](docs/glossary.md) | Short answers, and the words used here |
+| [Upgrading](docs/operations/upgrading.md) · [Troubleshooting](docs/operations/troubleshooting.md) | When a version moves, and when something breaks |
+| [Changelog](CHANGELOG.md) | What changed, version by version |
+
+## Contributing and support
 
 ```bash
 composer install
@@ -88,19 +145,27 @@ composer test
 ```
 
 Tests use in-memory SQLite by default and include a guard against destructive execution on a live database.
-Read the [development guide](docs/contributing/development.md) before running Testbench or MySQL tests.
+Read the [development guide](docs/contributing/development.md) before running Testbench or MySQL tests, and
+[contributing](docs/contributing/contributing.md) before opening a pull request.
 
-## Documentation and support
+Griglia is maintained by one person on personal time: what that means for issues, pull requests and
+compatibility is written down in the [governance and support policy](GOVERNANCE.md). Security reports go
+through [SECURITY.md](SECURITY.md), not through public issues.
 
-- [Documentation site](https://alle80.github.io/griglia/)
-- [Governance and support policy](GOVERNANCE.md)
-- [Feature overview](docs/features/index.md)
-- [Upgrade runbook](docs/operations/upgrading.md)
-- [Troubleshooting](docs/operations/troubleshooting.md)
-- [Security policy](SECURITY.md)
-- [License and third-party components](docs/contributing/license.md)
-- [Changelog](CHANGELOG.md)
+## Credits
 
-Griglia is released under the [MIT license](LICENSE): use it, change it and ship it in a commercial
-product, keeping the copyright notice. What that means in practice, which third-party licenses come with it
-and under which terms contributions are accepted: [License](docs/contributing/license.md).
+Griglia is written and maintained by [Alessandro (alle80)](https://github.com/alle80), with the help of the
+coding agents that use it every day — and it is developed on the board itself.
+
+It stands on [Laravel](https://laravel.com), [Livewire](https://livewire.laravel.com),
+[Tailwind CSS](https://tailwindcss.com), [spatie/laravel-settings](https://github.com/spatie/laravel-settings),
+[laravel-notification-channels/webpush](https://github.com/laravel-notification-channels/webpush),
+[league/commonmark](https://commonmark.thephpleague.com), [SortableJS](https://sortablejs.github.io/Sortable/)
+and [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) for this documentation. Their
+licenses, and what they cover, are listed in [license and third-party components](docs/contributing/license.md).
+
+## License
+
+Griglia is released under the [MIT license](LICENSE): use it, change it and ship it in a commercial product,
+keeping the copyright notice. What that means in practice, which third-party licenses come with it and under
+which terms contributions are accepted: [License](docs/contributing/license.md).

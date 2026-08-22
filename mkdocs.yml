@@ -109,6 +109,8 @@ plugins:
             Events and broadcasting: Eventi e broadcasting
             Changelog: Changelog
             Settings backlog: Impostazioni da fare
+            FAQ: Domande frequenti
+            Glossary: Glossario
             Operations: Esercizio
             Security: Sicurezza
             'Security assessment (2026-08-21)': 'Valutazione di sicurezza (21-08-2026)'
@@ -173,6 +175,8 @@ nav:
       - Settings: reference/settings.md
       - Events and broadcasting: reference/events.md
       - Changelog: reference/changelog.md
+  - FAQ: faq.md
+  - Glossary: glossary.md
   - Operations:
       - Security: operations/security.md
       - Upgrading: operations/upgrading.md
