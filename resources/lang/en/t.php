@@ -75,6 +75,7 @@ return [
     'archive_help' => 'You are looking at the archive: these items are not in the list and do not count in the total. You can restore or delete them.',
     'filter_help' => 'Filter active: drag & drop reordering is disabled until you clear the search and every filter (back to «All»).',
     'filters' => ['all' => 'All', 'todo' => 'To do', 'done' => 'Done', 'otw' => 'Open to work', 'working' => 'Working', 'paused' => 'Paused', 'question' => 'Questions'],
+    'status_filter' => 'Filter by state',
     'agent_filter' => 'Filter by agent',
     'all_agents' => 'All agents',
     'view_mode' => 'Task view',

@@ -18,7 +18,22 @@ class DashboardTest extends TestCase
         $this->get(config('griglia.dashboard_route'))
             ->assertOk()
             ->assertSee('Ship it')
-            ->assertSee('max-w-5xl', false); // wider desktop container
+            // full-width desktop container: no centred max-width, and the grid columns are free to
+            // multiply (see .tl-page-wide in griglia.css)
+            ->assertSee('tl-page-wide max-w-none', false)
+            ->assertDontSee("view === 'grid' ? 'max-w-6xl'", false);
+    }
+
+    public function test_the_plain_board_keeps_its_narrow_container(): void
+    {
+        $user = $this->actingAsUser();
+        $list = Checklist::create(['name' => 'dev', 'user_id' => $user->id]);
+        Todo::create(['title' => 'Ship it', 'order' => 1, 'checklist_id' => $list->id]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('tl-page-wide', false)
+            ->assertSee("view === 'grid' ? 'max-w-6xl' : 'max-w-2xl'", false);
     }
 
     public function test_side_tab_follows_its_settings(): void

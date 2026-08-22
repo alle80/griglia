@@ -73,6 +73,7 @@ return [
     'archive_help' => 'Stai guardando l\'archivio: gli elementi qui non compaiono nella lista e non contano nel totale. Puoi ripristinarli o eliminarli.',
     'filter_help' => 'Filtro attivo: il riordino con trascinamento è disabilitato finché non togli la ricerca e ogni filtro (torna a «Tutti»).',
     'filters' => ['all' => 'Tutti', 'todo' => 'Da fare', 'done' => 'Fatti', 'otw' => 'Open to work', 'working' => 'Working', 'paused' => 'In pausa', 'question' => 'Domande'],
+    'status_filter' => 'Filtra per stato',
     'agent_filter' => 'Filtra per agente',
     'all_agents' => 'Tutti gli agenti',
     'view_mode' => 'Visuale task',

@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.88.9] - 2026-08-22
+
+### Changed
+- The desktop dashboard (`/dashboard`) now uses the **full width** of the window instead of a centred
+  `max-w-5xl` container, and its grid view is no longer capped at three columns: from a 1200px window up the
+  columns auto-fill at a fixed card width (`--tl-card-w`, 22rem by default). Inside the narrow side tab the
+  ordinary responsive columns still apply (task 612).
+- The state filters became a single **drop-down** (`.db-status-filter`) dressed like the former chips, with the
+  badge of the selected state — or a new `filter` funnel icon — beside it; seven chips no longer wrap onto their
+  own line on a phone or eat the toolbar of a full-width board (task 612).
+- The task modal grows with the screen on desktop, up to `max-w-6xl` on very wide displays instead of stopping
+  at `max-w-3xl` (task 612).
 ## [0.88.8] - 2026-08-22
 
 ### Added

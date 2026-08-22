@@ -1,5 +1,6 @@
+@php($wideBoard = (bool) ($wide ?? false))
 <div
-    class="tl-page relative mx-auto px-4 pt-20 pb-10 sm:pt-24"
+    class="tl-page relative mx-auto px-4 pt-20 pb-10 sm:pt-24 {{ $wideBoard ? 'tl-page-wide max-w-none' : '' }}"
     x-data="{
         view: localStorage.getItem('griglia.board.view') === 'grid' ? 'grid' : 'list',
         setView(value) {
@@ -7,7 +8,7 @@
             localStorage.setItem('griglia.board.view', value);
         },
     }"
-    :class="view === 'grid' ? 'max-w-6xl' : '{{ ($wide ?? false) ? 'max-w-5xl' : 'max-w-2xl' }}'"
+    @unless ($wideBoard) :class="view === 'grid' ? 'max-w-6xl' : 'max-w-2xl'" @endunless
 >
 
     {{-- ===== HEADER ===== --}}

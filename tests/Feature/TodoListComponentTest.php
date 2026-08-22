@@ -153,6 +153,29 @@ class TodoListComponentTest extends TestCase
         $this->assertSame(['Call mom'], $t->viewData('todos')->pluck('title')->all());
     }
 
+    public function test_state_filters_are_a_select_that_shows_the_current_state(): void
+    {
+        $this->add('Buy milk');
+
+        $component = Livewire::test(TodoList::class)
+            ->assertSeeHtml('db-status-filter')
+            ->assertSeeHtml('wire:change="setFilter($event.target.value)"');
+
+        // every state is an option, and the one in use is the selected one
+        foreach (TodoList::filters() as $key => $label) {
+            $component->assertSeeHtml('<option value="'.$key.'"');
+        }
+        $component->assertSeeHtml('<option value="all" selected>');
+
+        $component->call('setFilter', 'done')
+            ->assertSet('filter', 'done')
+            ->assertSeeHtml('<option value="done" selected>')
+            ->assertDontSeeHtml('<option value="all" selected>');
+
+        // no chip is left behind: the states are only in the select
+        $this->assertSame(1, substr_count($component->html(), 'setFilter'));
+    }
+
     public function test_board_offers_persistent_list_and_responsive_grid_views(): void
     {
         $this->add('Grid card');

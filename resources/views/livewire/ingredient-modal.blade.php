@@ -12,7 +12,7 @@
             <div class="absolute inset-0 bg-black/70" wire:click="close"></div>
 
             {{-- Pannello --}}
-            <div class="tl-card tl-modal modal-panel relative w-full max-w-md md:max-w-2xl lg:max-w-3xl">
+            <div class="tl-card tl-modal modal-panel relative w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl">
 
                 {{-- Testata: comandi/badge + chiudi (il titolo sta nel corpo, prima di «Task») --}}
                 <div class="modal-head tl-modal-head flex items-center gap-3 px-5 py-3">

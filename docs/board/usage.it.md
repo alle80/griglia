@@ -141,7 +141,10 @@ Su desktop le etichette compatte, i filtri e la barra dell’editor Markdown han
 spazio ai contenuti della lista e del modale.
 
 Ricerca a testo libero (titolo, note, commento, sotto-task, domande, descrizioni delle immagini), filtri di
-stato e di agente, archivio. Con più agenti configurati il chip con l'icona del robot (**Tutti gli agenti**)
+stato e di agente, archivio. Il filtro di stato è una **tendina**: scegli *Tutti*, *Da fare*, *Fatti*, *Da lavorare*,
+*In lavorazione*, *In pausa* o *Domande*, e l'icona accanto diventa il badge dello stato scelto (un imbuto quando
+non filtri nulla). Un comando solo invece di sette chip, così la barra resta su una riga sia sul telefono sia sulla
+dashboard a tutta larghezza. Con più agenti configurati il chip con l'icona del robot (**Tutti gli agenti**)
 restringe la lista ai task di un solo agente; il filtro segue l'assegnazione effettiva (agente del task, altrimenti
 default della lista, altrimenti agente predefinito), si combina con ricerca e filtri di stato e — come loro —
 disabilita il trascinamento finché è attivo. Lo stile non cambia dopo la scelta: è il nome selezionato a indicare
@@ -152,13 +155,19 @@ Le liste archiviate e quelle di altri utenti restano escluse. Su una lista-piano
 
 I due bottoni della visuale cambiano l'area dei task fra l'**elenco** originale e una **griglia** di card verticali.
 La griglia usa una colonna su telefono, due su tablet e tre su desktop; il browser ricorda la scelta per la visita successiva.
+Sulla [dashboard](#desktop-la-dashboard) il tetto delle tre colonne cade: da 1200px di finestra in su le colonne si
+moltiplicano da sole tenendo fissa la larghezza della card (`--tl-card-w`, 22rem di default), quindi uno schermo largo
+mostra semplicemente più card per riga.
 
 ## Desktop: la dashboard
 
-Su uno schermo grande la board ha una seconda casa: **`/dashboard`**, la stessa lista in un contenitore più
-largo e arioso (`max-w-5xl` invece di `max-w-2xl`), così titoli e note lunghe smettono di andare a capo ogni
-tre parole. Sono lo stesso componente e gli stessi dati — stati, modale, filtri, trascinamento si comportano
-esattamente come su `/` — cambia solo la larghezza. La pagina veste il tema corrente quando quel tema è uno dei
+Su uno schermo grande la board ha una seconda casa: **`/dashboard`**, la stessa lista **a tutta larghezza**: nessun
+contenitore centrato (`.tl-page-wide`, contro `max-w-2xl` di `/`), così titoli e note lunghe smettono di andare a capo
+ogni tre parole. In vista griglia le colonne sono libere di moltiplicarsi (vedi la barra degli strumenti qui sopra) e
+anche il modale del task segue lo schermo, fino a `max-w-6xl` sui display molto larghi invece di fermarsi a `max-w-3xl`.
+Sono lo stesso componente e gli stessi dati — stati, modale, filtri, trascinamento si comportano esattamente come su
+`/` — cambia solo la larghezza. Dentro la linguetta laterale, stretta, la stessa pagina tiene le colonne responsive
+di sempre: la regola dei 1200px si misura sull'iframe, non sulla finestra. La pagina veste il tema corrente quando quel tema è uno dei
 generici; da uno stile dedicato dell'applicazione ospite (che non ha le variabili CSS condivise) ripiega sul
 tema predefinito.
 

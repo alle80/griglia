@@ -134,6 +134,9 @@ On desktop, compact labels, filter controls and the Markdown editor toolbar use 
 the denser mobile sizing is preserved to leave room for board and modal content.
 
 Free-text search (title, notes, comment, sub-tasks, questions, image descriptions), state and agent filters, archive.
+The state filter is a **drop-down**: pick *All*, *To do*, *Done*, *Open to work*, *Working*, *Paused* or *Questions*,
+and the icon beside it becomes the badge of the state in use (a funnel when no filter is on). One control instead of
+seven chips, so the toolbar stays on one line on a phone as well as on the full-width dashboard.
 When several agents are configured, the chip with the robot icon (**All agents**) narrows the list to one agent's
 tasks; the filter follows the effective assignment (task override, then list default, then the global default),
 combines with the search and the state filters, and — like them — disables drag & drop while it is on. Its visual
@@ -145,13 +148,18 @@ On a plan list the **Plan** bar shows progress and the start/pause buttons (see 
 
 The two view buttons switch the task area between the original **list** and a **grid** of vertical cards. The grid
 uses one column on phones, two on tablets and three on desktop; the browser remembers the choice for the next visit.
+On the [dashboard](#desktop-the-dashboard) the three-column ceiling is lifted: from a 1200px window up, the columns
+auto-fill at a fixed card width (`--tl-card-w`, 22rem by default), so a wide screen simply gets more cards per row.
 
 ## Desktop: the dashboard
 
-On a big screen the board has a second home: **`/dashboard`**, the same list rendered in a wider, roomier
-container (`max-w-5xl` instead of `max-w-2xl`), so long titles and notes stop wrapping every few words. It is
-the same component and the same data — states, modal, filters, drag & drop all behave exactly as on `/` — only
-the width changes. The page wears the current theme when that theme is a generic one; from a dedicated style of
+On a big screen the board has a second home: **`/dashboard`**, the same list rendered **full width**: no centred
+container at all (`.tl-page-wide`, against `max-w-2xl` on `/`), so long titles and notes stop wrapping every few
+words. In grid view the columns are free to multiply — see the toolbar section above — and the task modal follows
+the screen too, up to `max-w-6xl` on very wide displays instead of stopping at `max-w-3xl`. It is the same
+component and the same data — states, modal, filters, drag & drop all behave exactly as on `/` — only the width
+changes. Inside the narrow side tab the same page keeps the ordinary responsive columns: the 1200px rule is
+measured on the iframe, not on the window. The page wears the current theme when that theme is a generic one; from a dedicated style of
 the host app (which has no shared CSS variables) it falls back to the default theme.
 
 The path comes from the config key `dashboard_route` (`GRIGLIA_DASHBOARD_ROUTE`, default `/dashboard`); set it

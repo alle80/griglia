@@ -76,15 +76,22 @@
 
     {{-- Filtri di stato, agente e archivio --}}
     <div class="flex flex-wrap items-center gap-1.5">
+        {{-- Filtro di stato: una <select> vestita da chip (task 612). Sei chip andavano a capo su ogni
+             schermo stretto e rubavano spazio alla board larga; l'icona a sinistra segue lo stato scelto. --}}
         @php($icons = ['todo' => 'waiting', 'done' => 'done', 'otw' => 'open', 'working' => 'working', 'paused' => 'paused', 'question' => 'question'])
-        @foreach (\Alle80\Griglia\Livewire\TodoList::filters() as $key => $label)
-            <button
-                type="button"
-                wire:click="setFilter('{{ $key }}')"
-                class="{{ $filter === $key ? $chipOnClass : $chipClass }} inline-flex cursor-pointer items-center gap-1 px-2.5 py-1 text-xs leading-none"
-                aria-pressed="{{ $filter === $key ? 'true' : 'false' }}"
-            >@isset($icons[$key])<span class="db-badge db-badge-{{ $icons[$key] }}"><x-griglia::icon :name="$icons[$key]" size="1.1em" :stroke="2" /></span>@endisset{{ $label }}</button>
-        @endforeach
+        <label class="{{ $filter !== 'all' ? $chipOnClass : $chipClass }} db-status-filter inline-flex cursor-pointer items-center gap-1 px-2.5 py-1 text-xs leading-none"
+               title="{{ __('griglia::t.status_filter') }}">
+            @isset($icons[$filter])
+                <span class="db-badge db-badge-{{ $icons[$filter] }}"><x-griglia::icon :name="$icons[$filter]" size="1.1em" :stroke="2" /></span>
+            @else
+                <x-griglia::icon name="filter" size="1.1em" :stroke="2" />
+            @endisset
+            <select wire:change="setFilter($event.target.value)" aria-label="{{ __('griglia::t.status_filter') }}">
+                @foreach (\Alle80\Griglia\Livewire\TodoList::filters() as $key => $label)
+                    <option value="{{ $key }}" @selected($filter === $key)>{{ $label }}</option>
+                @endforeach
+            </select>
+        </label>
 
         {{-- Multi-agent: filter by the effective agent (task override, list default, global default — task 500).
              A <select> dressed like the status chips: the label carries the chip look, the select is transparent

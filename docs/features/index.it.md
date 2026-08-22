@@ -35,5 +35,5 @@ Tutto quello che fa la board, in una pagina. Segui un link quando vuoi il dettag
 | **Temi** | Un sistema di temi a variabili CSS, il tema Slate integrato e pacchetti zip installabili. [Temi](themes.md) |
 | **AI, facoltativa** | Descrizione delle immagini per la ricerca, dettatura su ogni campo, il costruttore di piani. [Funzioni AI](ai.md) |
 | **Modalità** | `server` (login, liste per utente) oppure `local` (niente autenticazione, solo la tua macchina). [Accessi e modalità](../configuration/access.md) |
-| **Dashboard desktop** | Una vista più larga della board su `/dashboard`, più una linguetta a scomparsa che la apre da qualsiasi pagina. [Usare la board](../board/usage.md#desktop-la-dashboard) |
+| **Dashboard desktop** | La board a tutta larghezza su `/dashboard`, con le colonne della griglia che si moltiplicano sugli schermi larghi, più una linguetta a scomparsa che la apre da qualsiasi pagina. [Usare la board](../board/usage.md#desktop-la-dashboard) |
 | **Mobile** | Un layout pensato per il pollice: bersagli grandi, allegati dalla fotocamera, Web Push. [Usare la board](../board/usage.md#mobile) |

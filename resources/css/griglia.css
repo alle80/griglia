@@ -47,6 +47,18 @@ body { -webkit-tap-highlight-color: transparent; }
 .todo-grid > [data-todo-id] > div:first-child { flex: 0 0 auto; }
 .todo-grid > [wire\:key="gap-end"] { grid-column: 1 / -1; }
 
+/* Board a tutta larghezza (dashboard, task 612): niente contenitore centrato, e in vista card le colonne
+   non si fermano a tre — da 1200px di finestra in su si moltiplicano da sole tenendo fissa la larghezza
+   della card (--tl-card-w, come le tre colonne di prima). Il pannello a scomparsa incornicia la stessa
+   pagina in un iframe stretto: lì la media query non scatta e restano le colonne di Tailwind. */
+.tl-page-wide { max-width: none; --tl-card-w: 22rem; }
+@media (min-width: 1024px) {
+    .tl-page-wide { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+@media (min-width: 1200px) {
+    .tl-page-wide .todo-grid { grid-template-columns: repeat(auto-fill, minmax(var(--tl-card-w, 22rem), 1fr)); }
+}
+
 /* ==================== Layout mobile condiviso (< 640px) ==================== */
 @media (max-width: 639px) {
     /* target touch più generosi */
@@ -524,8 +536,10 @@ select.setting-input { appearance: auto; }
 /* Toolbar filter by agent (task 500): a <select> dressed like the status chips. The wrapping label carries the
    chip look, the select is transparent and inherits colour and font, so the «on» chip (accent background, light
    text) stays one piece; the options keep the system colours so the dropdown is readable on every theme. */
-.db-agent-filter select { background: transparent; border: 0; padding: 0; color: inherit; font: inherit; max-width: 11rem; text-overflow: ellipsis; cursor: pointer; }
-.db-agent-filter option { color: CanvasText; background: Canvas; }
+.db-agent-filter select,
+.db-status-filter select { background: transparent; border: 0; padding: 0; color: inherit; font: inherit; max-width: 11rem; text-overflow: ellipsis; cursor: pointer; }
+.db-agent-filter option,
+.db-status-filter option { color: CanvasText; background: Canvas; }
 
 /* Desktop board density (task 556): keep compact mobile sizing, while desktop secondary copy and controls use a readable size. */
 @media (min-width: 768px) {
@@ -533,9 +547,11 @@ select.setting-input { appearance: auto; }
     .todo-row .text-xs,
     .modal-panel .text-xs { font-size: .875rem; }
     .list-toolbar button,
-    .list-toolbar .db-agent-filter { padding: .45rem .8rem; }
+    .list-toolbar .db-agent-filter,
+    .list-toolbar .db-status-filter { padding: .45rem .8rem; }
     .db-list-agent select { min-height: 2.5rem; font-size: .875rem; line-height: 1.25rem; }
-    .db-agent-filter select { line-height: 1.25rem; }
+    .db-agent-filter select,
+    .db-status-filter select { line-height: 1.25rem; }
 }
 
 /* Il nome dello stato resta accanto all'icona anche sul telefono: il colore da solo non deve costringere
