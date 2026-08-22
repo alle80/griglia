@@ -106,6 +106,14 @@ welcome and need no disclaimer. One rule applies: **the person who opens the pul
 Read the diff before sending it, make sure the tests fail without the change, and do not paste generated
 documentation you have not checked against the code.
 
+## License
+
+Griglia is MIT-licensed, and the project commits to staying under an OSI-approved permissive license:
+a `composer require` should never put conditions on the application that installs it. Contributions are
+accepted on the same terms — inbound equals outbound, with no agreement to sign. The reasoning, the
+third-party licenses that come with the package and what relicensing would take are on the
+[License](license.md) page.
+
 ## Changing this page
 
 Governance changes the same way the code does: a pull request, the maintainer's approval, and a line in the

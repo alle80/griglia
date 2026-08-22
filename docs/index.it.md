@@ -98,7 +98,7 @@ Griglia non è un modello di coding autonomo, un IDE, un'interfaccia chat o un s
 
 ## Open source per scelta
 
-Griglia è distribuita con licenza MIT. Board, protocollo per gli agenti, migrazioni e documentazione sono nel sorgente del package: un team può ispezionare il flusso, adattarlo alla propria applicazione Laravel e tenere i dati operativi sull'infrastruttura che controlla.
+Griglia è distribuita con [licenza MIT](contributing/license.md). Board, protocollo per gli agenti, migrazioni e documentazione sono nel sorgente del package: un team può ispezionare il flusso, adattarlo alla propria applicazione Laravel e tenere i dati operativi sull'infrastruttura che controlla.
 
 ## Come funziona in un minuto
 

@@ -116,6 +116,7 @@ plugins:
             Troubleshooting: Se qualcosa non va
             Contributing: Contribuire
             Governance: Governance
+            License: Licenza
             Development: Sviluppo
             Building this site: Costruire questo sito
             Translations: Traduzioni
@@ -179,6 +180,7 @@ nav:
   - Contributing:
       - Governance: contributing/governance.md
       - Contributing: contributing/contributing.md
+      - License: contributing/license.md
       - Development: contributing/development.md
       - Building this site: contributing/docs-site.md
       - Translations: contributing/translations.md

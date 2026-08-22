@@ -111,6 +111,14 @@ agente CLI sono benvenute e non richiedono avvisi. Vale una regola sola: **chi a
 risponde.** Leggi il diff prima di mandarlo, verifica che i test falliscano senza la modifica e non incollare
 documentazione generata che non hai confrontato con il codice.
 
+## Licenza
+
+Griglia è distribuita con licenza MIT, e il progetto si impegna a restare sotto una licenza permissiva
+approvata dall'OSI: un `composer require` non deve mai mettere condizioni all'applicazione che lo installa. I
+contributi sono accettati alle stesse condizioni — quello che entra esce con la stessa licenza, senza accordi
+da firmare. Le motivazioni, le licenze di terze parti che arrivano col package e cosa servirebbe per cambiare
+licenza stanno nella pagina [Licenza](license.md).
+
 ## Come si cambia questa pagina
 
 La governance cambia come il codice: una pull request, l'approvazione del maintainer e una riga nel

@@ -98,7 +98,7 @@ Griglia is not an autonomous coding model, an IDE, a chat interface or a hosted 
 
 ## Open source by design
 
-Griglia is released under the MIT licence. The board, agent protocol, migrations and documentation are available in the package source, so teams can inspect the workflow, adapt it to their Laravel application and keep operational data on infrastructure they control.
+Griglia is released under the [MIT license](contributing/license.md). The board, agent protocol, migrations and documentation are available in the package source, so teams can inspect the workflow, adapt it to their Laravel application and keep operational data on infrastructure they control.
 
 ## How it works in one minute
 

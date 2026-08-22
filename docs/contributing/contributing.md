@@ -30,6 +30,13 @@ Run `composer lint` to check the Laravel Pint style and `composer test` to run P
 code: Laravel conventions, no new dependency without a reason, UI built with the
 package's icon set and theme variables rather than one-off markup.
 
+## License
+
+Griglia is MIT-licensed and **what you contribute is MIT too**: no contributor licence agreement, no copyright
+assignment, no sign-off. Opening a pull request is your agreement to publish that work under the terms in
+[`LICENSE`](https://github.com/alle80/griglia/blob/master/LICENSE). If the change carries third-party code,
+declare its origin and its license in the pull request — see [License](license.md).
+
 ## Security
 
 Please do not open a public issue for a vulnerability — see [Security](../operations/security.md).

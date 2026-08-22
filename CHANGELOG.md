@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.4] - 2026-08-23
+
+### Documentation
+- **License** — a new page states the licensing choice: Griglia stays MIT, what that allows and requires,
+  why not Apache-2.0 or a copyleft license, what the license covers (sources, built assets, docs and brand
+  images), the third-party components bundled or required and their licenses, that contributions are inbound
+  = outbound with no agreement to sign, and what changing the license would take. The README, the governance
+  page and `GOVERNANCE.md` link it, and the broken `LICENSE.md` link in the README now points at `LICENSE`.
+
 ## [0.89.3] - 2026-08-23
 
 ### Changed

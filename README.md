@@ -98,6 +98,9 @@ Read the [development guide](docs/contributing/development.md) before running Te
 - [Upgrade runbook](docs/operations/upgrading.md)
 - [Troubleshooting](docs/operations/troubleshooting.md)
 - [Security policy](SECURITY.md)
+- [License and third-party components](docs/contributing/license.md)
 - [Changelog](CHANGELOG.md)
 
-Griglia is released under the [MIT license](LICENSE.md).
+Griglia is released under the [MIT license](LICENSE): use it, change it and ship it in a commercial
+product, keeping the copyright notice. What that means in practice, which third-party licenses come with it
+and under which terms contributions are accepted: [License](docs/contributing/license.md).

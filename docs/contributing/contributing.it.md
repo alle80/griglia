@@ -31,6 +31,13 @@ Esegui `composer lint` per controllare lo stile Laravel Pint e `composer test` p
 codice che hai attorno: convenzioni Laravel, nessuna dipendenza nuova senza un motivo, interfaccia
 costruita con il set di icone e le variabili di tema del package invece che con markup usa e getta.
 
+## Licenza
+
+Griglia ha licenza MIT e **anche quello che contribuisci è MIT**: nessun accordo da firmare, nessuna cessione
+del copyright, nessun sign-off. Aprire una pull request vale come consenso a pubblicare quel lavoro alle
+condizioni di [`LICENSE`](https://github.com/alle80/griglia/blob/master/LICENSE). Se la modifica porta con sé
+codice di terze parti, dichiarane provenienza e licenza nella pull request — vedi [Licenza](license.md).
+
 ## Sicurezza
 
 Per favore non aprire una issue pubblica per una vulnerabilità — vedi [Sicurezza](../operations/security.md).
