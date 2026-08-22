@@ -1,12 +1,15 @@
 # Contributing
 
 Issues and pull requests are welcome at
-[github.com/alle80/griglia](https://github.com/alle80/griglia).
+[github.com/alle80/griglia](https://github.com/alle80/griglia). [Governance](governance.md) says who decides,
+what is in scope, which versions are supported and how long an answer takes.
 
 ## Before opening a pull request
 
 ```bash
-cd packages/griglia && composer update\ncomposer lint\ncomposer test
+cd packages/griglia && composer update
+composer lint
+composer test
 ```
 
 The suite (orchestra/testbench, in-memory SQLite) covers migrations, per-user scoping, the Livewire
@@ -23,7 +26,8 @@ broadcast event. GitHub Actions runs it on PHP 8.3 and 8.4.
 
 ## Style
 
-Run `composer lint` to check the Laravel Pint style and `composer test` to run PHPUnit. Follow the surrounding\ncode: Laravel conventions, no new dependency without a reason, UI built with the
+Run `composer lint` to check the Laravel Pint style and `composer test` to run PHPUnit. Follow the surrounding
+code: Laravel conventions, no new dependency without a reason, UI built with the
 package's icon set and theme variables rather than one-off markup.
 
 ## Security

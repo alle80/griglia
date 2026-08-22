@@ -93,6 +93,7 @@ Read the [development guide](docs/contributing/development.md) before running Te
 ## Documentation and support
 
 - [Documentation site](https://alle80.github.io/griglia/)
+- [Governance and support policy](GOVERNANCE.md)
 - [Feature overview](docs/features/index.md)
 - [Upgrade runbook](docs/operations/upgrading.md)
 - [Troubleshooting](docs/operations/troubleshooting.md)

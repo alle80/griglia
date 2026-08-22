@@ -115,6 +115,7 @@ plugins:
             Upgrading: Aggiornare
             Troubleshooting: Se qualcosa non va
             Contributing: Contribuire
+            Governance: Governance
             Development: Sviluppo
             Building this site: Costruire questo sito
             Translations: Traduzioni
@@ -176,6 +177,7 @@ nav:
       - Upgrading: operations/upgrading.md
       - Troubleshooting: operations/troubleshooting.md
   - Contributing:
+      - Governance: contributing/governance.md
       - Contributing: contributing/contributing.md
       - Development: contributing/development.md
       - Building this site: contributing/docs-site.md

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.2] - 2026-08-23
+
+### Documentation
+- **Governance** — a new page states the mission and the five goals of the project, what is in and out of
+  scope, the roles, how a change is accepted or refused, which versions are supported (latest `0.x` minor, no
+  backports) and the response times to expect. A short `GOVERNANCE.md` in the repository root points to it,
+  and the contributing guide and the README link it.
+- Fixed the shell block and a broken line in the contributing guide, where escaped newlines had been written
+  literally.
+
 ## [0.89.1] - 2026-08-23
 
 ### Documentation

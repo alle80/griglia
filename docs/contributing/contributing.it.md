@@ -1,12 +1,15 @@
 # Contribuire
 
 Issue e pull request sono benvenute su
-[github.com/alle80/griglia](https://github.com/alle80/griglia).
+[github.com/alle80/griglia](https://github.com/alle80/griglia). La [governance](governance.md) dice chi decide,
+che cosa sta nel perimetro, quali versioni sono supportate e in quanto tempo arriva una risposta.
 
 ## Prima di aprire una pull request
 
 ```bash
-cd packages/griglia && composer update\ncomposer lint\ncomposer test
+cd packages/griglia && composer update
+composer lint
+composer test
 ```
 
 La suite (orchestra/testbench, SQLite in memoria) copre migrazioni, delimitazione per utente, i componenti
@@ -24,7 +27,8 @@ traduzioni e l'evento di broadcast. GitHub Actions la esegue su PHP 8.3 e 8.4.
 
 ## Stile
 
-Esegui `composer lint` per controllare lo stile Laravel Pint e `composer test` per avviare PHPUnit. Segui il\ncodice che hai attorno: convenzioni Laravel, nessuna dipendenza nuova senza un motivo, interfaccia
+Esegui `composer lint` per controllare lo stile Laravel Pint e `composer test` per avviare PHPUnit. Segui il
+codice che hai attorno: convenzioni Laravel, nessuna dipendenza nuova senza un motivo, interfaccia
 costruita con il set di icone e le variabili di tema del package invece che con markup usa e getta.
 
 ## Sicurezza
