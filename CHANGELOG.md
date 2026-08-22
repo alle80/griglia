@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.88.8] - 2026-08-22
+
+### Added
+- `Alle80\Griglia\Testing\DatabaseGuard`: the package suite and `vendor/bin/testbench` now refuse to open a
+  connection to a database that is not a test database (SQLite, or a name containing `test`), so a run started
+  inside an application container can no longer drop the live schema. Escape hatch: `GRIGLIA_ALLOW_PROD_DB=1`.
+
+### Changed
+- Expanded CI to cover the PHP 8.3/8.4 and Laravel 12/13 matrix, lowest supported dependencies, MySQL 8,
+  Pint/PHPStan linting, and Composer vulnerability auditing (task 521).
+- Raised the minimum Livewire 4 version to 4.4, the first supported release that passes the full package suite.
+
 ## [0.88.7] - 2026-08-22
 
 ### Added

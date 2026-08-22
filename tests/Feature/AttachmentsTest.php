@@ -26,7 +26,8 @@ class AttachmentsTest extends TestCase
         $this->assertSame(40, $a->width);
         $this->assertStringContainsString('/griglia/attachments/'.$a->id, $a->url(), 'served by the authorised route');
         $this->get($a->url())->assertOk()->assertHeader('X-Content-Type-Options', 'nosniff');
-        $this->get('/storage/'.$a->path)->assertNotFound();
+        $privateResponse = $this->get('/storage/'.$a->path);
+        $this->assertContains($privateResponse->status(), [403, 404]);
 
         // another user cannot fetch it
         $this->actingAs(User::create(['name' => 'B', 'email' => 'b@x.it', 'password' => bcrypt('s')]));

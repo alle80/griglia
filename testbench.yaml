@@ -1,0 +1,11 @@
+# `vendor/bin/testbench` boots a skeleton application that runs `migrate:fresh`, and
+# the skeleton picks up the DB_* variables of the environment it is started in. Inside
+# an application container those point at the live database (incident of 2026-08-22),
+# and an `env:` block here does not win over real environment variables — so always
+# pass the connection explicitly, e.g.
+#     docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: … vendor/bin/testbench …
+# Alle80\Griglia\Testing\DatabaseGuard refuses the run if anything still resolves to
+# a database that is not a test database.
+
+workbench:
+  install: true

@@ -29,7 +29,28 @@ invalid state transitions. `tests/Feature/ReviewUiTest.php` covers assigning the
 
 The suite covers migrations, per-user scoping, the Livewire components, `griglia:check` / `griglia:watch`,
 the theme registry and zip packs, translation parity between `en` and `it`, and the broadcast event.
-GitHub Actions runs it on PHP 8.3 and 8.4.
+GitHub Actions tests the full PHP 8.3/8.4 and Laravel 12/13 matrix. Separate jobs exercise the lowest supported
+dependency versions on PHP 8.3 and Laravel 12, run the suite against MySQL 8, and reject known vulnerable Composer
+dependencies with `composer audit`; Pint and PHPStan run in their own lint job. Local tests continue to use in-memory SQLite unless `GRIGLIA_TEST_DB=mysql` and
+the standard `DB_*` variables select a MySQL database.
+
+### The suite never runs against a real database
+
+`RefreshDatabase` and Testbench's workbench (`workbench: install: true` runs `migrate:fresh`) drop **every table**
+of the connection they are given, and a process started inside an application container inherits that
+application's `DB_*` variables — which is how the origin project lost its board data on 2026-08-22.
+`Alle80\Griglia\Testing\DatabaseGuard`, armed by the service provider whenever the process is phpunit or the
+Testbench skeleton, therefore inspects every connection as it is opened and aborts unless the driver is SQLite or
+the database name contains `test` (`griglia_test`, the name CI uses, passes). Set `GRIGLIA_ALLOW_PROD_DB=1` only if
+a test database really cannot follow the convention.
+
+In practice: run `vendor/bin/phpunit` where no `DB_*` variables point at a live database, and give
+`vendor/bin/testbench` an explicit connection — an `env:` block in `testbench.yaml` does not override real
+environment variables:
+
+```bash
+docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: … vendor/bin/testbench griglia:docs-generate --check
+```
 
 The `Todo`, `Checklist`, `Ingredient`, and `Question` models include package factories for focused tests:
 

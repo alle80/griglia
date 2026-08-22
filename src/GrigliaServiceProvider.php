@@ -20,6 +20,7 @@ use Alle80\Griglia\Http\Middleware\SetLocale;
 use Alle80\Griglia\Settings\AgentSettings;
 use Alle80\Griglia\Settings\AppSettings;
 use Alle80\Griglia\Settings\OptimizationSettings;
+use Alle80\Griglia\Testing\DatabaseGuard;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +30,9 @@ class GrigliaServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        // A test process pointed at a real database drops every table of it: refuse the connection.
+        DatabaseGuard::protect($this->app);
+
         $this->mergeConfigFrom(__DIR__.'/../config/griglia.php', 'griglia');
 
         // spatie/laravel-settings: our settings classes and their value migrations

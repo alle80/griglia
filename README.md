@@ -328,9 +328,11 @@ configured nothing happens (failures are logged, never raised).
 cd packages/griglia && composer update\ncomposer lint\ncomposer test
 ```
 
-The suite (orchestra/testbench, in-memory sqlite) covers migrations, per-user scoping, the Livewire
+The suite (orchestra/testbench, SQLite by default) covers migrations, per-user scoping, the Livewire
 components, `griglia:check` and `griglia:watch`, the theme registry and zip packs, translation parity
-and the live event. GitHub Actions runs it on PHP 8.3 / 8.4 on every push touching the package.
+and the live event. GitHub Actions tests every PHP 8.3/8.4 and Laravel 12/13 combination, the lowest
+supported dependency set, and MySQL 8; it also runs `composer audit`.
+The minimum supported Livewire release is 4.4.
 
 ## License
 
