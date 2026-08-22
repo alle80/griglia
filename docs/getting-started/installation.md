@@ -1,70 +1,94 @@
-# Installation
+# Install Griglia in a Laravel application
 
-The package is on Packagist as [`alle80/griglia`](https://packagist.org/packages/alle80/griglia).
+This tutorial adds Griglia to an existing Laravel application and ends with an authenticated user opening a
+working board. Allow about ten minutes for the required path; optional integrations can be added afterwards.
 
-## Requirements
+## Before you start
 
-- PHP 8.3+, Laravel 12 or 13, Livewire 4, `ext-gd`, `ext-fileinfo`, and `ext-zip`. Tailwind CSS 4 is required only for the `vite` asset mode; the default standalone assets already include it.
-- A database (MariaDB/MySQL/SQLite), a user model with `Notifiable` (and `HasPushSubscriptions` for Web Push).
-- Optional: Laravel Reverb (live updates), `laravel/ai` (image descriptions, plan builder, speech to text),
-  a mailer (mail notifications).
+- PHP 8.3+, Laravel 12 or 13, Livewire 4.4+, Composer and a configured database
+- `ext-gd`, `ext-fileinfo` and `ext-zip`
+- a working authentication flow and at least one user for the default `server` mode
+- the host Laravel application root as the current directory
 
-## Steps
+Back up an existing application before changing dependencies or applying migrations.
 
-```bash
-composer require alle80/griglia -W                  # -W: Web Push caps brick/math at ^0.17 (see the note below)
-php artisan migrate                                 # tables + settings defaults
-```
-
-That is the whole installation: the board ships its **precompiled** CSS and JS, published automatically by
-composer (Laravel republishes `laravel-assets` after every update), so there is nothing to build. Open `/`
-and the board is there, with one list named **My list**.
-
-One thing is still missing: the **agent list**, the list `griglia:check` reads, named after
-`config('griglia.agent_list')` (`dev` by default). Rename *My list* to `dev` from the lists menu, or set
-`GRIGLIA_AGENT_LIST` to the name of a list you already have — the [Quickstart](quickstart.md#1-open-the-board)
-walks through it.
-
-Optional, when you want them:
+## 1. Install the package
 
 ```bash
-php artisan vendor:publish --tag=griglia-config     # config/griglia.php
-php artisan vendor:publish --tag=griglia-agents     # AGENTS.md for your coding agent
-php artisan vendor:publish --tag=griglia-assets     # re-publish the assets by hand
-php artisan vendor:publish --tag=griglia-scripts    # host helpers → scripts/ (see docs/agent/scripts.md)
+composer require alle80/griglia -W
 ```
 
-!!! note "Why `-W`"
-    Web Push pulls `web-token/jwt-library`, which caps `brick/math` at `^0.17`, while a brand new
-    Laravel app ships `0.18`. `-W` lets composer downgrade that single transitive dependency; without
-    it the install stops with a conflict. Existing apps usually need nothing.
+`-W` lets Composer update transitive dependencies required by Web Push. Composer also publishes Griglia's
+precompiled assets through Laravel's `laravel-assets` tag. A successful run adds `alle80/griglia` to
+`composer.json` and completes without a dependency conflict.
 
-If instead you want the board to be part of your own Vite build (to share Tailwind with your app, or to
-restyle it), set `GRIGLIA_ASSETS=vite` and follow [Front-end assets](assets.md).
-
-Routes are registered under `griglia.route_prefix` (default: site root — `/`, `/settings`, `/stats`, …) and
-protected by the package itself according to the [mode](../configuration/access.md#modes).
-
-## Live updates (optional)
-
-Install Laravel Reverb, set the `REVERB_*`/`VITE_REVERB_*` variables and authorise the private channel
-`App.Models.User.{id}` in `routes/channels.php`. Without a broadcaster the board still works (no live refresh).
-
-## Web Push (optional)
+## 2. Create the tables and settings
 
 ```bash
-php artisan webpush:vapid          # VAPID keys into .env
+php artisan migrate
 ```
-Add `NotificationChannels\WebPush\HasPushSubscriptions` to your user model; users enable their devices in
-**Settings → Notifications**.
 
-## First user and administrators
+The migrations are idempotent and create board data, settings, notifications and push-subscription tables when
+they do not already exist.
 
-Registration is up to your app. By default the **first registered user** is the board administrator (settings,
-agent context, theme packs); see [Security](../operations/security.md) for `GRIGLIA_ADMINS`, `canManageGriglia()` or a Gate.
+## 3. Open the board
 
-## Next
+Sign in to the host application and open `/`. Griglia should display a first list. Routes are registered behind
+the `web` middleware and Griglia's access middleware; in `server` mode an unauthenticated request redirects to
+the host login route.
 
-- [Quickstart](quickstart.md) — write the first request and let an agent work it.
-- [Front-end assets](assets.md) — the two modes in detail (precompiled or bundled by your app).
-- [Access, administrators and modes](../configuration/access.md) — who gets in, and the local mode.
+If `/` belongs to the host application, publish `griglia.php`, disable `home_route`, and use the configured
+dashboard route instead. See [access and modes](../configuration/access.md) for gates, administrators and local
+mode.
+
+## 4. Connect an agent
+
+```bash
+php artisan vendor:publish --tag=griglia-agents
+```
+
+This writes the portable `AGENTS.md` workflow to the project root. Create or rename a list to match
+`GRIGLIA_AGENT_LIST` (`dev` by default), start the coding agent in that directory, then run:
+
+```bash
+php artisan griglia:check
+```
+
+Expected result: the command prints behaviour settings and the open/working items for the agent list.
+
+## Verify the installation
+
+```bash
+php artisan route:list --name=griglia
+php artisan griglia:check --all
+```
+
+Confirm that Griglia routes are present, the board opens for the intended user, and the CLI can read the same
+list. Complete the [quickstart](quickstart.md) to exercise the full request lifecycle.
+
+## Optional integrations
+
+- [Front-end assets](assets.md): switch from precompiled files to the host Vite build.
+- [Live updates and notifications](../features/notifications.md): configure a broadcaster and Web Push.
+- [AI features](../features/ai.md): enable plan generation, transcription and image descriptions.
+- [Themes](../features/themes.md): select or install a visual theme.
+
+### Live updates (optional)
+
+Configure a broadcaster only after the required installation works. The canonical setup and verification are
+in [notifications](../features/notifications.md).
+
+### Web Push (optional)
+
+Web Push requires HTTPS, VAPID keys and a user model with the subscription trait. Follow the same
+[notifications guide](../features/notifications.md) instead of duplicating the procedure here.
+
+## Common problems
+
+| Symptom | Likely cause | Action |
+|---|---|---|
+| Composer reports a `brick/math` conflict | transitive packages are locked | repeat the require command with `-W` |
+| `/` redirects to login | normal `server`-mode protection | sign in or configure access deliberately |
+| `/` is 404 after installation | stale route cache | run `php artisan route:cache` or clear the cache during setup |
+| CSS or JavaScript is missing | assets were not published or mode is inconsistent | republish `laravel-assets` or follow the Vite guide |
+| The agent list is empty | its name differs from `GRIGLIA_AGENT_LIST` | rename the list or update the configuration |

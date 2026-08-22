@@ -1,72 +1,94 @@
-# Installazione
+# Installare Griglia in un'applicazione Laravel
 
-Il package sta su Packagist come [`alle80/griglia`](https://packagist.org/packages/alle80/griglia).
+Questo tutorial aggiunge Griglia a un'applicazione Laravel esistente e termina quando un utente autenticato apre
+una board funzionante. Il percorso richiesto dura circa dieci minuti; le integrazioni opzionali possono seguire.
 
-## Requisiti
+## Prima di iniziare
 
-- PHP 8.3+, Laravel 12 o 13, Livewire 4, `ext-gd`, `ext-fileinfo` ed `ext-zip`. Tailwind CSS 4 serve solo con la modalità asset `vite`; gli asset standalone predefiniti lo includono già.
-- Un database (MariaDB/MySQL/SQLite), un modello utente con `Notifiable` (e `HasPushSubscriptions` per il Web Push).
-- Facoltativi: Laravel Reverb (aggiornamenti dal vivo), `laravel/ai` (descrizione delle immagini, costruttore
-  di piani, dettatura vocale), un mailer (notifiche via mail).
+- PHP 8.3+, Laravel 12 o 13, Livewire 4.4+, Composer e un database configurato
+- `ext-gd`, `ext-fileinfo` ed `ext-zip`
+- un flusso di autenticazione funzionante e almeno un utente per la modalità `server` predefinita
+- la root dell'applicazione Laravel ospite come directory corrente
 
-## Passi
+Creare un backup prima di cambiare dipendenze o applicare migrazioni a un'applicazione esistente.
 
-```bash
-composer require alle80/griglia -W                  # -W: il Web Push tiene brick/math a ^0.17 (vedi la nota sotto)
-php artisan migrate                                 # tabelle + valori di default delle impostazioni
-```
-
-L'installazione è tutta qui: la board porta con sé il proprio CSS e JS **precompilati**, pubblicati in automatico
-da composer (Laravel ripubblica `laravel-assets` dopo ogni aggiornamento), quindi non c'è niente da compilare.
-Apri `/` e la board è lì, con una lista che si chiama **La mia lista**.
-
-Manca ancora una cosa: la **lista dell'agente**, quella che legge `griglia:check`, che prende il nome da
-`config('griglia.agent_list')` (di default `dev`). Rinomina *La mia lista* in `dev` dal menu delle liste, oppure
-imposta `GRIGLIA_AGENT_LIST` col nome di una lista che hai già — i
-[Primi cinque minuti](quickstart.md#1-apri-la-board) lo spiegano passo passo.
-
-Facoltativi, quando ti servono:
+## 1. Installare il package
 
 ```bash
-php artisan vendor:publish --tag=griglia-config     # config/griglia.php
-php artisan vendor:publish --tag=griglia-agents     # AGENTS.md per il tuo agente
-php artisan vendor:publish --tag=griglia-assets     # ripubblica gli asset a mano
-php artisan vendor:publish --tag=griglia-scripts    # script per l'host → scripts/ (vedi docs/agent/scripts.md)
+composer require alle80/griglia -W
 ```
 
-!!! note "Perché `-W`"
-    Il Web Push tira dentro `web-token/jwt-library`, che tiene `brick/math` a `^0.17`, mentre un'applicazione
-    Laravel appena creata ha la `0.18`. `-W` lascia che composer retroceda quell'unica dipendenza indiretta;
-    senza, l'installazione si ferma con un conflitto. Le applicazioni già avviate di solito non hanno bisogno di niente.
+`-W` permette a Composer di aggiornare le dipendenze transitive richieste da Web Push. Composer pubblica anche
+gli asset precompilati tramite il tag Laravel `laravel-assets`. Un'esecuzione riuscita aggiunge
+`alle80/griglia` a `composer.json` e termina senza conflitti.
 
-Se invece vuoi che la board faccia parte della tua build Vite (per condividere Tailwind con la tua applicazione,
-o per rivestirla), imposta `GRIGLIA_ASSETS=vite` e segui [Asset front-end](assets.md).
-
-Le rotte sono registrate sotto `griglia.route_prefix` (default: la radice del sito — `/`, `/settings`, `/stats`, …)
-e protette dal package stesso secondo la [modalità](../configuration/access.md#modalita).
-
-## Aggiornamenti dal vivo (facoltativo)
-
-Installa Laravel Reverb, imposta le variabili `REVERB_*`/`VITE_REVERB_*` e autorizza il canale privato
-`App.Models.User.{id}` in `routes/channels.php`. Senza un broadcaster la board funziona lo stesso (niente
-aggiornamento dal vivo).
-
-## Web Push (facoltativo)
+## 2. Creare tabelle e impostazioni
 
 ```bash
-php artisan webpush:vapid          # chiavi VAPID nel .env
+php artisan migrate
 ```
-Aggiungi `NotificationChannels\WebPush\HasPushSubscriptions` al tuo modello utente; ogni utente abilita i propri
-dispositivi da **Impostazioni → Notifiche**.
 
-## Primo utente e amministratori
+Le migrazioni sono idempotenti e creano, quando mancanti, dati della board, impostazioni, notifiche e
+sottoscrizioni push.
 
-La registrazione è affare della tua applicazione. Per impostazione predefinita il **primo utente registrato** è
-l'amministratore della board (impostazioni, contesto dell'agente, pacchetti di temi); vedi
-[Sicurezza](../operations/security.md) per `GRIGLIA_ADMINS`, `canManageGriglia()` o un Gate.
+## 3. Aprire la board
 
-## E poi
+Accedere all'applicazione ospite e aprire `/`. Griglia deve mostrare una prima lista. Le rotte usano il middleware
+`web` e il middleware di accesso di Griglia; in modalità `server` una richiesta non autenticata viene reindirizzata
+al login dell'applicazione.
 
-- [Primi cinque minuti](quickstart.md) — scrivi la prima richiesta e falla lavorare a un agente.
-- [Asset front-end](assets.md) — le due modalità in dettaglio (precompilati o compilati dalla tua applicazione).
-- [Accessi, amministratori e modalità](../configuration/access.md) — chi entra, e la modalità locale.
+Se `/` appartiene già all'applicazione ospite, pubblicare `griglia.php`, disattivare `home_route` e usare la rotta
+dashboard configurata. Consultare [accessi e modalità](../configuration/access.md) per gate, amministratori e
+modalità locale.
+
+## 4. Collegare un agente
+
+```bash
+php artisan vendor:publish --tag=griglia-agents
+```
+
+Il comando scrive il workflow portabile `AGENTS.md` nella root del progetto. Creare o rinominare una lista in
+modo che corrisponda a `GRIGLIA_AGENT_LIST` (`dev` per default), avviare l'agente in quella directory, poi eseguire:
+
+```bash
+php artisan griglia:check
+```
+
+Risultato atteso: il comando stampa le impostazioni di comportamento e gli elementi aperti o in lavorazione.
+
+## Verificare l'installazione
+
+```bash
+php artisan route:list --name=griglia
+php artisan griglia:check --all
+```
+
+Verificare che le rotte siano presenti, che la board si apra per l'utente previsto e che la CLI legga la stessa
+lista. Completare il [quickstart](quickstart.md) per provare l'intero ciclo di una richiesta.
+
+## Integrazioni opzionali
+
+- [Asset front-end](assets.md): passare dai file precompilati alla build Vite dell'applicazione.
+- [Aggiornamenti live e notifiche](../features/notifications.md): configurare broadcaster e Web Push.
+- [Funzioni AI](../features/ai.md): attivare piani, trascrizione e descrizione immagini.
+- [Temi](../features/themes.md): scegliere o installare un tema grafico.
+
+### Aggiornamenti dal vivo (facoltativo)
+
+Configurare un broadcaster solo dopo che l'installazione richiesta funziona. Setup e verifica canonici sono in
+[notifiche](../features/notifications.md).
+
+### Web Push (facoltativo)
+
+Web Push richiede HTTPS, chiavi VAPID e il trait di sottoscrizione sul modello utente. Seguire la stessa
+[guida alle notifiche](../features/notifications.md) senza duplicare qui la procedura.
+
+## Problemi comuni
+
+| Sintomo | Causa probabile | Azione |
+|---|---|---|
+| Composer segnala un conflitto su `brick/math` | dipendenze transitive bloccate | ripetere il comando con `-W` |
+| `/` reindirizza al login | protezione normale della modalità `server` | autenticarsi o configurare l'accesso intenzionalmente |
+| `/` restituisce 404 dopo l'installazione | cache delle rotte vecchia | eseguire `php artisan route:cache` o pulire la cache durante il setup |
+| CSS o JavaScript mancano | asset non pubblicati o modalità incoerente | ripubblicare `laravel-assets` o seguire la guida Vite |
+| La lista dell'agente è vuota | il nome non coincide con `GRIGLIA_AGENT_LIST` | rinominare la lista o aggiornare la configurazione |

@@ -1,5 +1,8 @@
 # Sicurezza
 
+Usare questo runbook prima di esporre Griglia e dopo modifiche ad autenticazione, upload, temi, agenti o
+infrastruttura. Conoscere la modalità attiva e avere accesso alle impostazioni di autenticazione, HTTPS e storage.
+
 Il modello completo, la lista di irrobustimento e come segnalare una vulnerabilità stanno in
 [SECURITY.md](https://github.com/alle80/griglia/blob/master/SECURITY.md). In breve:
 
@@ -32,6 +35,11 @@ L'ultima revisione del codice sorgente, con le sue priorità, sta nella
 - Dai all'agente le credenziali che gli servono e nulla di più: gira sulla tua macchina, con la tua shell.
 
 ## Segnalazioni
+
+Prima del rilascio verificare che richieste anonime non aprano una board server, utenti ordinari non raggiungano
+l'amministrazione, gli allegati restino delimitati al proprietario, la modalità locale ascolti solo su loopback e
+`composer audit` sia verde. La valutazione datata sopra è evidenza storica per la versione dichiarata, non una
+garanzia sui deployment successivi.
 
 Per favore non aprire una issue pubblica per una vulnerabilità: il contatto e il processo di divulgazione
 stanno in [SECURITY.md](https://github.com/alle80/griglia/blob/master/SECURITY.md).

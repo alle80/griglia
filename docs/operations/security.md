@@ -1,5 +1,8 @@
 # Security
 
+Use this runbook before exposing Griglia and after changes to authentication, uploads, themes, agents or
+infrastructure. Know the active mode and have access to the host authentication, HTTPS and storage settings.
+
 The full model, the hardening checklist and how to report a vulnerability are in
 [SECURITY.md](https://github.com/alle80/griglia/blob/master/SECURITY.md). The short version:
 
@@ -29,6 +32,11 @@ The latest source review and its prioritized findings are in the
 - Give the agent the credentials it needs and nothing more: it runs on your machine, with your shell.
 
 ## Reporting
+
+Before release, verify that anonymous requests cannot open a server-mode board, ordinary users cannot reach
+administration, attachments remain owner-scoped, local mode listens only on loopback, and `composer audit`
+passes. The dated assessment above is historical evidence for its stated version, not a guarantee for later
+deployments.
 
 Please do not open a public issue for a vulnerability: the contact and the disclosure process are in
 [SECURITY.md](https://github.com/alle80/griglia/blob/master/SECURITY.md).

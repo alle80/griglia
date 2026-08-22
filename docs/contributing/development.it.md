@@ -1,5 +1,8 @@
 # Sviluppo
 
+Questa guida è per chi modifica il sorgente del package. Lavorare in un clone con PHP 8.3+ e Composer; Node 22
+serve solo per gli asset front-end. Non puntare mai i test al database di un'applicazione.
+
 ## Il repository
 
 ```
@@ -78,3 +81,9 @@ quando serve). È il tag `vX.Y.Z` su GitHub quello che Packagist pubblica — qu
 Ricompila gli asset precompilati prima di taggare, quando sono cambiati CSS/JS o le viste.
 
 Vedi anche [Contribuire](contributing.md) e [Costruire questo sito](docs-site.md).
+
+## Verificare prima di proporre una modifica
+
+Eseguire `composer lint`, `composer test` e `php artisan griglia:docs-build --strict`. Il risultato atteso è zero
+errori Pint/PHPStan, suite PHPUnit verde e build strict bilingue. Annotare un prerequisito mancante invece di
+dichiarare verificato un controllo non eseguito.

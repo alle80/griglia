@@ -1,5 +1,8 @@
 # Development
 
+This guide is for contributors changing the package source. Work in a clone with PHP 8.3+ and Composer; Node
+22 is needed only for front-end assets. Never point the test process at an application database.
+
 ## The repository
 
 ```
@@ -75,3 +78,9 @@ when relevant). A `vX.Y.Z` tag on GitHub is what Packagist publishes — so the 
 the precompiled assets before tagging when the CSS/JS or the views changed.
 
 See also [Contributing](contributing.md) and [Building this site](docs-site.md).
+
+## Verify before opening a change
+
+Run `composer lint`, `composer test`, and `php artisan griglia:docs-build --strict`. Expect zero Pint/PHPStan
+errors, a green PHPUnit suite, and a strict bilingual docs build. Record any missing prerequisite instead of
+reporting an unexecuted check as verified.
