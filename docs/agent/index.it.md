@@ -1,95 +1,57 @@
 # Il lato agente
 
-La board non parla mai con un fornitore preciso: il contratto è una CLI. Dai al tuo agente le regole di
-`AGENTS.md` (Codex lo legge nativamente; Claude Code legge `CLAUDE.md`; Gemini CLI `GEMINI.md`) e lascialo
-lavorare:
+Griglia funziona con qualsiasi agente di coding capace di eseguire comandi shell. Fornisci all'agente le
+istruzioni del repository (`AGENTS.md` per Codex, `CLAUDE.md` per Claude Code o `GEMINI.md` per Gemini CLI),
+poi lascia che usi la board tramite Artisan.
+
+## Lavorare su un task
 
 ```bash
-php artisan griglia:watch                       # stampa solo i cambiamenti a cui deve reagire (eventi)
-php artisan griglia:watch --agent=codex         # solo gli eventi assegnati a un agente
-php artisan griglia:check                       # cosa è open to work o già preso, impostazioni, piani
-php artisan griglia:check --take=ID             # presa in carico: il task passa a working (0%)
-php artisan griglia:check --take=ID --progress=60 --phase="testando"
-php artisan griglia:check --pause=ID            # pausa il lavoro conservando avanzamento e statistiche
-php artisan griglia:check --approve=ID_REVIEW --comment="Approvato"
-php artisan griglia:check --request-changes=ID_REVIEW --comment="Cosa modificare"
-php artisan griglia:check --ask=ID --q="Quale?" --choices="Prima|Seconda"     # mette il task in pausa con delle domande
-php artisan griglia:check --done=ID --comment="…" [--tokens-in=N --tokens-out=N]
-php artisan griglia:check --done=ID --comment="…" --outcome=alert   # fatto, ma va guardato (riga gialla)
-php artisan griglia:check --done=ID --comment="…" --outcome=blocked # c'è qualcosa che blocca (riga rossa)
+# 1. Trova il lavoro e leggi le regole correnti
+php artisan griglia:check --agent=codex
+
+# 2. Prendi il task prima di analizzarlo
+php artisan griglia:check --agent=codex --take=42
+
+# 3. Tieni informata la board
+php artisan griglia:check --agent=codex --take=42 --progress=60 --phase="testando"
+
+# 4. Chiudilo con una risposta utile
+php artisan griglia:check --agent=codex --done=42 --comment="Implementato e testato."
 ```
 
-Quando un task originale ha un revisore opzionale configurato, il `--done` dell'esecutore è un **invio**, non la
-chiusura finale. Griglia lascia atomicamente incompleto l'originale e crea un tentativo di revisione collegato, aperto
-e assegnato al revisore. Senza revisore, `--done` conserva il significato precedente. I tentativi hanno un numero di
-round immutabile, non possono revisionare sé stessi né entrare nelle catene di piano/ripresa e non sbloccano mai i
-dipendenti dell'originale. Le decisioni del revisore sono azioni esplicite, non un normale `--done`, così l'esito non
-può essere omesso.
+Sostituisci `codex` con la chiave configurata per il tuo agente. `check` mostra soltanto i task disponibili e
+attivi di quell'agente, compresi quelli dei piani avviati. Stampa anche le regole di lavoro correnti: vanno
+seguite.
 
-Il revisore assegnato prende prima in carico il tentativo, poi usa `--approve` oppure `--request-changes`; quest'ultimo
-richiede un commento con il lavoro da rifare. L'approvazione completa atomicamente tentativo e originale e sblocca i
-dipendenti del piano. La richiesta di modifiche conserva il commento della review, riapre l'originale al suo esecutore
-e consente un round successivo. Ripetere la stessa decisione è sicuro, mentre un esito opposto viene rifiutato.
+Se la richiesta non è chiara, fai una domanda dalla board invece di indovinare:
 
-I wrapper degli agenti possono passare commenti multilinea con sequenze `\n`: al salvataggio `griglia:check`
-le converte in veri a capo Markdown. Il riepilogo compatto del risultato resta sempre su una sola riga.
+```bash
+php artisan griglia:check --agent=codex --ask=42 \
+  --q="Quale layout devo aggiornare?" --choices="Board|Impostazioni"
+```
 
-Quando possibile, l’agente propone scelte chiuse brevi con `--choices` (ripetuto nello stesso ordine di `--q`). Nel modale diventano risposte selezionabili con un tocco, ma restano sempre disponibili il campo di testo libero e il microfono speech-to-text. Senza opzioni si omette il `--choices` corrispondente.
+L'utente risponde nel modale e riapre il task. Usa `--pause=42` soltanto per una pausa temporanea dal lato
+agente, per esempio quando raggiunge un limite di utilizzo.
 
-`check` stampa in testa le **impostazioni** dei gruppi `agent` e `optimization` (politica dei commit,
-grado di domande, notifiche, modalità di lavoro, modalità stringata, …) che l'agente deve rispettare, poi le
-regole del **grado di domande** scelto (`❓ question level: …` — quante domande fare prima di iniziare; lo stesso
-blocco che la board scrive nel [contesto dell'agente](context.md)), poi i task aperti della lista dell'agente e,
-dopo di quelli, i task aperti dei **piani** avviati (sotto un titolo `Plan «nome»`).
+## Le regole importanti
 
-Regole che vale la pena conoscere: prendere il task **per primo** (prima di leggere e analizzare), un task
-alla volta nell'ordine della lista (`task_mode=ordered`) oppure più task indipendenti insieme
-(`multitasking`), non toccare mai gli elementi *in attesa*, mollare un task nell'istante in cui viene
-fermato (e non riprenderlo finché l'utente non lo rimette 🟢: `--take` rifiuta un task fermato, così un
-`--take=ID --progress=N` in ritardo non può riavviarlo di nascosto), tenere aggiornate percentuale e fase, riportare i token alla chiusura quando l'impostazione lo
-chiede, e dire con `--outcome` quando un task chiuso non è filato liscio — è quello che
-[colora la riga](../board/usage.md#il-colore-della-riga) che vede l'utente (`ok` di default, `alert`,
-`blocked`).
+- Prendi il task prima di leggerne o analizzarne i dettagli.
+- Lavora soltanto sui task aperti assegnati all'agente. Non toccare quelli in attesa o fermati.
+- Segui l'ordine e la politica di concorrenza stampati da `check`.
+- Mantieni aggiornate percentuale e fase durante il lavoro.
+- Includi il conteggio dei token in `--done` quando le impostazioni lo richiedono.
+- Usa `--outcome=alert` o `--outcome=blocked` se un task chiuso richiede ancora attenzione.
+- Coordina checkout, build, migrazioni e rilasci condivisi quando sono attivi più agenti.
 
-Un task nato da una **ripresa** si porta dietro la sua storia: `check` stampa nota, risposta e sotto-task di
-ogni passo precedente, dal più recente (`resumes «…»`, poi `2 steps back «…»`, `3 steps back «…»`), perché
-anche una ripresa può essere ripresa. Con `--json` la stessa storia sta nel campo `resume_chain` di ogni task,
-ordinata dal passo più vicino al più vecchio.
+Per lavorare senza supervisione, avvia un [worker persistente](workers.it.md). Per reagire direttamente agli
+eventi della board usa `griglia:watch --agent=codex`; aggiungi `--once` per il polling da cron.
 
-Statistiche: ogni intervallo *working* viene cronometrato da solo; i token sono quelli che riporta l'agente.
-Quando l'agente deve fermarsi temporaneamente (per esempio per il limite di utilizzo), `--pause=ID` chiude
-l'intervallo cronometrato e mostra il badge di pausa senza perdere percentuale o fase. Il task non viene offerto
-ad altri agenti. Il worker persistente lo riprende automaticamente appena quell'agente ha uno slot di sessione
-disponibile; un agente manuale può riprenderlo con `--take=ID`. Il badge resta utilizzabile quando l'utente
-vuole farlo ripartire subito.
+## Per approfondire
 
-**Una sessione pesante costa a ogni passo**, perché il contesto viene riletto a ogni turno. L'impostazione
-«suggerisci di ripulire la sessione» (⚡ ottimizzazione, in migliaia di token) è la soglia oltre la quale
-l'agente ti dice di lanciare `/clear` — non può farlo al posto tuo.
-
-## Più agenti
-
-Si dichiarano con `GRIGLIA_AGENTS="claude:Claude Code,codex:Codex CLI"`. Una lista (progetto) ha un agente di
-default (selettore nella barra), un task può cambiarlo dalla propria riga o dal modale. Il nome resta sempre
-visibile: durante la lavorazione diventa un badge di sola lettura sia nella lista sia nel dettaglio. La barra degli
-strumenti può anche **filtrare** la lista per agente (il chip con l'icona del robot, accanto ai filtri di stato):
-segue la stessa assegnazione effettiva e si combina con ricerca e filtri di stato. Ogni agente esegue
-`griglia:check --agent=<la sua chiave>` (oppure imposta `GRIGLIA_AGENT_KEY`) e vede solo i propri task;
-`--take/--done` continuano a funzionare per id. Le [skill](skills.md) proposte su un task sono filtrate allo
-stesso modo: solo quelle che il suo agente ha installate.
-
-`--take`, `--done` e `--ask` rifiutano un task che appartiene a un altro agente, e `--take` un task fermato
-dall'utente (`--force` forza la mano in entrambi i casi),
-`check` stampa una riga `🔒 busy elsewhere` con quello che gli altri hanno in lavorazione, e la baseline 🆕 è
-tenuta per chiave d'agente. Quello che si condivide fuori dalla board — checkout, build, migrazioni, rilasci —
-sta in [Due agenti insieme](concurrency.md).
-
-Con `griglia:watch --agent=<chiave>` si usa la stessa chiave. Con `--once` il comando stampa anche i task che
-erano già in attesa quando è partito, il che lo rende adatto ai cron e ai worker sorvegliati; `--no-initial`
-mantiene il comportamento a sola baseline.
-
-## Vedi anche
-
-- [Primi cinque minuti](../getting-started/quickstart.md) — lo stesso flusso, passo per passo.
-- [Comandi artisan](../reference/commands.md) — ogni comando e ogni opzione, generati dal codice.
-- [Skill](skills.md) · [Contesto dell'agente](context.md) · [Statistiche](stats.md) · [Script sull'host](scripts.md) · [Worker persistenti](workers.md) · [Due agenti insieme](concurrency.md)
+- [Primi cinque minuti](../getting-started/quickstart.it.md) — completa il primo task passo per passo.
+- [Reference dei comandi Artisan](../reference/commands.it.md) — tutti i comandi e le opzioni, comprese review ed esiti.
+- [Contesto dell'agente](context.it.md) — genera e mantieni i file di istruzioni.
+- [Worker persistenti](workers.it.md) — avvia gli agenti automaticamente.
+- [Più agenti](concurrency.it.md) — assegnazioni e coordinamento delle risorse condivise.
+- [Skill](skills.it.md) · [Statistiche](stats.it.md) · [Script sull'host](scripts.it.md)

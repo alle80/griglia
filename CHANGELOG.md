@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.89.6] - 2026-08-23
+
+### Documentation
+- Reworked the agent overview into a short four-step workflow, a compact list of essential rules and links to
+  the dedicated reference pages; removed detailed review, resume, statistics and multi-agent explanations from
+  the entry page in both English and Italian.
 
 ## [0.89.5] - 2026-08-23
 

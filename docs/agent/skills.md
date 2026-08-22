@@ -25,7 +25,7 @@ The SKILL.md format is portable — frontmatter plus instructions in markdown, n
 but a skill only exists for the agent that finds it on disk: what is installed in `~/.claude/skills` is invisible
 to Codex CLI, and the built-in skills of a CLI cannot be installed anywhere at all. Each entry therefore carries
 `agents`, the keys (from `griglia.agents`) of the agents that can use it, and the modal of a task only offers the
-skills of [its agent](index.md#several-agents) plus the ones with no `agents` at all — shared, or imported before this
+skills of [its agent](concurrency.md) plus the ones with no `agents` at all — shared, or imported before this
 field existed. A skill already ticked stays visible even if the task changes agent, so you can untick it.
 
 `scripts/sync-skills.py` fills the field from the folder it read the skill from: `~/.claude/skills`, project

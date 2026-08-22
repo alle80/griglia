@@ -25,7 +25,7 @@ Il formato SKILL.md è portabile — frontmatter più istruzioni in markdown, ni
 particolare — ma una skill esiste solo per l'agente che se la trova sul disco: quello che sta in
 `~/.claude/skills` è invisibile a Codex CLI, e le skill integrate di una CLI non si possono installare da
 nessuna parte. Ogni voce porta quindi `agents`, le chiavi (da `griglia.agents`) degli agenti che possono
-usarla, e il modale di un task propone solo le skill del [suo agente](index.md#piu-agenti) più quelle senza
+usarla, e il modale di un task propone solo le skill del [suo agente](concurrency.it.md) più quelle senza
 alcun `agents` — condivise, o importate prima che questo campo esistesse. Una skill già spuntata resta
 visibile anche se il task cambia agente, così puoi toglierla.
 
