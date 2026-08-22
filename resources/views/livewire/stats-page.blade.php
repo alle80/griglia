@@ -1,6 +1,6 @@
 {{-- Desktop: contenitore più largo e, da xl, storico affiancato a grafico e panoramica (task 321).
      Sotto xl resta la colonna unica di prima. --}}
-<div class="mx-auto w-full max-w-3xl px-4 pt-24 pb-16 sm:pt-24 lg:max-w-5xl xl:max-w-7xl xl:px-8 2xl:max-w-[90rem]" style="{{ $skin['vars'] }}">
+<div class="tl-page-wide mx-auto w-full px-4 pt-24 pb-16 sm:pt-24" style="{{ $skin['vars'] }}">
     <div class="mb-4 flex items-center justify-between gap-3">
         <h1 class="{{ $skin['h1'] }} db-ctx-h1">{{ __('griglia::t.stats_page.title') }}</h1>
         <a href="{{ $skin['home'] }}" class="{{ $skin['back'] }} inline-flex items-center gap-1"><x-griglia::icon name="arrow-left" /> {{ __('griglia::t.back_to_list') }}</a>

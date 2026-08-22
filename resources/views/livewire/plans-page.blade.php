@@ -1,4 +1,4 @@
-<div class="mx-auto w-full max-w-5xl px-4 pt-24 pb-16 xl:px-8" style="{{ $skin['vars'] }}">
+<div class="tl-page-wide mx-auto w-full px-4 pt-24 pb-16" style="{{ $skin['vars'] }}">
     <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div><h1 class="{{ $skin['h1'] }} inline-flex items-center gap-2"><x-griglia::icon name="ruler" /> {{ __('griglia::t.plan.index_title') }}</h1><p class="{{ $skin['sub'] }} mt-1">{{ __('griglia::t.plan.index_intro') }}</p></div>
         <div class="flex flex-wrap items-center gap-2"><a href="{{ route('griglia.plans.create') }}" class="tl-btn inline-flex items-center gap-1"><x-griglia::icon name="plus" /> {{ __('griglia::t.plan.new') }}</a><a href="{{ $skin['home'] }}" class="{{ $skin['back'] }} inline-flex items-center gap-1"><x-griglia::icon name="arrow-left" /> {{ __('griglia::t.back_to_list') }}</a></div>

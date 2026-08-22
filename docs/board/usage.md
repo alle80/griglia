@@ -154,8 +154,9 @@ From a 1200px window up the three-column ceiling is lifted: the columns auto-fil
 
 ## Desktop: the full-width board
 
-On a big screen the board uses the **whole window**: no centred narrow container, only a readable ceiling of
-1920px, past which the page stays centred (`.tl-page-wide`, override with the `--tl-page-max` CSS variable).
+On a big screen every application page uses the **whole window**: the board, settings, context, statistics,
+plans, the plan editor and agents all share a readable ceiling of 1920px, past which the page stays centred
+(`.tl-page-wide`, override with the `--tl-page-max` CSS variable).
 Long titles and notes stop wrapping every few words. In grid view the columns are free to multiply — see the
 toolbar section above — and the task modal follows the screen too, up to `max-w-6xl` on very wide displays.
 Inside the narrow side tab the same page keeps the ordinary responsive columns: the 1200px rule is measured on

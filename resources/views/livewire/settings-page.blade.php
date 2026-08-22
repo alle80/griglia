@@ -1,6 +1,6 @@
-{{-- Una sola colonna a ogni larghezza (task 329): il contenitore resta stretto quanto basta
-     a leggere le voci; su desktop si allarga solo per fare posto all'indice laterale. --}}
-<div class="mx-auto w-full max-w-xl px-4 pt-24 pb-16 sm:pt-24 lg:max-w-4xl xl:max-w-5xl xl:px-8" style="{{ $skin['vars'] }}" x-data="{ tab: 'agent' }">
+{{-- Una sola colonna a ogni larghezza (task 329); il pannello usa il contenitore condiviso
+     a tutta larghezza, mentre l'indice laterale continua a separare navigazione e contenuto. --}}
+<div class="tl-page-wide mx-auto w-full px-4 pt-24 pb-16 sm:pt-24" style="{{ $skin['vars'] }}" x-data="{ tab: 'agent' }">
     <div class="mb-6 flex items-center justify-between gap-3">
         <h1 class="{{ $skin['h1'] }} inline-flex items-center gap-2"><x-griglia::icon name="settings" size="1em" /> {{ __('griglia::t.settings_title') }}</h1>
         <a href="{{ $skin['home'] }}" class="{{ $skin['back'] }} inline-flex items-center gap-1"><x-griglia::icon name="arrow-left" /> {{ __('griglia::t.back_to_list') }}</a>

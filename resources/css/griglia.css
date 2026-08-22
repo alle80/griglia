@@ -47,8 +47,8 @@ body { -webkit-tap-highlight-color: transparent; }
 .todo-grid > [data-todo-id] > div:first-child { flex: 0 0 auto; }
 .todo-grid > [wire\:key="gap-end"] { grid-column: 1 / -1; }
 
-/* Board a tutta larghezza (task 612, estesa a ogni rotta col task 617): il contenitore riempie la finestra
-   fino a un tetto leggibile di 1920px e resta centrato (mx-auto), e in vista card le colonne non si fermano
+/* Pagine a tutta larghezza (task 622): il contenitore condiviso riempie la finestra fino a un tetto leggibile
+   di 1920px e resta centrato (mx-auto). Sulla board, in vista card, le colonne non si fermano
    a tre — da 1200px di finestra in su si moltiplicano da sole tenendo fissa la larghezza della card
    (--tl-card-w, come le tre colonne di prima). Il pannello a scomparsa incornicia la stessa pagina in un
    iframe stretto: lì la media query non scatta e restano le colonne di Tailwind. */

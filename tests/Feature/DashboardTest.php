@@ -32,6 +32,17 @@ class DashboardTest extends TestCase
             ->assertDontSee("view === 'grid' ? 'max-w-6xl'", false);
     }
 
+    public function test_every_application_page_uses_the_same_full_width_container(): void
+    {
+        $this->actingAsUser();
+
+        foreach (['/settings', '/context', '/plans', '/plans/new', '/stats', '/agents'] as $path) {
+            $this->get($path)
+                ->assertOk()
+                ->assertSee('tl-page-wide mx-auto w-full', false);
+        }
+    }
+
     public function test_side_tab_follows_its_settings(): void
     {
         $user = $this->actingAsUser();

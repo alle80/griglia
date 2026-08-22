@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.3] - 2026-08-23
+
+### Changed
+- Extended the shared full-width 1920px page container from the board to settings, context, statistics, plans,
+  the plan editor and agents, while preserving their mobile layout.
+
 ## [0.89.2] - 2026-08-23
 
 ### Documentation

@@ -1,5 +1,5 @@
 {{-- Pagina dedicata alla creazione di un piano: spazio vero per scrivere l'obiettivo (task 342). --}}
-<div class="mx-auto w-full max-w-xl px-4 pt-24 pb-16 lg:max-w-3xl" style="{{ $skin['vars'] }}"
+<div class="tl-page-wide mx-auto w-full px-4 pt-24 pb-16" style="{{ $skin['vars'] }}"
      x-data="{ dirty: false }"
      x-on:keydown.escape.window="$wire.prompt.trim() === '' || confirm(@js(__('griglia::t.plan.leave_confirm'))) ? $wire.cancel() : null">
     <div class="mb-6 flex items-center justify-between gap-3">

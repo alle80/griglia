@@ -161,9 +161,10 @@ riga — vedi [la board a tutta larghezza](#desktop-la-board-a-tutta-larghezza).
 
 ## Desktop: la board a tutta larghezza
 
-Su uno schermo grande la board usa **tutta la finestra**: niente contenitore stretto e centrato, solo un tetto
-leggibile di 1920px, oltre il quale la pagina resta centrata (`.tl-page-wide`, si cambia con la variabile CSS
-`--tl-page-max`). Titoli e note lunghe smettono di andare a capo ogni tre parole. In vista griglia le colonne sono
+Su uno schermo grande ogni pagina dell'applicazione usa **tutta la finestra**: board, impostazioni, contesto,
+statistiche, piani, editor del piano e agenti condividono un tetto leggibile di 1920px, oltre il quale la pagina
+resta centrata (`.tl-page-wide`, si cambia con la variabile CSS `--tl-page-max`). Titoli e note lunghe smettono
+di andare a capo ogni tre parole. In vista griglia le colonne sono
 libere di moltiplicarsi (vedi la barra degli strumenti qui sopra) e anche il modale del task segue lo schermo, fino a
 `max-w-6xl` sui display molto larghi. Dentro la linguetta laterale, stretta, la stessa pagina tiene le colonne
 responsive di sempre: la regola dei 1200px si misura sull'iframe, non sulla finestra. Sul telefono non cambia nulla:
