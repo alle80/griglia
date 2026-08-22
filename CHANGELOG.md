@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.88.10] - 2026-08-22
+
+### Fixed
+- Made the PHPStan ignore rules stable across clean CI checkouts while keeping every exception scoped by identifier and source path.
+
 ## [0.88.9] - 2026-08-22
 
 ### Changed
