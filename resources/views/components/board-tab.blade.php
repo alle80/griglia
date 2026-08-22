@@ -9,10 +9,12 @@
         // settings not migrated yet — fall back
     }
     $dash = $show ? config('griglia.dashboard_route') : null;
-    $onDashboard = $dash && request()->path() === ltrim($dash, '/');
+    // No tab on the board itself: since task 617 every board route shows the same full-width page, so the
+    // panel would only frame the page you are already on (and, inside the iframe, a tab within a tab).
+    $onBoard = request()->routeIs('griglia.home', 'griglia.dashboard');
 @endphp
 
-@if ($dash && ! $onDashboard)
+@if ($dash && ! $onBoard)
     {{-- Slide-out dashboard tab (desktop only), Laravel-debugbar style: a handle pinned to one
          edge; click opens a resizable panel with the dashboard in an iframe. --}}
     <div

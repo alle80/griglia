@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.0] - 2026-08-23
+
+### Changed
+- **One board, one page** — the board now fills the window on **every** route, up to a readable cap of 1920px
+  (`.tl-page-wide`, `--tl-page-max`) and centred beyond that: the old narrow container of `/`
+  (`max-w-2xl` in list view, `max-w-6xl` in grid view) is gone, and the grid columns multiply from a 1200px
+  window up everywhere, not only on the dashboard.
+- **`/dashboard` redirects to the board** — it had nothing of its own left. Old links, bookmarks and the
+  slide-out board tab keep working; the `dashboard_route` config key still names the path and still switches
+  the tab off when set to `null`. An application that disables `home_route` keeps the board on that path.
+- **The slide-out board tab no longer appears on the board itself** — on any board route it would only frame
+  the page you are already on (and draw a tab inside its own iframe). It still opens from `/settings`,
+  `/context`, `/stats`, `/plans` and `/agents`.
+
+### Removed
+- **`Alle80\Griglia\Livewire\DashboardTodoList`** — the board component (`ThemedTodoList`) renders the same
+  full-width page. Host apps that referenced the class in their own routes should use `ThemedTodoList`.
+
+
 ## [0.88.13] - 2026-08-23
 
 ### Documentation

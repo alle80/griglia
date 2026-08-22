@@ -84,6 +84,6 @@ class SettingsPageTest extends TestCase
         $this->get('/')->assertOk()->assertSee('deep blue');
         $this->get('/ocean')->assertNotFound();
         $this->get('/slate')->assertNotFound();
-        $this->get('/dashboard')->assertOk();
+        $this->get('/dashboard')->assertRedirect('/');
     }
 }

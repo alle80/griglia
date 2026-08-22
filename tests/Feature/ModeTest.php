@@ -99,6 +99,7 @@ class ModeTest extends TestCase
         Mode::reset();
         $this->assertFalse(Mode::isLocal());
         $this->actingAsUser('c@x.it');
-        $this->get('/')->assertOk()->assertDontSee('DASHBOARD');
+        // the tab lives on the pages that are not the board (task 617)
+        $this->get('/plans')->assertOk()->assertDontSee('DASHBOARD');
     }
 }

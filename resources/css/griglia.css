@@ -47,11 +47,12 @@ body { -webkit-tap-highlight-color: transparent; }
 .todo-grid > [data-todo-id] > div:first-child { flex: 0 0 auto; }
 .todo-grid > [wire\:key="gap-end"] { grid-column: 1 / -1; }
 
-/* Board a tutta larghezza (dashboard, task 612): niente contenitore centrato, e in vista card le colonne
-   non si fermano a tre — da 1200px di finestra in su si moltiplicano da sole tenendo fissa la larghezza
-   della card (--tl-card-w, come le tre colonne di prima). Il pannello a scomparsa incornicia la stessa
-   pagina in un iframe stretto: lì la media query non scatta e restano le colonne di Tailwind. */
-.tl-page-wide { max-width: none; --tl-card-w: 22rem; }
+/* Board a tutta larghezza (task 612, estesa a ogni rotta col task 617): il contenitore riempie la finestra
+   fino a un tetto leggibile di 1920px e resta centrato (mx-auto), e in vista card le colonne non si fermano
+   a tre — da 1200px di finestra in su si moltiplicano da sole tenendo fissa la larghezza della card
+   (--tl-card-w, come le tre colonne di prima). Il pannello a scomparsa incornicia la stessa pagina in un
+   iframe stretto: lì la media query non scatta e restano le colonne di Tailwind. */
+.tl-page-wide { max-width: var(--tl-page-max, 120rem); --tl-card-w: 22rem; }
 @media (min-width: 1024px) {
     .tl-page-wide { padding-left: 1.5rem; padding-right: 1.5rem; }
 }

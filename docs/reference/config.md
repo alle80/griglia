@@ -20,7 +20,7 @@ Decided by whoever installs the package; the run-time options live in [Settings]
 | `local_channel` | — | `'griglia.local'` | Public broadcast channel used for live updates in local mode |
 | `register_routes` | — | `true` | Register the package routes at all (set false to define your own routes with the components) |
 | `home_route` | — | `true` | Register a home route (route_prefix + '/') showing the theme selected in /settings |
-| `dashboard_route` | `GRIGLIA_DASHBOARD_ROUTE` | `'/dashboard'` | Desktop dashboard: a wider, more readable view of the board on its own route. Set to null/false to disable the route and the slide-out board tab. |
+| `dashboard_route` | `GRIGLIA_DASHBOARD_ROUTE` | `'/dashboard'` | Legacy dashboard path: it redirects to the board (which is full width on every route) and feeds the slide-out board tab. Set to null/false to disable both. Without a home route it serves the board itself. |
 | `default_theme` | — | `'slate'` | Generic theme used by the home route and as fallback |
 | `themes` | — | _array_ | Extra generic themes (slug => definition, same keys as Alle80\Griglia\Themes::builtin(); a built-in slug is overridden key by key) |
 | `user_model` | `GRIGLIA_USER_MODEL` | `'App\\Models\\User'` | User model owning the lists |

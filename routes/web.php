@@ -12,7 +12,6 @@ use Alle80\Griglia\Http\Middleware\RememberStyle;
 use Alle80\Griglia\Http\Middleware\SetLocale;
 use Alle80\Griglia\Livewire\AgentsPage;
 use Alle80\Griglia\Livewire\ContextPage;
-use Alle80\Griglia\Livewire\DashboardTodoList;
 use Alle80\Griglia\Livewire\PlanPage;
 use Alle80\Griglia\Livewire\PlansPage;
 use Alle80\Griglia\Livewire\SettingsPage;
@@ -47,7 +46,14 @@ Route::middleware(array_merge(array_values(array_diff((array) config('griglia.mi
         Route::post('/griglia/transcribe', TranscribeController::class)->middleware('throttle:'.config('griglia.rate_limits.transcribe', '10,1').',griglia-transcribe')->name('griglia.transcribe');
 
         if ($dash = config('griglia.dashboard_route')) {
-            Route::get($dash, DashboardTodoList::class)->name('griglia.dashboard');
+            // The board is one page: it fills the window (capped and centred) on every route, so the old
+            // wider «dashboard» has nothing left of its own and simply redirects home (task 617). Old links,
+            // bookmarks and the slide-out board tab keep working. Without a home route it still shows the board.
+            if (config('griglia.home_route', true)) {
+                Route::redirect($dash, '/'.trim((string) config('griglia.route_prefix', ''), '/'))->name('griglia.dashboard');
+            } else {
+                Route::get($dash, ThemedTodoList::class)->name('griglia.dashboard');
+            }
         }
 
     });

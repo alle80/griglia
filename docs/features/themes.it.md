@@ -4,7 +4,7 @@ I temi generici sono rivestimenti fatti di variabili CSS (`.theme-<slug>`); quel
 si registrano nella config (`themes`) o nel codice (`Themes::registerTheme`). I **pacchetti di temi** sono zip
 (`theme.json` + `theme.css` + immagini/font) installati da Impostazioni → Temi (solo amministratori) oppure con:
 
-Seleziona il tema attivo in **Impostazioni → App → Tema**. La board principale resta su `/` (sotto il prefisso configurato); i temi non creano rotte `/<slug>`. La vista desktop più larga resta esclusivamente su `/dashboard` (o `dashboard_route`).
+Seleziona il tema attivo in **Impostazioni → App → Tema**. La board principale resta su `/` (sotto il prefisso configurato); i temi non creano rotte `/<slug>`. `/dashboard` (o `dashboard_route`) reindirizza alla stessa board.
 
 ```bash
 php artisan griglia:theme-import pack.zip

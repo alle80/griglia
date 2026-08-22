@@ -61,7 +61,8 @@ use the [persistent worker runbook](docs/agent/workers.md).
 ## Routes and access
 
 The package registers `/`, `/plans`, `/plans/new`, `/settings`, `/context`, `/stats`, `/agents` and
-`/dashboard`. The dashboard path is configurable and can be disabled. In `server` mode, lists belong to the
+`/dashboard` (a redirect to the board, kept for old links). The dashboard path is configurable and can be
+disabled; without a home route it serves the board itself. In `server` mode, lists belong to the
 authenticated user; restrict access with `canAccessGriglia()` or `GRIGLIA_ACCESS_GATE`. Administrative pages
 use `canManageGriglia()`, `GRIGLIA_ADMIN_GATE` or `GRIGLIA_ADMINS`.
 

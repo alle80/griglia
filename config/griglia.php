@@ -49,8 +49,8 @@ return [
     // Register a home route (route_prefix + '/') showing the theme selected in /settings
     'home_route' => true,
 
-    // Desktop dashboard: a wider, more readable view of the board on its own route.
-    // Set to null/false to disable the route and the slide-out board tab.
+    // Legacy dashboard path: it redirects to the board (which is full width on every route) and feeds the
+    // slide-out board tab. Set to null/false to disable both. Without a home route it serves the board itself.
     'dashboard_route' => env('GRIGLIA_DASHBOARD_ROUTE', '/dashboard'),
 
     // Generic theme used by the home route and as fallback

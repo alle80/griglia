@@ -35,5 +35,5 @@ Everything the board does, in one page. Follow a link when you want the detail.
 | **Themes** | A theme system with CSS variables, the built-in Slate theme and installable zip packs. [Themes](themes.md) |
 | **AI, optional** | Image descriptions for search, speech to text on every field, the plan builder. [AI features](ai.md) |
 | **Modes** | `server` (login, lists per user) or `local` (no auth, your machine only). [Access & modes](../configuration/access.md) |
-| **Desktop dashboard** | A full-width view of the board on `/dashboard`, with grid columns that multiply on a wide screen, plus a slide-out tab that opens it from any page. [Using the board](../board/usage.md#desktop-the-dashboard) |
+| **Full-width board** | On a big screen the board uses the whole window (capped at 1920px and centred), with grid columns that multiply, plus a slide-out tab that opens it from any other page. [Using the board](../board/usage.md#desktop-the-full-width-board) |
 | **Mobile** | A layout made for a thumb: touch targets, camera attachments, Web Push. [Using the board](../board/usage.md#mobile) |

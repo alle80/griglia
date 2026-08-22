@@ -136,7 +136,7 @@ the denser mobile sizing is preserved to leave room for board and modal content.
 Free-text search (title, notes, comment, sub-tasks, questions, image descriptions), state and agent filters, archive.
 The state filter is a **drop-down**: pick *All*, *To do*, *Done*, *Open to work*, *Working*, *Paused* or *Questions*,
 and the icon beside it becomes the badge of the state in use (a funnel when no filter is on). One control instead of
-seven chips, so the toolbar stays on one line on a phone as well as on the full-width dashboard.
+seven chips, so the toolbar stays on one line on a phone as well as on the full-width board.
 When several agents are configured, the chip with the robot icon (**All agents**) narrows the list to one agent's
 tasks; the filter follows the effective assignment (task override, then list default, then the global default),
 combines with the search and the state filters, and — like them — disables drag & drop while it is on. Its visual
@@ -148,37 +148,40 @@ On a plan list the **Plan** bar shows progress and the start/pause buttons (see 
 
 The two view buttons switch the task area between the original **list** and a **grid** of vertical cards. The grid
 uses one column on phones, two on tablets and three on desktop; the browser remembers the choice for the next visit.
-On the [dashboard](#desktop-the-dashboard) the three-column ceiling is lifted: from a 1200px window up, the columns
-auto-fill at a fixed card width (`--tl-card-w`, 22rem by default), so a wide screen simply gets more cards per row.
+From a 1200px window up the three-column ceiling is lifted: the columns auto-fill at a fixed card width
+(`--tl-card-w`, 22rem by default), so a wide screen simply gets more cards per row — see
+[the full-width board](#desktop-the-full-width-board).
 
-## Desktop: the dashboard
+## Desktop: the full-width board
 
-On a big screen the board has a second home: **`/dashboard`**, the same list rendered **full width**: no centred
-container at all (`.tl-page-wide`, against `max-w-2xl` on `/`), so long titles and notes stop wrapping every few
-words. In grid view the columns are free to multiply — see the toolbar section above — and the task modal follows
-the screen too, up to `max-w-6xl` on very wide displays instead of stopping at `max-w-3xl`. It is the same
-component and the same data — states, modal, filters, drag & drop all behave exactly as on `/` — only the width
-changes. Inside the narrow side tab the same page keeps the ordinary responsive columns: the 1200px rule is
-measured on the iframe, not on the window. The page wears the current theme when that theme is a generic one; from a dedicated style of
-the host app (which has no shared CSS variables) it falls back to the default theme.
+On a big screen the board uses the **whole window**: no centred narrow container, only a readable ceiling of
+1920px, past which the page stays centred (`.tl-page-wide`, override with the `--tl-page-max` CSS variable).
+Long titles and notes stop wrapping every few words. In grid view the columns are free to multiply — see the
+toolbar section above — and the task modal follows the screen too, up to `max-w-6xl` on very wide displays.
+Inside the narrow side tab the same page keeps the ordinary responsive columns: the 1200px rule is measured on
+the iframe, not on the window. On a phone nothing changes: the container was never the limit there.
 
-The path comes from the config key `dashboard_route` (`GRIGLIA_DASHBOARD_ROUTE`, default `/dashboard`); set it
-to `null` and the route disappears, together with the tab below.
+There is no second, wider address to go to. `/dashboard` used to be one and now **redirects to the board**, so
+old links, bookmarks and the side tab keep working. The path still comes from the config key `dashboard_route`
+(`GRIGLIA_DASHBOARD_ROUTE`, default `/dashboard`); set it to `null` and both the redirect and the tab below
+disappear. A host application that owns `/` and turns `home_route` off keeps the board on that path instead of
+the redirect.
 
 ### The side tab
 
 Every page carries a **slide-out tab pinned to one edge of the window** — a handle, debugbar style, that opens
-a panel with the dashboard inside it. Click the handle and the panel slides out; drag its inner edge to resize
-it (from 300px up to 70% of the window); ⤢ opens the full dashboard in the tab you are on; ✕ closes the panel.
+a panel with the board inside it. Click the handle and the panel slides out; drag its inner edge to resize
+it (from 300px up to 70% of the window); ⤢ opens the whole board in the tab you are on; ✕ closes the panel.
 Whether it is open and how wide it is are remembered in the browser (`localStorage`), so the panel comes back
-the way you left it on the next page. It never appears on the dashboard itself, and it is **desktop only**:
+the way you left it on the next page. It never appears on the board itself — there it would only frame the page
+you are already on — and it is **desktop only**:
 below the `lg` breakpoint it is not rendered at all, on the principle that a phone has no room to spare.
 
 Two settings in `/settings` govern it:
 
 | Setting | What it does |
 |---|---|
-| **DASHBOARD side tab** (`show_dashboard_tab`) | Shows or hides the tab. Off, the dashboard stays reachable at its own address. |
+| **DASHBOARD side tab** (`show_dashboard_tab`) | Shows or hides the tab. Off, the board stays reachable at its own address. |
 | **Dashboard tab side** (`tab_side`) | Which edge the tab lives on — `right` (default) or `left`. |
 
 ## Mobile
