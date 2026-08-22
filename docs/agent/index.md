@@ -33,16 +33,6 @@ php artisan griglia:check --agent=codex --ask=42 \
 The user answers in the task modal and reopens the task. Use `--pause=42` only for a temporary agent-side
 pause, such as a usage limit.
 
-## Rules that matter
-
-- Take a task before reading or analysing its details.
-- Work only on open tasks assigned to the agent. Never touch waiting or stopped tasks.
-- Follow the order and concurrency policy printed by `check`.
-- Keep progress and phase current while working.
-- Include token counts on `--done` when the settings request them.
-- Use `--outcome=alert` or `--outcome=blocked` when a completed task still needs attention.
-- Coordinate shared checkouts, builds, migrations and releases when several agents are active.
-
 For unattended operation, run a [persistent worker](workers.md). To react to board events yourself, use
 `griglia:watch --agent=codex`; add `--once` for polling from cron.
 

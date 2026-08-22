@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.89.8] - 2026-08-23
+### Documentation
+- Removed the agent-only operating rules from the English and Italian agent overview; agents already receive
+  those dynamic instructions through their context file and `griglia:check`, while the user guide stays focused
+  on connecting and using an agent.
 
 ## [0.89.7] - 2026-08-23
 

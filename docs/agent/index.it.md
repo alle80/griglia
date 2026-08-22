@@ -34,16 +34,6 @@ php artisan griglia:check --agent=codex --ask=42 \
 L'utente risponde nel modale e riapre il task. Usa `--pause=42` soltanto per una pausa temporanea dal lato
 agente, per esempio quando raggiunge un limite di utilizzo.
 
-## Le regole importanti
-
-- Prendi il task prima di leggerne o analizzarne i dettagli.
-- Lavora soltanto sui task aperti assegnati all'agente. Non toccare quelli in attesa o fermati.
-- Segui l'ordine e la politica di concorrenza stampati da `check`.
-- Mantieni aggiornate percentuale e fase durante il lavoro.
-- Includi il conteggio dei token in `--done` quando le impostazioni lo richiedono.
-- Usa `--outcome=alert` o `--outcome=blocked` se un task chiuso richiede ancora attenzione.
-- Coordina checkout, build, migrazioni e rilasci condivisi quando sono attivi più agenti.
-
 Per lavorare senza supervisione, avvia un [worker persistente](workers.it.md). Per reagire direttamente agli
 eventi della board usa `griglia:watch --agent=codex`; aggiungi `--once` per il polling da cron.
 
