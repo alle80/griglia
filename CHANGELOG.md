@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.88.13] - 2026-08-23
+
+### Documentation
+- Reduced the quickstart to the shortest successful request lifecycle and moved setup choices and advanced
+  workflows to their canonical guides.
+
 ## [0.88.12] - 2026-08-22
 
 ### Documentation
