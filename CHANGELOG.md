@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.19] - 2026-08-23
+
+### Changed
+- **The codebase speaks English.** Every comment left in Italian — in the components, the models, the
+  settings, the views, the stylesheet and the host scripts — is now in English, docstrings and
+  `--help` texts included. Only text changed: no behaviour, no renamed symbol. The user-visible strings stay
+  where they belong, in `resources/lang`, translated on purpose.
+- `scripts/agent-status.py` sends English window labels (`5 hours`, `7 days`) and the board translates the keys
+  it knows (`five_hour`, `seven_day`, `seven_day_opus`, `seven_day_sonnet`, `primary`, `secondary`), so
+  `/agents` reads the same as before in Italian while the collector stays language-neutral. An unknown key
+  still falls back to the label in the snapshot.
+- `scripts/sync-context.py` writes an English header in the generated instruction files. It recognises the
+  header of older releases too, so an upgrade does not mistake a generated `CLAUDE.md` for a hand-written one.
+- `scripts/builtin-skills.json` describes the built-in skills in English, like every skill read from disk.
+
+### Added
+- `QualityStandardsTest` fails on the first Italian word found in a comment of `src/`, `scripts/`, `tests/`,
+  the views or the stylesheets — the rule the contributing guide already stated now has a check behind it.
+
 ## [0.89.18] - 2026-08-23
 
 ### Added

@@ -2,7 +2,7 @@
 
 use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
-/** Lingua dell'interfaccia della board ('' = come il config dell'applicazione, APP_LOCALE). */
+/** Interface language of the board ('' = same as the application config, APP_LOCALE). */
 return new class extends SettingsMigration
 {
     public function up(): void

@@ -6,20 +6,20 @@ use Alle80\Griglia\Settings\AppSettings;
 use Carbon\Carbon;
 
 /**
- * Lingua dell'interfaccia della board. La sceglie l'impostazione `app.locale` di /settings
- * ('' = come il config `app.locale` dell'applicazione, cioè APP_LOCALE) e la applica il
- * middleware SetLocale a ogni richiesta della board (comprese quelle di Livewire).
- * Le lingue disponibili sono le cartelle di traduzione del package (e quelle pubblicate).
+ * Interface language of the board. It is chosen by the `app.locale` setting in /settings
+ * ('' = same as the application's `app.locale` config, i.e. APP_LOCALE) and applied by the
+ * SetLocale middleware on every board request (Livewire ones included).
+ * The available languages are the translation folders of the package (and the published ones).
  */
 class Locale
 {
-    /** Nomi mostrati nel selettore; per una lingua non elencata si usa intl o il codice. */
+    /** Names shown in the selector; for a language not listed here intl or the code is used. */
     public const NAMES = [
         'en' => 'English',
         'it' => 'Italiano',
     ];
 
-    /** Codici delle lingue in cui la board è tradotta (cartelle in resources/lang + lang/vendor/griglia). */
+    /** Codes of the languages the board is translated into (folders in resources/lang + lang/vendor/griglia). */
     public static function available(): array
     {
         $dirs = [__DIR__.'/../../resources/lang'];
@@ -39,7 +39,7 @@ class Locale
         return $codes;
     }
 
-    /** Nome della lingua nella lingua stessa («Italiano», «English»). */
+    /** Name of the language in the language itself («Italiano», «English»). */
     public static function name(string $code): string
     {
         if (isset(self::NAMES[$code])) {
@@ -55,7 +55,7 @@ class Locale
         return strtoupper($code);
     }
 
-    /** Opzioni della select in /settings: '' = come nel config, poi una voce per lingua. */
+    /** Options of the select in /settings: '' = same as the config, then one entry per language. */
     public static function options(): array
     {
         $options = ['' => __('griglia::t.settings_options.locale_app', ['locale' => strtoupper((string) config('app.locale', 'en'))])];
@@ -66,28 +66,28 @@ class Locale
         return $options;
     }
 
-    /** Lingua scelta in /settings, o '' se non ne è stata scelta una (o non è più disponibile). */
+    /** Language chosen in /settings, or '' when none was chosen (or it is no longer available). */
     public static function chosen(): string
     {
         $chosen = '';
         try {
             $chosen = (string) app(AppSettings::class)->locale;
         } catch (\Throwable) {
-            // impostazioni non ancora migrate
+            // settings not migrated yet
         }
 
         return in_array($chosen, self::available(), true) ? $chosen : '';
     }
 
-    /** Lingua con cui la board si mostra adesso: quella scelta, altrimenti quella dell'applicazione. */
+    /** Language the board shows itself in right now: the chosen one, otherwise the application's. */
     public static function current(): string
     {
         return self::chosen() ?: app()->getLocale();
     }
 
     /**
-     * Applica la lingua scelta all'applicazione (e a Carbon, per le date «3 ore fa»).
-     * Senza una scelta non tocca nulla: la board resta nella lingua dell'applicazione ospite.
+     * Apply the chosen language to the application (and to Carbon, for dates like «3 hours ago»).
+     * Without a choice it touches nothing: the board stays in the host application's language.
      */
     public static function apply(): void
     {

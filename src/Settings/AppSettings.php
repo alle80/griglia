@@ -8,35 +8,35 @@ use Alle80\Griglia\Themes;
 use Spatie\LaravelSettings\Settings;
 
 /**
- * Impostazioni dell'app (comportamento della board), gruppo «app». Vedi AgentSettings per l'assistente.
+ * App settings (behaviour of the board), «app» group. See AgentSettings for the assistant.
  */
 class AppSettings extends Settings
 {
-    /** Lingua dell'interfaccia: '' = come il config dell'applicazione (APP_LOCALE), altrimenti 'en', 'it'… */
+    /** Interface language: '' = same as the application config (APP_LOCALE), otherwise 'en', 'it'… */
     public string $locale;
 
-    /** Tema mostrato su «/»: vuoto o slug non valido = tema di fallback configurato. */
+    /** Theme shown on «/»: empty or an invalid slug = the configured fallback theme. */
     public string $default_style;
 
-    /** Lunghezza massima del titolo di un todo. */
+    /** Maximum length of a todo title. */
     public int $title_max_length;
 
-    /** Archivia da solo i completati più vecchi di N giorni (0 = mai). */
+    /** Archive by itself the completed items older than N days (0 = never). */
     public int $auto_archive_days;
 
-    /** Descrizione AI delle immagini caricate (per la ricerca). */
+    /** AI description of the uploaded images (for the search). */
     public bool $ai_describe_images;
 
-    /** Provider AI per le immagini: '' = da .env (AI_IMAGE_PROVIDERS/AI_PROVIDER), altrimenti nome provider. */
+    /** AI provider for the images: '' = from .env (AI_IMAGE_PROVIDERS/AI_PROVIDER), otherwise a provider name. */
     public string $ai_image_provider;
 
-    /** Modello AI per le immagini: '' = da .env / il più economico del provider. */
+    /** AI model for the images: '' = from .env / the cheapest one of the provider. */
     public string $ai_image_model;
 
-    /** Toast in pagina quando lo stato viene cambiato da console (es. Claude prende in carico). */
+    /** In-page toast when the state is changed from the console (e.g. the agent takes a task in charge). */
     public bool $toast_console_changes;
 
-    /** Lato del pannello a scomparsa della dashboard su desktop: 'right' | 'left'. */
+    /** Side of the slide-out dashboard panel on desktop: 'right' | 'left'. */
     public string $tab_side;
 
     /** Board mode override: '' = follow config griglia.mode, 'local' = no authentication (global lists), 'server' = authenticated users. */

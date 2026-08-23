@@ -8,7 +8,7 @@ use Alle80\Griglia\Support\Locale;
 use Alle80\Griglia\Tests\TestCase;
 use Livewire\Livewire;
 
-/** Selettore della lingua della board in /settings (impostazione app.locale). */
+/** Board language selector in /settings (setting app.locale). */
 class LocaleSettingTest extends TestCase
 {
     protected function setUp(): void
@@ -21,7 +21,7 @@ class LocaleSettingTest extends TestCase
     {
         $this->assertSame(['en', 'it'], Locale::available());
         $this->assertSame('Italiano', Locale::name('it'));
-        $this->assertSame('ZZ', Locale::name('zz')); // lingua sconosciuta: resta il codice
+        $this->assertSame('ZZ', Locale::name('zz')); // unknown language: the code stays
 
         $options = Locale::options();
         $this->assertSame(['', 'en', 'it'], array_keys($options));
@@ -65,7 +65,7 @@ class LocaleSettingTest extends TestCase
 
         $page->set('values.app.locale', 'it');
         $this->assertSame('it', app(AppSettings::class)->refresh()->locale);
-        $page->assertSee('Lingua della board'); // la pagina si ridisegna già tradotta
+        $page->assertSee('Lingua della board'); // the page redraws itself already translated
 
         $page->set('values.app.locale', 'bogus');
         $this->assertSame('it', app(AppSettings::class)->refresh()->locale);

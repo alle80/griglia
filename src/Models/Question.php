@@ -32,7 +32,7 @@ class Question extends Model
 
     protected static function booted(): void
     {
-        // Aggiornamento live della lista/modale aperti altrove (Reverb)
+        // Live update of the list/modal open elsewhere (Reverb)
         static::saved(fn ($m) => $m->todo && Live::todoChanged($m->todo));
         static::deleted(fn ($m) => $m->todo && Live::todoChanged($m->todo));
     }

@@ -1,4 +1,4 @@
-{{-- Pagina dedicata alla creazione di un piano: spazio vero per scrivere l'obiettivo (task 342). --}}
+{{-- Page dedicated to creating a plan: real room to write the goal (task 342). --}}
 <div class="tl-page-wide mx-auto w-full px-4 pt-24 pb-16" style="{{ $skin['vars'] }}"
      x-data="{ dirty: false }"
      x-on:keydown.escape.window="$wire.prompt.trim() === '' || confirm(@js(__('griglia::t.plan.leave_confirm'))) ? $wire.cancel() : null">

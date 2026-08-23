@@ -1,5 +1,5 @@
-{{-- Una sola colonna a ogni larghezza (task 329); il pannello usa il contenitore condiviso
-     a tutta larghezza, mentre l'indice laterale continua a separare navigazione e contenuto. --}}
+{{-- A single column at every width (task 329); the panel uses the shared full-width
+     container, while the side index keeps navigation and content apart. --}}
 <div class="tl-page-wide mx-auto w-full px-4 pt-24 pb-16 sm:pt-24" style="{{ $skin['vars'] }}" x-data="{ tab: 'agent' }">
     <div class="mb-6 flex items-center justify-between gap-3">
         <h1 class="{{ $skin['h1'] }} inline-flex items-center gap-2"><x-griglia::icon name="settings" size="1em" /> {{ __('griglia::t.settings_title') }}</h1>
@@ -13,8 +13,8 @@
     @endforeach
     @php($tabs[] = ['key' => 'themes', 'label' => __('griglia::t.themes.title'), 'icon' => 'palette', 'count' => null])
 
-    {{-- Un gruppo alla volta a ogni larghezza (task 329): su desktop l'indice sta a sinistra,
-         sotto lg diventa una striscia di schede scorrevole sopra il pannello. --}}
+    {{-- One group at a time at every width (task 329): on desktop the index is on the left,
+         below lg it becomes a scrollable strip of tabs above the panel. --}}
     <nav class="-mx-4 mb-4 overflow-x-auto px-4 pb-1 lg:hidden" aria-label="{{ __('griglia::t.settings_title') }}">
         <ul class="flex w-max gap-2">
             @foreach ($tabs as $t)
@@ -78,9 +78,9 @@
                             <p class="{{ $skin['help'] }}">{{ $help }}</p>
                         </div>
 
-                        {{-- I campi non-bool salvano da soli sull'evento «change» (task 436): in Livewire 4
-                             «.change» da solo aggiorna il valore solo lato client, serve «.live» perché
-                             parta la richiesta e scatti updatedValues() → save(). --}}
+                        {{-- Non-bool fields save by themselves on the «change» event (task 436): in Livewire 4
+                             «.change» alone only updates the value client-side, «.live» is needed for the
+                             request to start and updatedValues() → save() to fire. --}}
                         @if ($type === 'bool')
                             <button
                                 type="button"
@@ -135,8 +135,8 @@
                         <p class="db-setting-warn" x-data x-show="$wire.get('values.app.mode') === 'local'" x-cloak>{{ __('griglia::t.settings_options.mode_warn') }}</p>
                     @endif
                     @if ($key === 'task_mode')
-                        {{-- Reso sempre, mostrato via Alpine quando è "multitasking": la sola @if lato
-                             server non veniva inserita dal morph di Livewire al cambio della select. --}}
+                        {{-- Always rendered, shown through Alpine when it is "multitasking": the server-side
+                             @if alone was not inserted by Livewire's morph when the select changed. --}}
                         <li class="pb-3" wire:key="warn-{{ $fieldGroup }}-{{ $key }}"
                             x-data x-show="$wire.get('values.{{ $fieldGroup }}.{{ $key }}') === 'multitasking'" x-cloak>
                             <p class="db-setting-warn">{{ __('griglia::t.settings_options.task_mode_warn') }}</p>

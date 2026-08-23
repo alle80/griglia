@@ -100,10 +100,22 @@ class AgentStatus
                         }
                     })->latest('working_since')->first();
                 if ($todo) {
-                    Notify::agentLimitReached($todo, $agent['name'], $window['label'], $window['resets_at']);
+                    Notify::agentLimitReached($todo, $agent['name'], self::windowLabel($window), $window['resets_at']);
                 }
             }
         }
+    }
+
+    /**
+     * Label of a usage window: the translation of its key when the board knows it (the host collector speaks
+     * English), otherwise whatever label the collector sent.
+     */
+    public static function windowLabel(array $w): string
+    {
+        $key = 'griglia::t.agents.window.'.($w['key'] ?? '');
+        $label = __($key);
+
+        return is_string($label) && $label !== $key ? $label : (string) ($w['label'] ?? $w['key'] ?? '');
     }
 
     /**
@@ -135,7 +147,8 @@ class AgentStatus
             }
         }
 
-        return $w + ['used' => $used, 'remaining' => $remaining, 'bar' => $bar, 'level' => $level, 'resets' => $resets, 'resets_in' => $resetsIn];
+        return array_merge($w, ['label' => self::windowLabel($w), 'used' => $used, 'remaining' => $remaining,
+            'bar' => $bar, 'level' => $level, 'resets' => $resets, 'resets_in' => $resetsIn]);
     }
 
     /** Agents with computed windows + snapshot meta (updated_at, stale). Empty list when no snapshot. */

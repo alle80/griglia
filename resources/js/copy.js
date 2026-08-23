@@ -1,7 +1,7 @@
-// alle80/griglia — «copiabile»: ogni blocco di codice nelle note e nei commenti dell'agente ha un pulsante
-// che lo copia, e il codice inline si copia con un clic. Serve perché quei riquadri contengono comandi e
-// prompt da incollare altrove (task 367). Qualunque elemento con data-copy (la targhetta «id:N» del task nella
-// riga e nel modale, task 510) copia quel valore con un tocco e per un attimo dice «copiato».
+// alle80/griglia — «copyable»: every code block in the notes and in the agent's comments has a button
+// that copies it, and inline code is copied with a click. It is needed because those boxes hold commands and
+// prompts to paste elsewhere (task 367). Any element with data-copy (the «id:N» badge of the task in the
+// row and in the modal, task 510) copies that value with a tap and says «copied» for a moment.
 const t = () => window.GRIGLIA_I18N || {};
 
 async function copyText(text) {

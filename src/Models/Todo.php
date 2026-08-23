@@ -103,16 +103,16 @@ class Todo extends Model
         return $this->belongsTo(Checklist::class);
     }
 
-    /** Todo chiuso da cui questo è stato «ripreso» (ne porta il contesto). */
+    /** Closed todo this one was «resumed» from (it carries its context). */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Todo::class, 'parent_id');
     }
 
     /**
-     * Catena dei «riprendi»: tutti i todo da cui questo discende, dal più recente al più vecchio
-     * (parent, nonno, …). Un resume può nascere da un resume: l'agente deve avere tutto lo storico,
-     * non solo l'ultimo passo (task 416). Protetta da cicli e da catene assurdamente lunghe.
+     * Chain of «resumes»: every todo this one descends from, from the most recent to the oldest
+     * (parent, grandparent, …). A resume can be born from a resume: the agent must have the whole history,
+     * not only the last step (task 416). Guarded against cycles and absurdly long chains.
      *
      * @return Collection<int, Todo>
      */
@@ -135,7 +135,7 @@ class Todo extends Model
         return $chain;
     }
 
-    /** Todo aperti a partire da questo con «Riprendi». */
+    /** Todos opened from this one with «Resume». */
     public function followUps(): HasMany
     {
         return $this->hasMany(Todo::class, 'parent_id')->orderBy('id');
@@ -354,8 +354,8 @@ class Todo extends Model
             }
         });
 
-        // Solo l'eliminazione DEFINITIVA rimuove i file allegati (il soft delete tiene tutto: le statistiche
-        // continuano a leggere la riga — task 298). La FK cancella solo i record, i file vanno tolti qui.
+        // Only the DEFINITIVE deletion removes the attached files (the soft delete keeps everything: the statistics
+        // keep reading the row — task 298). The FK only deletes the records, the files must be removed here.
         static::deleting(function (Todo $todo) {
             if ($todo->isForceDeleting()) {
                 $todo->attachments->each->delete();
@@ -388,7 +388,7 @@ class Todo extends Model
 
         static::deleting(fn (Todo $todo) => $todo->handOverChain());
 
-        // Aggiornamento live delle pagine aperte (Reverb)
+        // Live update of the open pages (Reverb)
         static::saved(fn (Todo $todo) => Live::todoChanged($todo, stateChanged: $todo->wasChanged(['completed', 'open_to_work', 'working', 'paused', 'question'])));
         static::deleted(fn (Todo $todo) => Live::todoChanged($todo, deleted: true));
     }

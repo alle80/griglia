@@ -11,9 +11,9 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 
 /**
- * Qualcosa è cambiato in un todo (stato, titolo, sotto-task…): lo si dice via
- * Reverb al proprietario della lista, così le pagine aperte (desktop, telefono)
- * si aggiornano senza ricaricare. Vedi Alle80\Griglia\Support\Live.
+ * Something changed in a todo (state, title, sub-task…): it is announced through
+ * Reverb to the owner of the list, so the open pages (desktop, phone)
+ * refresh without reloading. See Alle80\Griglia\Support\Live.
  */
 class TodoChanged implements ShouldBroadcastNow
 {
@@ -25,10 +25,10 @@ class TodoChanged implements ShouldBroadcastNow
         public int $todoId,
         public string $title,
         public string $state,
-        /** 'cli' quando la modifica arriva da artisan (es. sviluppo:check dell'assistente), 'web' altrimenti */
+        /** 'cli' when the change comes from artisan (e.g. the agent's griglia:check), 'web' otherwise */
         public string $source,
         public bool $deleted = false,
-        /** true se è cambiato lo stato (spunta / 🟢 / 🔧 / ❓): la pagina mostra un toast */
+        /** true when the state changed (tick / 🟢 / 🔧 / ❓): the page shows a toast */
         public bool $stateChanged = false,
     ) {}
 

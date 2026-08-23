@@ -122,7 +122,9 @@ senza di lei fallisce — cioè la proprietà di cui la percentuale è solo un i
   a controllare.
 - **I commenti spiegano il perché**, in inglese, e devono valere la riga che occupano: qui si preferisce un
   paragrafo che spiega una trappola a cinque righe che riscrivono il codice.
-- **Inglese nel repository**, italiano solo nelle pagine `.it.md` del sito.
+- **Inglese nel repository**, italiano solo nelle pagine `.it.md` del sito. Un test passa in rassegna i
+  commenti di `src/`, `scripts/`, le viste e i fogli di stile in cerca di parole italiane e fallisce alla
+  prima (`QualityStandardsTest`).
 - **Commit** in inglese con prefisso convenzionale (`feat:`, `fix:`, `docs:`, `chore:`, `ci:`, `refactor:`),
   una modifica logica per branch.
 - **Nessun nome di agente nelle stringhe**: la board è neutrale rispetto all'agente, e il segnaposto è

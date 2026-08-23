@@ -3,7 +3,7 @@
     'rows' => 4,
     'placeholder' => '',
     'inputClass' => '',
-    'live' => false,         // true = salvataggio live: la bozza va al componente a ogni pausa
+    'live' => false,         // true = live save: the draft goes to the component at every pause
     'debounce' => '800ms',
 ])
 @php($wireModel = $live ? 'wire:model.live.debounce.'.$debounce : 'wire:model')
@@ -54,7 +54,7 @@
         <span class="db-md-sep"></span>
         <x-griglia::mic class="db-md-btn" within=".db-md" target="textarea" />
     </div>
-    {{-- Con live: l'uscita dal campo manda subito quello che c'è, senza aspettare il debounce --}}
+    {{-- With live: leaving the field sends what is there right away, without waiting for the debounce --}}
     <textarea x-ref="ta" {{ $wireModel }}="{{ $model }}" rows="{{ $rows }}" placeholder="{{ $placeholder }}"
               @if ($live) @blur="$wire.set('{{ $model }}', $event.target.value)" @endif
               x-init="$nextTick(() => grow())" @input="grow()" style="overflow:hidden; resize:none;"

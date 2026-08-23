@@ -1,26 +1,27 @@
 #!/usr/bin/env python3
 """
-Legge le skill che l'agente (Claude Code, Codex CLI, Gemini CLI…) ha a disposizione su questo host e le importa nella board
-(`griglia:skills-import`), così il modale del task le mostra nell'accordion «🧩 Skill».
+Read the skills the agent (Claude Code, Codex CLI, Gemini CLI…) has available on this host and import them into the
+board (`griglia:skills-import`), so the task modal lists them in the «🧩 Skill» accordion.
 
-Fonti (nell'ordine): skill di progetto (.claude/skills/*/SKILL.md), skill utente (~/.claude/skills/*/SKILL.md),
-plugin installati (~/.claude/plugins/installed_plugins.json → <installPath>/skills/**/SKILL.md, nome «plugin:skill»),
-più le skill built-in di Claude Code elencate in scripts/builtin-skills.json (non stanno su disco).
+Sources (in order): project skills (.claude/skills/*/SKILL.md), user skills (~/.claude/skills/*/SKILL.md),
+installed plugins (~/.claude/plugins/installed_plugins.json → <installPath>/skills/**/SKILL.md, named «plugin:skill»),
+plus the Claude Code built-in skills listed in scripts/builtin-skills.json (they are not on disk).
 
-Il formato SKILL.md è portabile, ma una skill esiste solo per l'agente che la trova sul disco: ogni voce porta perciò
-`agents` (chiavi di GRIGLIA_AGENTS che possono usarla, dedotte dalla cartella; lista vuota = tutti). ~/.agents/skills è
-la cartella condivisa fra CLI diverse → nessun vincolo; la stessa skill trovata in più cartelle unisce gli agenti.
+The SKILL.md format is portable, but a skill only exists for the agent that finds it on disk: every entry therefore
+carries `agents` (the GRIGLIA_AGENTS keys allowed to use it, inferred from the folder; empty list = everyone).
+~/.agents/skills is the folder shared between different CLIs → no constraint; the same skill found in several folders
+merges the agents.
 
-Uso:  scripts/sync-skills.py            # importa nel container (docker exec -i … griglia:skills-import)
-      scripts/sync-skills.py --print    # stampa solo il JSON
+Usage:  scripts/sync-skills.py            # import into the container (docker exec -i … griglia:skills-import)
+        scripts/sync-skills.py --print    # only print the JSON
 """
 import glob, json, os, re, subprocess, sys
 
 
 def project_root():
-    """La root del progetto che usa la board: $GRIGLIA_PROJECT_ROOT, altrimenti la cartella che contiene questi
-    script (<progetto>/scripts, dove li mette `vendor:publish --tag=griglia-scripts`) oppure — se si lancia lo
-    script direttamente da vendor/alle80/griglia/scripts — la cartella che contiene `vendor`."""
+    """Root of the project using the board: $GRIGLIA_PROJECT_ROOT, otherwise the directory holding these scripts
+    (<project>/scripts, where `vendor:publish --tag=griglia-scripts` puts them) or — when the script is run straight
+    from vendor/alle80/griglia/scripts — the directory holding `vendor`."""
     env = os.environ.get('GRIGLIA_PROJECT_ROOT')
     if env:
         return os.path.abspath(os.path.expanduser(env))
@@ -34,12 +35,12 @@ def project_root():
 HOME = os.path.expanduser('~')
 ROOT = project_root()
 CONTAINER = os.environ.get('GRIGLIA_CONTAINER', 'laravel-dev-app')
-# Trasporto di Artisan: 'docker' (default, `docker exec <container>`) oppure 'local' (PHP sull'host, niente Docker)
+# Artisan transport: 'docker' (default, `docker exec <container>`) or 'local' (PHP on the host, no Docker)
 TRANSPORT = os.environ.get('GRIGLIA_TRANSPORT', 'docker')
 
 
 def artisan_command(*args):
-    """`php artisan …` via `docker exec` oppure, con GRIGLIA_TRANSPORT=local, con GRIGLIA_PHP sull'host."""
+    """`php artisan …` through `docker exec` or, with GRIGLIA_TRANSPORT=local, with GRIGLIA_PHP on the host."""
     if TRANSPORT == 'local':
         return [os.environ.get('GRIGLIA_PHP', 'php'), 'artisan', *args]
     return ['docker', 'exec', '-i', '-u', os.environ.get('GRIGLIA_USER', 'www-data'), CONTAINER, 'php', 'artisan', *args]
@@ -74,7 +75,7 @@ def collect():
         if old is None:
             out[s['name']] = s
             return
-        # Stessa skill trovata anche altrove: vale per entrambi gli agenti (lista vuota = per tutti)
+        # Same skill found elsewhere too: it counts for both agents (empty list = for everyone)
         old['agents'] = sorted(set(old['agents']) | set(s['agents'])) if old['agents'] and s['agents'] else []
 
     for p in sorted(glob.glob(os.path.join(ROOT, '.claude', 'skills', '*', 'SKILL.md'))):
@@ -108,7 +109,7 @@ def collect():
     if os.path.isfile(builtin):
         for s in json.load(open(builtin)):
             s.setdefault('source', 'built-in')
-            s.setdefault('agents', ['claude'])  # funzioni interne di Claude Code: nessun altro agente le ha
+            s.setdefault('agents', ['claude'])  # Claude Code internals: no other agent has them
             add(s)
     return sorted(out.values(), key=lambda s: s['name'].lower())
 

@@ -25,6 +25,10 @@ reset, livelli ok/alto/quasi esaurito/oltre il limite). I dati vengono da uno sn
 php artisan griglia:agent-status-import --file=snapshot.json   # {updated_at, agents:[{key,name,plan,windows:[…]}]}
 ```
 
+Ogni finestra porta una `key` e una `label`. Se la chiave è una di quelle note alla board (`five_hour`,
+`seven_day`, `seven_day_opus`, `seven_day_sonnet`, `primary`, `secondary`) l'etichetta mostrata è quella
+tradotta, così la pagina parla la lingua della board; con qualsiasi altra chiave vale la label dello snapshot.
+
 Il package porta con sé `scripts/agent-status.py` per Claude Code e Codex CLI: legge l'uso OAuth di Claude e la telemetria locale dei rollout Codex **sull'host** e
 manda solo percentuali (cron ogni 5 minuti). Lo stesso vale per i token di un task:
 `scripts/claude-tokens.py --todo=ID --args`. Vedi [gli script](scripts.md).

@@ -14,27 +14,27 @@ use Livewire\Component;
 
 class TodoList extends Component
 {
-    /** Valore di `order` che prenderà il nuovo todo (null = nessun inserimento in corso). */
+    /** The `order` value the new todo will take (null = no insertion in progress). */
     public ?int $insertAt = null;
 
     public string $newTitle = '';
 
-    /** Vista archivio (true) o lista attiva (false). */
+    /** Archive view (true) or active list (false). */
     public bool $showArchived = false;
 
-    /** Ricerca a testo libero (titolo, nota, commento, sotto-task, immagini). */
+    /** Free-text search (title, note, comment, sub-tasks, images). */
     public string $search = '';
 
     /** Show todos from every active list owned by the current user. */
     public bool $searchAllLists = false;
 
-    /** Filtro di stato: all | todo | done | otw | working | paused | question */
+    /** Status filter: all | todo | done | otw | working | paused | question */
     public string $filter = 'all';
 
     /** Effective agent key, or '' for every configured agent. */
     public string $agentFilter = '';
 
-    /** Lunghezza massima del titolo di un todo: default 50, modificabile da /settings. */
+    /** Maximum length of a todo title: 50 by default, changeable in /settings. */
     public const TITLE_MAX = 50;
 
     public static function titleMax(): int
@@ -73,7 +73,7 @@ class TodoList extends Component
         $this->searchAllLists = ! $this->searchAllLists;
     }
 
-    /** Applica ricerca e filtro di stato a una query di todo. */
+    /** Apply the search and the status filter to a todo query. */
     protected function applyFilters(Builder $q): Builder
     {
         $term = trim($this->search);
@@ -124,15 +124,15 @@ class TodoList extends Component
         return $this->searchAllLists || trim($this->search) !== '' || $this->filter !== 'all' || $this->agentFilter !== '';
     }
 
-    /** Todo in rinomina e relativa bozza. */
+    /** Todo being renamed and its draft. */
     public ?int $editingId = null;
 
     public string $titleDraft = '';
 
-    /** Titolo com'era quando è iniziata la rinomina: il salvataggio è live, «annulla» rimette questo. */
+    /** Title as it was when the rename started: saving is live, «undo» puts this one back. */
     public ?string $titleOriginal = null;
 
-    /** Query dei todo della lista corrente. */
+    /** Query of the todos of the current list. */
     protected function scoped(): Builder
     {
         if ($this->searchAllLists) {
@@ -142,7 +142,7 @@ class TodoList extends Component
         return Todo::where('checklist_id', Checklist::currentId());
     }
 
-    /** Todo della lista corrente, ordinati, con sotto-task: usato dai render di tutte le varianti. */
+    /** Todos of the current list, ordered, with sub-tasks: used by the render of every variant. */
     protected function todos(): Collection
     {
         return $this->applyFilters($this->scoped())
@@ -150,7 +150,7 @@ class TodoList extends Component
             ->with(['checklist:id,name,agent', 'ingredients', 'dependsOn:id,title,completed,order'])->withCount('attachments')->get();
     }
 
-    /** Query dei todo attivi (non archiviati) della lista corrente: la numerazione `order` vive solo qui. */
+    /** Query of the active (not archived) todos of the current list: the `order` numbering lives only here. */
     protected function active(): Builder
     {
         return Todo::where('checklist_id', Checklist::currentId())->whereNull('archived_at');
@@ -239,7 +239,7 @@ class TodoList extends Component
     {
         $this->showArchived = ! $this->showArchived;
         $this->cancelInsert();
-        $this->closeEdit(); // quello che si stava scrivendo è già salvato: non si butta via
+        $this->closeEdit(); // what was being typed is already saved: nothing gets thrown away
     }
 
     public function archive(int $todoId): void
@@ -250,7 +250,7 @@ class TodoList extends Component
         }
         $todo->update(['archived_at' => now()]);
 
-        // Richiude il buco nella numerazione degli attivi
+        // Close the gap in the numbering of the active todos
         $this->active()->where('order', '>', $todo->order)->decrement('order');
         $this->dispatch('toast', message: __('griglia::t.msg.archived', ['title' => $todo->title]), type: 'info');
     }
@@ -262,7 +262,7 @@ class TodoList extends Component
         $this->dispatch('toast', message: __('griglia::t.msg.restored', ['title' => $todo->title]));
     }
 
-    /** Nome della lista corrente: è il titolo di tutte le pagine. */
+    /** Name of the current list: it is the title of every page. */
     protected function listName(): string
     {
         return Checklist::findOrFail(Checklist::currentId())->name;
@@ -299,7 +299,7 @@ class TodoList extends Component
             return;
         }
 
-        // Con domande aperte il pallino porta al modale per rispondere
+        // With open questions the dot leads to the modal to answer them
         if ($todo->question) {
             $this->dispatch('open-ingredients', todoId: $todo->id);
 
@@ -314,7 +314,7 @@ class TodoList extends Component
             return;
         }
 
-        // In lavorazione (🔧): il click ferma il lavoro dell'assistente → torna ⚪ e resta traccia in stopped_at
+        // Working (🔧): the click stops the assistant → back to ⚪, with a trace left in stopped_at
         if ($todo->working) {
             $todo->update(['working' => false, 'open_to_work' => false, 'stopped_at' => now()]);
             $this->dispatch('toast', message: __('griglia::t.msg.stopped', ['title' => $todo->title]), type: 'info');
@@ -324,7 +324,7 @@ class TodoList extends Component
 
         $todo->open_to_work = ! $todo->open_to_work;
         if ($todo->open_to_work) {
-            $todo->stopped_at = null; // rimesso 🟢: lo stop non vale più
+            $todo->stopped_at = null; // back to 🟢: the stop does not apply any more
         }
         $todo->save();
 
@@ -332,9 +332,9 @@ class TodoList extends Component
     }
 
     /**
-     * «Riprendi»: da un todo completato apre un nuovo todo collegato (parent_id) subito dopo,
-     * stesso titolo, nota vuota da compilare con aggiunte/modifiche; il contesto del vecchio
-     * (nota, commento, sotto-task, immagini) resta consultabile dal nuovo.
+     * «Resume»: from a completed todo it opens a new linked todo (parent_id) right after it,
+     * same title, empty note to fill in with additions/changes; the context of the old one
+     * (note, comment, sub-tasks, images) stays readable from the new one.
      */
     public function resume(int $todoId): void
     {
@@ -346,7 +346,7 @@ class TodoList extends Component
             return;
         }
 
-        // Posizione: subito dopo l'originale se è attivo, altrimenti in fondo
+        // Position: right after the original when that is active, otherwise at the end
         $position = $old->archived_at ? ((int) $this->active()->max('order') + 1) : $old->order + 1;
         $this->active()->where('order', '>=', $position)->increment('order');
 
@@ -378,8 +378,8 @@ class TodoList extends Component
     }
 
     /**
-     * «Annulla»: rimette il titolo com'era quando la modifica è cominciata.
-     * La rinomina resta aperta — è un passo indietro, non una chiusura (task 438).
+     * «Undo»: puts the title back as it was when the edit started.
+     * The rename stays open — it is a step back, not a close (task 438).
      */
     public function revertEdit(): void
     {
@@ -394,7 +394,7 @@ class TodoList extends Component
         $this->dispatch('toast', message: __('griglia::t.msg.reverted'));
     }
 
-    /** Chiude la rinomina senza toccare quello che è già stato salvato. */
+    /** Close the rename without touching what has already been saved. */
     protected function closeEdit(): void
     {
         $this->editingId = null;
@@ -402,13 +402,13 @@ class TodoList extends Component
         $this->titleOriginal = null;
     }
 
-    /** Salvataggio live: la bozza arriva dal campo (wire:model.live) a ogni pausa nella digitazione. */
+    /** Live save: the draft comes from the field (wire:model.live) at every pause in the typing. */
     public function updatedTitleDraft(): void
     {
         $this->autosaveEdit();
     }
 
-    /** Persiste la bozza senza chiudere la rinomina e senza toast (sarebbe uno a ogni pausa). */
+    /** Persist the draft without closing the rename and without a toast (there would be one per pause). */
     protected function autosaveEdit(): bool
     {
         $title = trim($this->titleDraft);
@@ -421,16 +421,16 @@ class TodoList extends Component
             ->update(['title' => $title]) > 0;
 
         if ($saved) {
-            $this->dispatch('griglia-autosaved'); // spia «salvato» accanto al campo
+            $this->dispatch('griglia-autosaved'); // the «saved» light next to the field
         }
 
         return $saved;
     }
 
     /**
-     * Chiude la rinomina senza bottoni: Invio, Esc o un clic fuori dal campo (task 438). Quello che
-     * c'è scritto è già salvato; con un titolo vuoto o troppo lungo si resta dentro, altrimenti il
-     * testo appena scritto sparirebbe senza essere mai stato salvato.
+     * Close the rename without buttons: Enter, Esc or a click outside the field (task 438). What is
+     * written is already saved; with an empty or too long title we stay inside, otherwise the text
+     * just typed would vanish without ever having been saved.
      */
     public function finishEdit(): void
     {
@@ -444,7 +444,7 @@ class TodoList extends Component
         $this->closeEdit();
     }
 
-    /** Titolo entro il limite? Altrimenti avvisa e non salva (niente troncamenti silenziosi). */
+    /** Title within the limit? Otherwise warn and do not save (no silent truncation). */
     protected function titleFits(string $title): bool
     {
         if (mb_strlen($title) <= self::titleMax()) {
@@ -476,7 +476,7 @@ class TodoList extends Component
             return;
         }
 
-        // Fa spazio: tutti i todo della lista dalla posizione in poi scalano di uno.
+        // Make room: every todo of the list from that position on shifts by one.
         $this->active()->where('order', '>=', $this->insertAt)->increment('order');
 
         Todo::create([
@@ -490,7 +490,7 @@ class TodoList extends Component
         $this->dispatch('toast', message: __('griglia::t.msg.added', ['title' => $title]));
     }
 
-    /** @param array<int, int|string> $orderedIds Id dei todo nell'ordine mostrato dopo il drag. */
+    /** @param array<int, int|string> $orderedIds Ids of the todos in the order shown after the drag. */
     public function reorder(array $orderedIds): void
     {
         if ($this->showArchived || $this->isFiltering()) {
@@ -525,30 +525,30 @@ class TodoList extends Component
         if ($todo->working) {
             return;
         }
-        // Resume chain: chi era «ripreso» da questo passa al nonno, così lo storico non si spezza (task 416)
+        // Resume chain: whoever was «resumed» from this one moves to the grandparent, so the history does not break (task 416)
         Todo::where('parent_id', $todo->id)->update(['parent_id' => $todo->parent_id]);
         $todo->delete();
 
-        // Richiude il buco lasciato dall'elemento eliminato (solo se era attivo: gli archiviati non hanno posto in numerazione)
+        // Close the gap left by the deleted item (only if it was active: archived ones have no place in the numbering)
         if (! $todo->archived_at) {
             $this->active()->where('order', '>', $todo->order)->decrement('order');
         }
         $this->dispatch('toast', message: __('griglia::t.msg.deleted', ['title' => $todo->title]), type: 'info');
     }
 
-    /** Proprietario delle liste: identifica il canale privato Reverb su cui arrivano gli aggiornamenti. */
+    /** Owner of the lists: identifies the private Reverb channel the updates arrive on. */
     public int $userId = 0;
 
     public function boot(): void
     {
-        // In boot() (non mount): le sottoclassi con mount($theme) resterebbero incompatibili
+        // In boot() (not mount): subclasses with mount($theme) would stay incompatible
         $this->userId = (int) auth()->id();
     }
 
     /**
-     * Aggiornamento live: un todo della lista è cambiato altrove (comando artisan
-     * dell'assistente, altro dispositivo). Se riguarda la lista corrente si ri-renderizza
-     * lista e modale; se lo stato è stato cambiato da console, lo si dice con un toast.
+     * Live update: a todo of the list changed elsewhere (artisan command of the
+     * assistant, another device). When it concerns the current list, list and modal are
+     * re-rendered; when the status was changed from the console, a toast says so.
      */
     /** Listeners: the private broadcast channel comes from config (griglia.broadcast_channel). */
     protected function getListeners(): array
@@ -570,7 +570,7 @@ class TodoList extends Component
             return;
         }
 
-        $this->dispatch('todo-changed-live'); // il modale, se aperto, si aggiorna
+        $this->dispatch('todo-changed-live'); // the modal, if open, refreshes
 
         if (($event['source'] ?? '') === 'cli' && ! empty($event['state_changed']) && app(AppSettings::class)->toast_console_changes) {
             $title = (string) ($event['title'] ?? '');
@@ -585,7 +585,7 @@ class TodoList extends Component
         }
     }
 
-    /** Ri-sincronizzazione dopo background/riconnessione (vedi resources/js/echo.js): basta ri-renderizzare. */
+    /** Re-sync after background/reconnection (see resources/js/echo.js): a re-render is enough. */
     public function resync(): void
     {
         $this->dispatch('todo-changed-live');
@@ -593,8 +593,8 @@ class TodoList extends Component
 
     public function refreshList(): void
     {
-        // Vuoto di proposito: l'evento forza il re-render della lista
-        // così i contatori sotto-task restano allineati al modal.
+        // Empty on purpose: the event forces the list to re-render
+        // so the sub-task counters stay aligned with the modal.
     }
 
     public function render()

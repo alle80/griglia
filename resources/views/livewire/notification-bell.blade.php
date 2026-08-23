@@ -1,4 +1,4 @@
-{{-- Campanella delle notifiche della board (accanto al selettore liste; stesso look, dal tema) --}}
+{{-- Board notifications bell (next to the lists switcher; same look, from the theme) --}}
 <details
     class="relative"
     x-data="{ open: false }"

@@ -6,15 +6,15 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    {{-- interactive-widget: la tastiera virtuale RIDIMENSIONA il viewport (100dvh si accorcia) invece di
-         coprire il contenuto — senza, su Android l'editor dei sotto-task finisce sotto la tastiera (task 303). --}}
+    {{-- interactive-widget: the virtual keyboard RESIZES the viewport (100dvh shrinks) instead of
+         covering the content — without it, on Android the sub-task editor ends up under the keyboard (task 303). --}}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#111111">
     <title>{{ $title ?? 'Griglia — '.$t['label'] }}</title>
-    {{-- La favicon è sempre il marchio Griglia, qualunque sia il tema: la linguetta identifica l'app, non
-         lo skin (l'icona del tema resta nel menu degli stili). Il ?v= è la data del file: senza, i browser
-         tengono la vecchia icona per giorni anche dopo un ricaricamento forzato. --}}
+    {{-- The favicon is always the Griglia mark, whatever the theme: the tab identifies the app, not
+         the skin (the theme icon stays in the styles menu). The ?v= is the file date: without it, browsers
+         keep the old icon for days even after a forced reload. --}}
     @php($iconV = @filemtime(public_path('vendor/griglia/images/brand/mark.svg')) ?: '1')
     <link rel="icon" href="{{ asset('vendor/griglia/images/brand/mark.svg') }}?v={{ $iconV }}" type="image/svg+xml">
     <link rel="icon" href="{{ asset('vendor/griglia/images/brand/mark-32.png') }}?v={{ $iconV }}" sizes="32x32" type="image/png">

@@ -7,9 +7,9 @@ use Closure;
 use Illuminate\Http\Request;
 
 /**
- * Veste ogni pagina della board con la lingua scelta in /settings (impostazione `app.locale`).
- * È anche middleware «persistente» di Livewire, così le richieste /livewire/update
- * (modali, salvataggi) restituiscono le stesse stringhe della pagina.
+ * Dresses every board page with the language chosen in /settings (setting `app.locale`).
+ * It is also a Livewire «persistent» middleware, so the /livewire/update requests
+ * (modals, saves) return the same strings as the page.
  */
 class SetLocale
 {

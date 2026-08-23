@@ -7,8 +7,8 @@ use Alle80\Griglia\Settings\AppSettings;
 use Illuminate\Console\Command;
 
 /**
- * Archivia da solo i todo completati da più di N giorni (impostazione «Archiviazione automatica»
- * in /settings; 0 = mai). Gira ogni notte dallo scheduler (routes/console.php).
+ * Archives by itself the todos completed more than N days ago (setting «Automatic archiving»
+ * in /settings; 0 = never). Runs every night from the scheduler (routes/console.php).
  */
 class AutoArchive extends Command
 {
@@ -32,7 +32,7 @@ class AutoArchive extends Command
         $query = Todo::whereNull('archived_at')->where('completed', true)->where('updated_at', '<', $cutoff);
 
         $count = 0;
-        // Per lista, dal fondo, così la numerazione degli attivi resta compatta
+        // Per list, from the bottom, so the numbering of the active ones stays compact
         foreach ($query->orderByDesc('order')->get()->groupBy('checklist_id') as $todos) {
             foreach ($todos as $todo) {
                 $count++;

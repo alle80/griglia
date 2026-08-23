@@ -9,12 +9,12 @@ class ChecklistSwitcher extends Component
 {
     public string $newName = '';
 
-    /** Lista in rinomina e relativa bozza. */
+    /** List being renamed and its draft. */
     public ?int $editingId = null;
 
     public string $nameDraft = '';
 
-    /** Vista archivio: il menu elenca le liste archiviate invece di quelle attive. */
+    /** Archive view: the menu lists the archived lists instead of the active ones. */
     public bool $showArchived = false;
 
     public function startRename(int $checklistId): void
@@ -44,7 +44,7 @@ class ChecklistSwitcher extends Component
         $this->cancelRename();
         $this->dispatch('toast', message: __('griglia::t.msg.list_renamed'));
 
-        // Il nome della lista corrente è il titolo della pagina: ricarico per aggiornarlo ovunque
+        // The name of the current list is the page title: reload to refresh it everywhere
         if ($wasCurrent) {
             $this->js('window.location.reload()');
         }
@@ -80,10 +80,10 @@ class ChecklistSwitcher extends Component
         $this->cancelRename();
     }
 
-    /** Archivia una lista: sparisce dal menu, i suoi task restano. */
+    /** Archive a list: it disappears from the menu, its tasks stay. */
     public function archiveList(int $checklistId): void
     {
-        // Come per l'eliminazione: l'ultima lista attiva non si archivia
+        // As for the deletion: the last active list cannot be archived
         if (Checklist::mine()->count() <= 1) {
             $this->dispatch('toast', message: __('griglia::t.msg.list_archive_last'), type: 'error');
 
@@ -104,7 +104,7 @@ class ChecklistSwitcher extends Component
         }
     }
 
-    /** Riporta una lista archiviata tra quelle attive. */
+    /** Bring an archived list back among the active ones. */
     public function restoreList(int $checklistId): void
     {
         $list = Checklist::mineArchived()->whereKey($checklistId)->first();
@@ -118,7 +118,7 @@ class ChecklistSwitcher extends Component
 
     public function deleteList(int $checklistId): void
     {
-        // L'ultima lista attiva non si tocca (le archiviate si possono sempre eliminare)
+        // The last active list is untouchable (archived ones can always be deleted)
         $archived = Checklist::mineArchived()->whereKey($checklistId)->exists();
         if (! $archived && Checklist::mine()->count() <= 1) {
             return;

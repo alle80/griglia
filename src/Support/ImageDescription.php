@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\Storage;
 use Laravel\Ai\Files\Image;
 
 /**
- * Servizio di descrizione immagini: usa il Laravel AI SDK con il provider
- * configurato (config ai.image_description / ai.default), con failover se
- * ne sono indicati più d'uno. Se nessun provider ha una chiave, è un no-op.
+ * Image description service: uses the Laravel AI SDK with the configured
+ * provider (config ai.image_description / ai.default), with failover when
+ * more than one is listed. When no provider has a key, it is a no-op.
  */
 class ImageDescription
 {
-    /** Provider da usare, in ordine di preferenza (il primo è il primario, gli altri failover). */
+    /** Providers to use, in order of preference (the first is the primary one, the others failover). */
     public static function providers(): array
     {
         $settings = app(AppSettings::class);
@@ -24,11 +24,11 @@ class ImageDescription
             return [];
         }
 
-        // Provider scelto da /settings, altrimenti da .env (AI_IMAGE_PROVIDERS con failover, poi AI_PROVIDER)
+        // Provider chosen in /settings, otherwise from .env (AI_IMAGE_PROVIDERS with failover, then AI_PROVIDER)
         $configured = $settings->ai_image_provider !== '' ? [$settings->ai_image_provider] : config('ai.image_description.providers', []);
         $candidates = $configured ?: [config('ai.default')];
 
-        // Tiene solo i provider che hanno effettivamente una chiave (o che non ne richiedono, es. ollama)
+        // Keep only the providers that actually have a key (or that need none, e.g. ollama)
         return array_values(array_filter($candidates, function ($name) {
             $p = config("ai.providers.{$name}");
 

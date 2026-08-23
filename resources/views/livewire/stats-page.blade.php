@@ -1,5 +1,5 @@
-{{-- Desktop: contenitore più largo e, da xl, storico affiancato a grafico e panoramica (task 321).
-     Sotto xl resta la colonna unica di prima. --}}
+{{-- Desktop: wider container and, from xl, history side by side with chart and overview (task 321).
+     Below xl the single column of before stays. --}}
 <div class="tl-page-wide mx-auto w-full px-4 pt-24 pb-16 sm:pt-24" style="{{ $skin['vars'] }}">
     <div class="mb-4 flex items-center justify-between gap-3">
         <h1 class="{{ $skin['h1'] }} db-ctx-h1">{{ __('griglia::t.stats_page.title') }}</h1>
@@ -46,7 +46,7 @@
         {{-- Da xl i tre blocchi si affiancano: storico a sinistra (2 colonne), grafico e panoramica a destra --}}
         <div class="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-start xl:grid-cols-3">
 
-        {{-- Su lg i due blocchi entrano nella griglia (display:contents); da xl formano la colonna destra --}}
+        {{-- On lg the two blocks join the grid (display:contents); from xl they form the right column --}}
         <aside class="contents xl:order-2 xl:block xl:space-y-4">
 
         {{-- Per-day series: completed tasks (bars) + cost/time on hover --}}

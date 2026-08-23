@@ -49,9 +49,9 @@ class SettingsPageTest extends TestCase
     }
 
     /**
-     * Le select (e gli altri campi non-bool) devono salvare da sole al cambio: in Livewire 4
-     * «wire:model.change» senza «.live» aggiorna il valore solo lato client e non invia la
-     * richiesta, quindi updatedValues() non scattava e il settaggio restava quello vecchio (task 436).
+     * Selects (and the other non-bool fields) must save by themselves on change: in Livewire 4
+     * «wire:model.change» without «.live» updates the value client-side only and does not send the
+     * request, so updatedValues() did not fire and the setting stayed the old one (task 436).
      */
     public function test_non_bool_fields_are_bound_live_so_they_save_on_change(): void
     {

@@ -1,5 +1,5 @@
-{{-- Selettore della lista corrente, identico su tutte le pagine. Prende look e font dal tema
-     corrente (.tl-btn / .tl-menu): niente stile proprio hard-coded. --}}
+{{-- Switcher of the current list, identical on every page. It takes look and font from the current
+     theme (.tl-btn / .tl-menu): no hard-coded style of its own. --}}
 @php($current = $lists->firstWhere('id', $currentId))
 <div class="tl-chrome fixed top-3 left-3 z-[60]">
 <details
@@ -106,7 +106,7 @@
             <p class="px-2 py-3 text-center text-xs opacity-60">{{ __('griglia::t.lists_archive_empty') }}</p>
         @endforelse
 
-        {{-- Archivio delle liste: si entra e si esce da qui --}}
+        {{-- Archive of the lists: you get in and out from here --}}
         <div class="tl-menu-sep mt-1.5 p-1 pt-2">
             <button type="button" wire:click="toggleArchived" class="tl-btn tl-btn-sm w-full justify-center" aria-pressed="{{ $showArchived ? 'true' : 'false' }}">
                 <x-griglia::icon :name="$showArchived ? 'restore' : 'archive'" />
@@ -114,7 +114,7 @@
             </button>
         </div>
 
-        {{-- Nuova lista --}}
+        {{-- New list --}}
         <form wire:submit="create" class="tl-menu-sep mt-1.5 p-1 pt-2" @if ($showArchived) hidden @endif>
             <div class="flex items-center gap-1">
                 <input
@@ -127,14 +127,14 @@
                     <span wire:loading.remove wire:target="create"><x-griglia::icon name="plus" :stroke="2.5" /></span><span wire:loading wire:target="create">…</span>
                 </button>
             </div>
-            {{-- Un piano si scrive in una pagina sua: qui non c'è spazio (task 342) --}}
+            {{-- A plan is written on a page of its own: there is no room here (task 342) --}}
             <a href="{{ route('griglia.plans.index') }}" class="tl-btn tl-btn-sm mt-1.5 w-full justify-start">
                 <x-griglia::icon name="ruler" /> {{ __('griglia::t.plan.index_menu') }}
             </a>
 
         </form>
 
-        {{-- Utente, pagine e uscita --}}
+        {{-- User, pages and exit --}}
         @php($logout = \Alle80\Griglia\Mode::isLocal() ? null : config('griglia.logout_route'))
         <form method="POST" action="{{ $logout && \Illuminate\Support\Facades\Route::has($logout) ? route($logout) : '#' }}" class="tl-menu-sep mt-1.5 px-1 pt-2 pb-1">
             @csrf

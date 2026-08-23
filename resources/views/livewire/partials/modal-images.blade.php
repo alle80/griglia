@@ -46,7 +46,7 @@
                 <x-griglia::icon name="image" /> {{ __('griglia::t.add_image') }}
                 <input type="file" accept="image/jpeg,image/png,image/gif" multiple class="sr-only" wire:model="images">
             </label>
-            {{-- Fotocamera (su smartphone apre direttamente la camera) --}}
+            {{-- Camera (on smartphones it opens the camera directly) --}}
             <label class="{{ $btnClass }} cursor-pointer sm:hidden">
                 <x-griglia::icon name="camera" /> {{ __('griglia::t.take_photo') }}
                 <input type="file" accept="image/*" capture="environment" class="sr-only" wire:model="images">
@@ -83,8 +83,8 @@
         </div>
     @endif
 
-    {{-- Lightbox: fuori dal blocco delle anteprime (che Livewire ri-renderizza a ogni upload,
-         lasciando altrimenti in <body> una copia orfana dell'overlay = schermo nero). --}}
+    {{-- Lightbox: outside the previews block (which Livewire re-renders at every upload,
+         otherwise leaving an orphan copy of the overlay in <body> = black screen). --}}
     <template x-teleport="body">
         <div x-show="zoom" x-cloak x-on:click="zoom = null" x-on:keydown.escape.window="zoom = null" class="db-lightbox fixed inset-0 z-[80] flex cursor-zoom-out flex-col items-center justify-center gap-3 bg-black/90 p-4">
             <img :src="zoom" :alt="caption || name" class="min-h-0 max-w-full flex-1 object-contain">

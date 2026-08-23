@@ -39,7 +39,7 @@
             @elseif ($plan['done'] === $plan['total'] && $plan['total'] > 0)
                 <span class="inline-flex items-center gap-1 text-xs opacity-80"><x-griglia::icon name="done" /> {{ __('griglia::t.plan.completed') }}</span>
             @endif
-            {{-- L'obiettivo del piano si corregge dalla sua pagina (task 344) --}}
+            {{-- The goal of the plan is edited from its own page (task 344) --}}
             <a href="{{ route('griglia.plans.edit', ['list' => \Alle80\Griglia\Models\Checklist::currentId()]) }}"
                class="{{ $btnClass }} inline-flex cursor-pointer items-center gap-1 px-2.5 py-1 text-xs leading-none"
                title="{{ __('griglia::t.plan.edit_title') }}">
@@ -76,8 +76,8 @@
 
     {{-- Filtri di stato, agente e archivio --}}
     <div class="flex flex-wrap items-center gap-1.5">
-        {{-- Filtro di stato: una <select> vestita da chip (task 612). Sei chip andavano a capo su ogni
-             schermo stretto e rubavano spazio alla board larga; l'icona a sinistra segue lo stato scelto. --}}
+        {{-- Status filter: a <select> dressed as a chip (task 612). Six chips wrapped on every
+             narrow screen and stole room from the wide board; the icon on the left follows the chosen state. --}}
         @php($icons = ['todo' => 'waiting', 'done' => 'done', 'otw' => 'open', 'working' => 'working', 'paused' => 'paused', 'question' => 'question'])
         <label class="{{ $filter !== 'all' ? $chipOnClass : $chipClass }} db-status-filter inline-flex cursor-pointer items-center gap-1 px-2.5 py-1 text-xs leading-none"
                title="{{ __('griglia::t.status_filter') }}">

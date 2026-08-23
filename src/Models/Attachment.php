@@ -14,11 +14,11 @@ class Attachment extends Model
 
     protected static function booted(): void
     {
-        // Aggiornamento live della lista/modale aperti altrove (Reverb)
+        // Live update of the list/modal open elsewhere (Reverb)
         static::saved(fn ($m) => $m->todo && Live::todoChanged($m->todo));
         static::deleted(fn ($m) => $m->todo && Live::todoChanged($m->todo));
 
-        // Cancellando il record sparisce anche il file
+        // Deleting the record removes the file too
         static::deleted(fn (Attachment $a) => Storage::disk(config('griglia.attachments_disk', 'local'))->delete($a->path));
     }
 

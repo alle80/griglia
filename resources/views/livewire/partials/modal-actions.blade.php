@@ -29,7 +29,7 @@
             <span class="db-state-name">{{ __('griglia::t.state.'.$state) }}</span>
         </button>
 
-        {{-- Prev / next task of the list: seguire una catena senza chiudere il modale (task 365) --}}
+        {{-- Prev / next task of the list: follow a chain without closing the modal (task 365) --}}
         @php($prevId = $this->siblingId(-1))
         @php($nextId = $this->siblingId(1))
         @php($position = $this->position())

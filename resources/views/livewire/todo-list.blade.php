@@ -20,7 +20,7 @@
             @endif
         </div>
 
-        {{-- Avanzamento della lista: stessa hairline del menu delle liste --}}
+        {{-- Progress of the list: the same hairline as the lists menu --}}
         <div class="mx-auto mt-5 max-w-xs">
             <p class="tl-display tl-counter">
                 <span class="tabular-nums">{{ $done }}/{{ $total }}</span> {{ $t['counter'] }}{{ $done === $total && $todos->isNotEmpty() ? ' — '.$t['done_all'] : '' }}
@@ -40,7 +40,7 @@
         'btnClass' => 'tl-check tl-display',
     ])
 
-    {{-- ===== LISTA (riordinabile con drag & drop sulla maniglia) ===== --}}
+    {{-- ===== LIST (reorderable with drag & drop on the handle) ===== --}}
     <div
         :class="view === 'grid' ? 'todo-grid grid grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-3' : 'space-y-0'"
         x-data
@@ -59,7 +59,7 @@
         @foreach ($todos as $todo)
         <div wire:key="todo-{{ $todo->id }}" data-todo-id="{{ $todo->id }}">
 
-            {{-- Separatore "+" per inserire PRIMA di questo todo --}}
+            {{-- "+" separator to insert BEFORE this todo --}}
             <div>
                 @if ($insertAt === $todo->order)
                     @include('griglia::livewire.partials.insert-form')
@@ -75,10 +75,10 @@
             </div>
 
             {{-- Riga todo --}}
-            {{-- Bordo colorato finché la riga chiede attenzione: verde/giallo/rosso secondo l'esito, viola se ci sono domande.
-                 Il colore è scritto INLINE, non solo nelle classi: le viste arrivano da vendor/ mentre il CSS passa da una
-                 build dell'app, e finché le due versioni non coincidono le regole `.db-attention` possono mancare (o essere
-                 quelle vecchie) — il bordo non si vedeva affatto. Inline vince anche sul filtro grigio di `.tl-done`. --}}
+            {{-- Coloured border while the row asks for attention: green/yellow/red by outcome, purple when there are questions.
+                 The colour is written INLINE, not only in the classes: the views come from vendor/ while the CSS goes through an
+                 app build, and until the two versions match the `.db-attention` rules may be missing (or be
+                 the old ones) — the border did not show at all. Inline also beats the grey filter of `.tl-done`. --}}
             @php($attention = $todo->attention())
             @php($unseen = $attention && $attention !== 'question')
             @php($attentionColor = $todo->attentionColor())
@@ -136,8 +136,8 @@
                             @if ($todo->attachments_count)
                                 <span class="inline-flex shrink-0 items-center gap-0.5 text-sm" title="{{ __('griglia::t.images_count', ['count' => $todo->attachments_count]) }}"><x-griglia::icon name="image" />{{ $todo->attachments_count }}</span>
                             @endif
-                            {{-- Niente targhetta visibile: l'utente ha chiesto il bordo colorato e basta (task 415).
-                                 Il testo resta per chi legge con uno screen reader, che il colore non lo vede. --}}
+                            {{-- No visible badge: the user asked for the coloured border and nothing else (task 415).
+                                 The text stays for whoever reads with a screen reader, which does not see the colour. --}}
                             @if ($attention)
                                 <span class="sr-only">{{ __('griglia::t.result_'.($attention === 'ok' ? 'new' : $attention)) }}</span>
                             @endif
@@ -150,18 +150,18 @@
                                     <span class="db-phase min-w-0 truncate text-xs italic opacity-75" title="{{ $todo->phase }}">{{ $todo->phase }}</span>
                                 @endif
                             @endif
-                            {{-- Id del task (task 510): lo stesso «id:N» che l'agente stampa in griglia:check, ultima targhetta
-                                 del titolo, spinta a destra (ml-auto): sul telefono va a capo da sola invece di rubare spazio ai
-                                 comandi del primo livello (in v0.87.0 li mandava su due righe). È uno span dentro il bottone del
-                                 titolo: copy.js intercetta il tocco in fase di cattura e copia il numero senza aprire il modale. --}}
+                            {{-- Task id (task 510): the same «id:N» the agent prints in griglia:check, last badge
+                                 of the title, pushed to the right (ml-auto): on the phone it wraps by itself instead of stealing room from
+                                 the first-level commands (in v0.87.0 it pushed them onto two rows). It is a span inside the title
+                                 button: copy.js intercepts the tap during the capture phase and copies the number without opening the modal. --}}
                             <span class="db-id ml-auto shrink-0" data-copy="{{ $todo->id }}" title="{{ __('griglia::t.task_id_copy', ['id' => $todo->id]) }}">id:{{ $todo->id }}</span>
                     </button>
                     @if ($todo->claude_comment && $todo->result_summary)
                         <p class="mt-0.5 truncate text-xs opacity-60" title="{{ \Alle80\Griglia\Support\Markdown::normalizeAgentResponse($todo->result_summary) }}">{{ \Alle80\Griglia\Support\Markdown::normalizeAgentResponse($todo->result_summary) }}</p>
                     @endif
-                    {{-- Multi-agente: chi lavora questo task. La targhetta sta su una riga sua, SOTTO il titolo
-                         (task 427): in mezzo ai comandi era schiacciata fra le icone. Il nome si vede SEMPRE,
-                         anche quando il task eredita l'agente della lista (opzione vuota = eredita). --}}
+                    {{-- Multi-agent: who works this task. The badge sits on a row of its own, BELOW the title
+                         (task 427): among the commands it was squeezed between the icons. The name is ALWAYS visible,
+                         even when the task inherits the agent of the list (empty option = inherit). --}}
                     @if (\Alle80\Griglia\Agent::many())
                         <div class="db-agent-row mt-1 flex items-center">
                             @include('griglia::livewire.partials.agent-select', [
@@ -253,7 +253,7 @@
         {{ $t['footer'] }}
     </footer>
 
-    {{-- wire:key: senza chiave stabile il modale viene ricreato (perdendo open=true) quando la lista
-         si ri-renderizza dopo aver aggiunto una riga → il pulsante «nuovo task» non apriva il modale. --}}
+    {{-- wire:key: without a stable key the modal is recreated (losing open=true) when the list
+         re-renders after adding a row → the «new task» button did not open the modal. --}}
     <livewire:griglia::themed-ingredient-modal :theme="$theme" wire:key="griglia-ingredient-modal" />
 </div>

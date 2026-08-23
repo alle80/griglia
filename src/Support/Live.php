@@ -7,8 +7,8 @@ use Alle80\Griglia\Models\Todo;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Notifica live (Reverb) delle modifiche ai todo. Se il server WebSocket non
- * risponde, la modifica va comunque a buon fine: si logga e basta.
+ * Live notification (Reverb) of the changes to the todos. When the WebSocket server
+ * does not answer, the change goes through anyway: it is just logged.
  */
 class Live
 {

@@ -26,7 +26,7 @@ class IngredientModal extends Component
 
     public bool $open = false;
 
-    /** Immagini in arrivo (upload da file, fotocamera o incolla). */
+    /** Incoming images (upload from a file, the camera or a paste). */
     public array $images = [];
 
     public ?string $imageError = null;
@@ -35,32 +35,32 @@ class IngredientModal extends Component
 
     public string $newIngredient = '';
 
-    /** Bozza della nota mentre è in modifica (null = non in modifica). */
+    /** Draft of the note while it is being edited (null = not editing). */
     public ?string $notesDraft = null;
 
-    /** Bozza del titolo mentre è in rinomina dal modale (null = non in modifica). */
+    /** Draft of the title while it is being renamed from the modal (null = not editing). */
     public ?string $titleDraft = null;
 
     /**
-     * Valori com'erano all'apertura della modifica: il salvataggio è live (a ogni pausa nella
-     * digitazione), quindi «annulla» non basta più a buttare via la bozza — deve rimettere questi.
+     * Values as they were when the edit opened: saving is live (at every pause in the typing),
+     * so «undo» is no longer enough to drop the draft — it has to put these back.
      */
     public ?string $titleOriginal = null;
 
     public ?string $notesOriginal = null;
 
-    /** Ingrediente in rinomina e relativa bozza. */
+    /** Ingredient being renamed and its draft. */
     public ?int $editingIngredientId = null;
 
     public string $ingredientDraft = '';
 
-    /** Todo raggiungibili dall'utente: solo quelli delle sue liste. */
+    /** Todos the user can reach: only those of their own lists. */
     protected function reachable(): Builder
     {
         return Todo::whereIn('checklist_id', Checklist::mine()->select('id'));
     }
 
-    /** Il todo aperto nel modale (null se chiuso o non più raggiungibile). */
+    /** The todo open in the modal (null when closed or no longer reachable). */
     protected function todo(): ?Todo
     {
         return $this->todoId ? $this->reachable()->with([
@@ -71,8 +71,8 @@ class IngredientModal extends Component
     }
 
     /**
-     * Un elemento completato o in lavorazione è in sola lettura: note, domande e sotto-task non si toccano
-     * finché non torna a uno stato precedente. Restituisce il todo solo se modificabile.
+     * A completed or working item is read-only: notes, questions and sub-tasks are untouchable
+     * until it goes back to an earlier state. Returns the todo only when it is editable.
      */
     protected function editable(): ?Todo
     {
@@ -153,11 +153,11 @@ class IngredientModal extends Component
         }
     }
 
-    /** Aggiornamento live (Reverb) ricevuto dalla lista: il modale aperto si ri-renderizza. */
+    /** Live update (Reverb) received from the list: the open modal re-renders. */
     #[On('todo-changed-live')]
     public function refreshLive(): void
     {
-        // Se il todo aperto non esiste più, chiudiamo
+        // If the open todo does not exist any more, close
         if ($this->open && ! $this->todo()) {
             $this->close();
         }
@@ -194,9 +194,9 @@ class IngredientModal extends Component
         $this->answers = [];
     }
 
-    // ----- Immagini -----
+    // ----- Images -----
 
-    /** Appena Livewire ha ricevuto i file (da <input type=file> o da incolla), li salviamo. */
+    /** As soon as Livewire has received the files (from <input type=file> or from a paste), save them. */
     public function updatedImages(): void
     {
         $this->imageError = null;
@@ -230,7 +230,7 @@ class IngredientModal extends Component
                 $attachment = ImageStore::store($todo, $file);
                 $saved++;
 
-                // Descrizione AI per la ricerca: dopo la risposta, così l'upload resta veloce
+                // AI description for the search: after the answer, so the upload stays fast
                 if (ImageDescription::enabled()) {
                     dispatch(fn () => ImageDescription::describe($attachment->fresh()))->afterResponse();
                 }
@@ -260,9 +260,9 @@ class IngredientModal extends Component
         $this->dispatch('toast', message: __('griglia::t.msg.image_deleted'), type: 'info');
     }
 
-    // ----- Domande dell'assistente -----
+    // ----- Questions of the assistant -----
 
-    /** Risposte in bozza, indicizzate per id domanda. */
+    /** Draft answers, indexed by question id. */
     public array $answers = [];
 
     public function saveAnswer(int $questionId): void
@@ -291,7 +291,7 @@ class IngredientModal extends Component
         $this->saveAnswer($questionId);
     }
 
-    /** Ultimo passo: tutte le domande hanno risposta → l'elemento torna "open to work". */
+    /** Last step: every question has an answer → the item goes back to "open to work". */
     public function resumeWork(): void
     {
         if (! ($todo = $this->editable())) {
@@ -310,7 +310,7 @@ class IngredientModal extends Component
         $this->dispatch('toast', message: __('griglia::t.msg.restarted', ['title' => $todo->title]));
     }
 
-    /** «Riprendi» dal modale: la logica (posizione, scoping) sta in TodoList::resume. */
+    /** «Resume» from the modal: the logic (position, scoping) lives in TodoList::resume. */
     public function resumeTodo(): void
     {
         if (! ($todo = $this->todo())) {
@@ -320,7 +320,7 @@ class IngredientModal extends Component
         $this->dispatch('resume-todo', todoId: $todo->id);
     }
 
-    // ----- Comandi nella testata -----
+    // ----- Commands in the header -----
 
     /**
      * Ids of the active tasks of the list, in the order they are shown: the modal walks them with the
@@ -509,7 +509,7 @@ class IngredientModal extends Component
         }
     }
 
-    // ----- Titolo -----
+    // ----- Title -----
 
     public function editTitle(): void
     {
@@ -522,8 +522,8 @@ class IngredientModal extends Component
     }
 
     /**
-     * «Annulla»: rimette il titolo com'era quando la modifica è cominciata.
-     * Il campo resta aperto — è un passo indietro, non una chiusura (task 438).
+     * «Undo»: puts the title back as it was when the edit started.
+     * The field stays open — it is a step back, not a close (task 438).
      */
     public function revertTitle(): void
     {
@@ -540,15 +540,15 @@ class IngredientModal extends Component
         $this->dispatch('toast', message: __('griglia::t.msg.reverted'));
     }
 
-    /** Salvataggio live: la bozza arriva dal campo (wire:model.live) a ogni pausa nella digitazione. */
+    /** Live save: the draft comes from the field (wire:model.live) at every pause in the typing. */
     public function updatedTitleDraft(): void
     {
         $this->autosaveTitle();
     }
 
     /**
-     * Persiste la bozza del titolo senza chiudere la modifica e senza toast (sarebbe uno a ogni pausa):
-     * la spia «salvato» accanto al campo basta. Restituisce false se non c'era niente da salvare.
+     * Persist the title draft without closing the edit and without a toast (there would be one per pause):
+     * the «saved» light next to the field is enough. Returns false when there was nothing to save.
      */
     protected function autosaveTitle(): bool
     {
@@ -569,15 +569,15 @@ class IngredientModal extends Component
         }
 
         $todo->update(['title' => $title]);
-        $this->dispatch('ingredients-updated'); // la lista mostra il nuovo titolo
-        $this->dispatch('griglia-autosaved'); // spia «salvato» accanto al campo
+        $this->dispatch('ingredients-updated'); // the list shows the new title
+        $this->dispatch('griglia-autosaved'); // the «saved» light next to the field
 
         return true;
     }
 
     /**
-     * Chiude la modifica del titolo senza bottoni: Invio, Esc o un clic fuori dal campo (task 438).
-     * Quello che c'è scritto è già salvato.
+     * Close the title edit without buttons: Enter, Esc or a click outside the field (task 438).
+     * What is written is already saved.
      */
     public function finishTitle(): void
     {
@@ -589,14 +589,14 @@ class IngredientModal extends Component
         $title = trim($this->titleDraft);
 
         if ($title === '' || mb_strlen($title) > TodoList::titleMax()) {
-            return; // titolo non valido: si resta in modifica, l'avviso l'ha già dato l'autosalvataggio
+            return; // invalid title: stay in edit mode, the autosave already warned about it
         }
 
         $this->titleDraft = null;
         $this->titleOriginal = null;
     }
 
-    // ----- Nota -----
+    // ----- Note -----
 
     public function editNotes(): void
     {
@@ -609,8 +609,8 @@ class IngredientModal extends Component
     }
 
     /**
-     * «Annulla»: rimette la nota com'era quando la modifica è cominciata.
-     * L'editor resta aperto — è un passo indietro, non una chiusura (task 438).
+     * «Undo»: puts the note back as it was when the edit started.
+     * The editor stays open — it is a step back, not a close (task 438).
      */
     public function revertNotes(): void
     {
@@ -628,13 +628,13 @@ class IngredientModal extends Component
         $this->dispatch('toast', message: __('griglia::t.msg.reverted'));
     }
 
-    /** Salvataggio live: la bozza arriva dall'editor (wire:model.live) a ogni pausa nella digitazione. */
+    /** Live save: the draft comes from the editor (wire:model.live) at every pause in the typing. */
     public function updatedNotesDraft(): void
     {
         $this->autosaveNotes();
     }
 
-    /** Persiste la bozza della nota senza chiudere l'editor e senza toast. */
+    /** Persist the note draft without closing the editor and without a toast. */
     protected function autosaveNotes(): bool
     {
         if (! ($todo = $this->editable()) || $this->notesDraft === null) {
@@ -651,14 +651,14 @@ class IngredientModal extends Component
         $todo->notes = $notes;
         $todo->save();
         $this->dispatch('ingredients-updated');
-        $this->dispatch('griglia-autosaved'); // spia «salvato» accanto all'editor
+        $this->dispatch('griglia-autosaved'); // the «saved» light next to the editor
 
         return true;
     }
 
     /**
-     * Chiude l'editor della nota senza bottoni: Esc o un clic fuori (task 438). Quello che c'è
-     * scritto è già salvato.
+     * Close the note editor without buttons: Esc or a click outside (task 438). What is written
+     * is already saved.
      */
     public function finishNotes(): void
     {
@@ -692,7 +692,7 @@ class IngredientModal extends Component
         $this->dispatch('ingredients-updated');
     }
 
-    // ----- Rinomina ingrediente -----
+    // ----- Rename an ingredient -----
 
     public function editIngredient(int $ingredientId): void
     {
@@ -746,7 +746,7 @@ class IngredientModal extends Component
         $this->dispatch('toast', message: __('griglia::t.msg.subtask_added'));
     }
 
-    /** @param array<int, int|string> $orderedIds Id dei sotto-task nell'ordine mostrato dopo il drag. */
+    /** @param array<int, int|string> $orderedIds Ids of the sub-tasks in the order shown after the drag. */
     public function reorderIngredients(array $orderedIds): void
     {
         if (! $this->editable()) {
@@ -789,13 +789,13 @@ class IngredientModal extends Component
         return view('griglia::livewire.ingredient-modal', $this->viewData() + ['t' => Themes::get(Themes::default())]);
     }
 
-    /** Le skill che l'agente assegnato a questo task può davvero invocare (task 375). */
+    /** The skills the agent assigned to this task can actually invoke (task 375). */
     protected function skillCatalogue(Todo $todo): array
     {
         return Skills::forAgent(Agent::effective($todo));
     }
 
-    /** Dati comuni a tutte le viste del modale (base e stili dedicati). */
+    /** Data shared by every view of the modal (base one and dedicated styles). */
     protected function viewData(): array
     {
         $todo = $this->todo();

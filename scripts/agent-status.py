@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
 """
-Raccoglie piano e finestre di utilizzo degli agenti CLI sul server e le manda alla board (/agents) con
-`griglia:agent-status-import`. Le credenziali restano qui: alla board arrivano solo percentuali e orari di reset.
+Collect the plan and the usage windows of the CLI agents on this server and send them to the board (/agents) with
+`griglia:agent-status-import`. The credentials stay here: only percentages and reset times reach the board.
 
-Agenti:
+Agents:
   - Claude Code: ~/.claude/.credentials.json (claudeAiOauth) → GET https://api.anthropic.com/api/oauth/usage
-    (five_hour / seven_day: utilization %, resets_at; extra_usage). Piano da subscriptionType/rateLimitTier.
-  - Codex CLI: ultimo evento `token_count.rate_limits` nei rollout locali (nessuna credenziale esce dall'host).
+    (five_hour / seven_day: utilization %, resets_at; extra_usage). Plan from subscriptionType/rateLimitTier.
+  - Codex CLI: latest `token_count.rate_limits` event in the local rollouts (no credential leaves the host).
 
-Uso:  scripts/agent-status.py            # raccoglie e importa nel container
-      scripts/agent-status.py --print    # stampa solo il JSON
-Cron: */5 * * * * /path/to/laravel-dev/scripts/agent-status.py -q
+Usage:  scripts/agent-status.py            # collect and import into the container
+        scripts/agent-status.py --print    # only print the JSON
+Cron:   */5 * * * * /path/to/laravel-dev/scripts/agent-status.py -q
 """
 import glob, json, os, subprocess, sys, urllib.request
 from datetime import datetime, timezone
 
 HOME = os.path.expanduser('~')
 CONTAINER = os.environ.get('GRIGLIA_CONTAINER', 'laravel-dev-app')
-# Trasporto di Artisan: 'docker' (default, `docker exec <container>`) oppure 'local' (PHP sull'host, niente Docker)
+# Artisan transport: 'docker' (default, `docker exec <container>`) or 'local' (PHP on the host, no Docker)
 TRANSPORT = os.environ.get('GRIGLIA_TRANSPORT', 'docker')
 
 
 def project_root():
-    """La root del progetto che usa la board: $GRIGLIA_PROJECT_ROOT, altrimenti la cartella che contiene questi
-    script (<progetto>/scripts) oppure — lanciando lo script da vendor/alle80/griglia/scripts — quella che
-    contiene `vendor`. Serve come working directory quando Artisan gira in locale."""
+    """Root of the project using the board: $GRIGLIA_PROJECT_ROOT, otherwise the directory holding these scripts
+    (<project>/scripts) or — when the script is run from vendor/alle80/griglia/scripts — the one holding `vendor`.
+    Used as the working directory when Artisan runs locally."""
     env = os.environ.get('GRIGLIA_PROJECT_ROOT')
     if env:
         return os.path.abspath(os.path.expanduser(env))
@@ -36,7 +36,7 @@ def project_root():
 
 
 def artisan_command(*args):
-    """`php artisan …` via `docker exec` oppure, con GRIGLIA_TRANSPORT=local, con GRIGLIA_PHP sull'host."""
+    """`php artisan …` through `docker exec` or, with GRIGLIA_TRANSPORT=local, with GRIGLIA_PHP on the host."""
     if TRANSPORT == 'local':
         return [os.environ.get('GRIGLIA_PHP', 'php'), 'artisan', *args]
     return ['docker', 'exec', '-i', '-u', os.environ.get('GRIGLIA_USER', 'www-data'), CONTAINER, 'php', 'artisan', *args]
@@ -74,7 +74,8 @@ def claude():
     except Exception as e:  # noqa: BLE001
         agent['error'] = f'usage endpoint: {e}'
         return agent
-    for key, label in (('five_hour', '5 ore'), ('seven_day', '7 giorni'), ('seven_day_opus', '7 giorni · Opus'), ('seven_day_sonnet', '7 giorni · Sonnet')):
+    # Labels are a fallback: the board translates the known window keys (griglia::t.agents.window.*)
+    for key, label in (('five_hour', '5 hours'), ('seven_day', '7 days'), ('seven_day_opus', '7 days · Opus'), ('seven_day_sonnet', '7 days · Sonnet')):
         w = body.get(key)
         if not isinstance(w, dict):
             continue
@@ -111,13 +112,13 @@ def codex():
     plan = str(limits.get('plan_type') or '').lower()
     agent['plan'] = PLAN_LABELS.get(plan, plan.capitalize()) or None
     agent['plan_kind'] = plan or None
-    for key, label in (('secondary', '5 ore'), ('primary', '7 giorni')):
+    for key, label in (('secondary', '5 hours'), ('primary', '7 days')):
         window = limits.get(key)
         if not isinstance(window, dict):
             continue
         minutes = window.get('window_minutes')
-        if minutes == 300: label = '5 ore'
-        elif minutes == 10080: label = '7 giorni'
+        if minutes == 300: label = '5 hours'
+        elif minutes == 10080: label = '7 days'
         reset = window.get('resets_at')
         agent['windows'].append({'key': key, 'label': label, 'utilization': window.get('used_percent'),
                                  'resets_at': datetime.fromtimestamp(reset, timezone.utc).isoformat() if isinstance(reset, (int, float)) else None})

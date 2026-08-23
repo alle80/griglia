@@ -10,11 +10,11 @@ use Laravel\Ai\Promptable;
 use Stringable;
 
 /**
- * Descrive un'immagine allegata a un todo per renderla ricercabile a testo libero.
+ * Describes an image attached to a todo to make it searchable by free text.
  *
- * Provider e modello NON sono fissati qui: arrivano da config('ai.image_description')
- * (env AI_IMAGE_PROVIDERS / AI_IMAGE_MODEL) e in mancanza dal provider di default
- * dell'SDK, col modello più economico del provider. Vedi Alle80\Griglia\Support\ImageDescription.
+ * Provider and model are NOT fixed here: they come from config('ai.image_description')
+ * (env AI_IMAGE_PROVIDERS / AI_IMAGE_MODEL) and, failing that, from the SDK's default
+ * provider, with the cheapest model of that provider. See Alle80\Griglia\Support\ImageDescription.
  */
 #[UseCheapestModel]
 #[MaxTokens(300)]

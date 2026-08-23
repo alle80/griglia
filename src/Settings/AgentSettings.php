@@ -11,46 +11,46 @@ use Spatie\LaravelSettings\Settings;
  */
 class AgentSettings extends Settings
 {
-    /** Commit automatico alla chiusura di ogni task. */
+    /** Commit automatically when each task is closed. */
     public bool $commit_after_task;
 
-    /** Push su GitHub dopo il commit automatico (se spento: commit sì, push solo su richiesta). */
+    /** Push to GitHub after the automatic commit (when off: commit yes, push only on request). */
     public bool $push_after_commit;
 
     /** Question level (task 499): autonomous | essential | ask | many | paranoid — rules in Support\QuestionLevel. */
     public string $autonomy;
 
-    /** Notifica push sul telefono quando chiude un task. */
+    /** Push notification on the phone when it closes a task. */
     public bool $notify_on_done;
 
-    /** Notifica push sul telefono quando pone una domanda ❓. */
+    /** Push notification on the phone when it asks a question ❓. */
     public bool $notify_on_question;
 
-    /** Prima di chiudere: screenshot mobile+desktop e test Livewire automatici. */
+    /** Before closing: mobile+desktop screenshots and automatic Livewire tests. */
     public bool $verify_before_close;
 
-    /** 'short' = commento 🤖 essenziale; 'detailed' = con dettagli tecnici e come provare. */
+    /** 'short' = essential 🤖 comment; 'detailed' = with technical details and how to try it. */
     public string $comment_detail;
 
-    /** Tono e leggibilità delle risposte rivolte all'utente. */
+    /** Tone and readability of the answers addressed to the user. */
     public string $response_tone;
 
-    /** Lunghezza desiderata delle risposte rivolte all'utente. */
+    /** Desired length of the answers addressed to the user. */
     public string $response_length;
 
-    /** 'main' = commit diretti su main; 'branch_pr' = branch per task + Pull Request su GitHub. */
+    /** 'main' = commits straight on main; 'branch_pr' = one branch per task + a Pull Request on GitHub. */
     public string $git_flow;
 
-    /** Riepilogo serale via push (cosa è stato chiuso in giornata). */
+    /** Evening summary by push (what was closed during the day). */
     public bool $daily_summary;
 
-    /** Ora del riepilogo serale (HH:MM). */
+    /** Time of the evening summary (HH:MM). */
     public string $daily_summary_time;
 
-    /** Alla chiusura di un task spunta automaticamente tutti i sotto-task. */
+    /** When a task is closed, tick every sub-task automatically. */
     public bool $check_subtasks_on_done;
 
-    /** 'ordered' = un task alla volta, in ordine; 'multitasking' = più task in parallelo (con cautela). */
+    /** 'ordered' = one task at a time, in order; 'multitasking' = several tasks in parallel (with care). */
     public string $task_mode;
 
     public static function group(): string
@@ -58,10 +58,6 @@ class AgentSettings extends Settings
         return 'agent';
     }
 
-    /**
-     * Definizione dei campi per la pagina impostazioni e per sviluppo:check.
-     * chiave => [label, help, type (bool|select|int|time), options (per select: valore => etichetta)]
-     */
     /**
      * Fields for the settings page and griglia:check.
      * key => [label, help, type (bool|select|int|text|time), options (select: value => label)]

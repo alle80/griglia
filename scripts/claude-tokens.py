@@ -1,31 +1,31 @@
 #!/usr/bin/env python3
 """
-Conta i token REALI spesi da Claude Code in questa sessione a partire da un istante
-(tipicamente il `working_since` di un task della lista sviluppo), leggendo il transcript
-JSONL che Claude Code scrive in ~/.claude/projects/<progetto>/<session>.jsonl
-(ogni messaggio dell'assistente porta il blocco `usage` dell'API).
+Count the REAL tokens Claude Code spent in this session from a given instant on
+(typically the `working_since` of a task in the sviluppo list), by reading the JSONL
+transcript Claude Code writes to ~/.claude/projects/<project>/<session>.jsonl
+(every assistant message carries the API `usage` block).
 
-Uso (dal host, dove vive il transcript):
+Usage (from the host, where the transcript lives):
   scripts/claude-tokens.py --since 2026-08-19T08:12:00+02:00          # in=… out=…
-  scripts/claude-tokens.py --todo 180 --args                          # legge working_since dal DB via artisan
-      → stampa "--tokens-in=N --tokens-out=N", da incollare in `griglia:check --done=… --tokens-in… --tokens-out…`
-  scripts/claude-tokens.py --context                                  # quanto pesa ORA il contesto della sessione
+  scripts/claude-tokens.py --todo 180 --args                          # reads working_since from the DB via artisan
+      → prints "--tokens-in=N --tokens-out=N", to paste into `griglia:check --done=… --tokens-in… --tokens-out…`
+  scripts/claude-tokens.py --context                                  # how heavy the session context is RIGHT NOW
 
-Il contesto viene riletto a ogni turno: quando diventa pesante ogni singolo passo costa di più. Con
---warn-at=N (migliaia di token, default 400; 0 = mai) lo script stampa su STDERR un promemoria da girare
-all'utente — /clear lo può lanciare solo lui.
+The context is re-read every turn: once it gets heavy, every single step costs more. With
+--warn-at=N (thousands of tokens, default 400; 0 = never) the script prints a reminder on STDERR to pass on
+to the user — only they can run /clear.
 
-Token "in" = input_tokens + cache_creation_input_tokens + cache_read_input_tokens (tutto ciò che il modello
-ha letto); "out" = output_tokens. I record duplicati dello stesso messaggio (stesso `message.id`) contano una volta.
+Token "in" = input_tokens + cache_creation_input_tokens + cache_read_input_tokens (everything the model
+read); "out" = output_tokens. Duplicate records of the same message (same `message.id`) count once.
 """
 import argparse, glob, json, os, subprocess, sys
 from datetime import datetime, timezone
 
 
 def project_root():
-    """La root del progetto che usa la board: $GRIGLIA_PROJECT_ROOT, altrimenti la cartella che contiene questi
-    script (<progetto>/scripts, dove li mette `vendor:publish --tag=griglia-scripts`) oppure — se si lancia lo
-    script direttamente da vendor/alle80/griglia/scripts — la cartella che contiene `vendor`."""
+    """Root of the project using the board: $GRIGLIA_PROJECT_ROOT, otherwise the directory holding these scripts
+    (<project>/scripts, where `vendor:publish --tag=griglia-scripts` puts them) or — when the script is run straight
+    from vendor/alle80/griglia/scripts — the directory holding `vendor`."""
     env = os.environ.get('GRIGLIA_PROJECT_ROOT')
     if env:
         return os.path.abspath(os.path.expanduser(env))
@@ -38,12 +38,12 @@ def project_root():
 
 REPO = project_root()
 CONTAINER = os.environ.get('GRIGLIA_CONTAINER', 'laravel-dev-app')
-# Trasporto di Artisan: 'docker' (default, `docker exec <container>`) oppure 'local' (PHP sull'host, niente Docker)
+# Artisan transport: 'docker' (default, `docker exec <container>`) or 'local' (PHP on the host, no Docker)
 TRANSPORT = os.environ.get('GRIGLIA_TRANSPORT', 'docker')
 
 
 def artisan_command(*args):
-    """`php artisan …` via `docker exec` oppure, con GRIGLIA_TRANSPORT=local, con GRIGLIA_PHP sull'host."""
+    """`php artisan …` through `docker exec` or, with GRIGLIA_TRANSPORT=local, with GRIGLIA_PHP on the host."""
     if TRANSPORT == 'local':
         return [os.environ.get('GRIGLIA_PHP', 'php'), 'artisan', *args]
     return ['docker', 'exec', CONTAINER, 'php', 'artisan', *args]
@@ -54,7 +54,7 @@ PROJECT_DIR = os.path.expanduser('~/.claude/projects/' + os.environ.get('CLAUDE_
 
 
 def transcript_path(a) -> str:
-    """Il transcript da leggere: quello indicato con --session, altrimenti il più recente del progetto."""
+    """The transcript to read: the one given with --session, otherwise the most recent one of the project."""
     if a.agent == 'codex':
         files = sorted(glob.glob(os.path.expanduser('~/.codex/sessions/**/rollout-*.jsonl'), recursive=True), key=os.path.getmtime)
     else:
@@ -111,7 +111,7 @@ def codex_usage(since: datetime):
 
 
 def context_size(path: str, agent: str) -> int:
-    """Quanto pesa ora il contesto: l'input dell'ultimo turno (prompt + cache riletta)."""
+    """How heavy the context is now: the input of the last turn (prompt + re-read cache)."""
     last = 0
     with open(path, encoding='utf-8') as fh:
         for line in fh:
@@ -140,8 +140,8 @@ def warn_if_heavy(path: str, agent: str, warn_at_k: int) -> None:
         return
     size = context_size(path, agent)
     if size >= warn_at_k * 1000:
-        print(f'⚠ contesto ~{round(size / 1000)}k token (soglia {warn_at_k}k): dì all\'utente di lanciare /clear '
-              f'prima del prossimo task — il contesto si rilegge a ogni turno.', file=sys.stderr)
+        print(f'⚠ context ~{round(size / 1000)}k tokens (threshold {warn_at_k}k): tell the user to run /clear '
+              f'before the next task — the context is re-read every turn.', file=sys.stderr)
 
 
 def main() -> None:
@@ -151,8 +151,8 @@ def main() -> None:
     ap.add_argument('--session', help='session id (default: the transcript most recently modified)')
     ap.add_argument('--args', action='store_true', help='print as griglia:check options (--tokens-in=N --tokens-out=N)')
     ap.add_argument('--agent', choices=['claude', 'codex'], default=os.environ.get('GRIGLIA_AGENT', 'claude'), help='which agent wrote the transcript (default claude; codex = ~/.codex/sessions rollouts)')
-    ap.add_argument('--context', action='store_true', help='stampa quanto pesa ORA il contesto della sessione (ultimo turno)')
-    ap.add_argument('--warn-at', type=int, default=int(os.environ.get('GRIGLIA_CLEAR_REMINDER_K', 400)), help='migliaia di token oltre le quali ricordare /clear su stderr (0 = mai)')
+    ap.add_argument('--context', action='store_true', help='print how heavy the session context is RIGHT NOW (last turn)')
+    ap.add_argument('--warn-at', type=int, default=int(os.environ.get('GRIGLIA_CLEAR_REMINDER_K', 400)), help='thousands of tokens above which the /clear reminder is printed on stderr (0 = never)')
     a = ap.parse_args()
     if not a.since and not a.todo and not a.context:
         ap.error('--since, --todo or --context is required')

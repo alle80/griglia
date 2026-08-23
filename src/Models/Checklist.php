@@ -48,20 +48,20 @@ class Checklist extends Model
         return $this->belongsTo(config('griglia.user_model', 'App\\Models\\User'));
     }
 
-    /** Solo le liste dell'utente autenticato, archivio escluso. */
+    /** Only the authenticated user's lists, archive excluded. */
     public static function mine(): Builder
     {
         return static::mineWithArchived()->whereNull('archived_at');
     }
 
-    /** Le liste dell'utente, archivio compreso (per la vista archivio e i ripristini). */
+    /** The user's lists, archive included (for the archive view and the restores). */
     public static function mineWithArchived(): Builder
     {
         // Local mode: one global set of lists (no users); server mode: the logged-in user's lists
         return Mode::isLocal() ? static::query() : static::where('user_id', auth()->id());
     }
 
-    /** Solo l'archivio dell'utente. */
+    /** Only the user's archive. */
     public static function mineArchived(): Builder
     {
         return static::mineWithArchived()->whereNotNull('archived_at');
@@ -72,7 +72,7 @@ class Checklist extends Model
         return $this->archived_at !== null;
     }
 
-    /** Id della lista corrente dell'utente (dalla sessione, con fallback alla prima sua lista). */
+    /** Id of the user's current list (from the session, falling back to their first list). */
     public static function currentId(): int
     {
         $id = session('checklist_id');
@@ -89,7 +89,7 @@ class Checklist extends Model
         return $first->id;
     }
 
-    /** Nome della prima lista di un utente: la config `griglia.default_list_name`, se vuota la traduzione. */
+    /** Name of a user's first list: the `griglia.default_list_name` config, or the translation when empty. */
     public static function defaultName(): string
     {
         $configured = trim((string) config('griglia.default_list_name', ''));

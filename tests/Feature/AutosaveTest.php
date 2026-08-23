@@ -10,10 +10,10 @@ use Alle80\Griglia\Tests\TestCase;
 use Livewire\Livewire;
 
 /**
- * Salvataggio live (task 433): titolo e nota si salvano da soli mentre si scrive, senza
- * schiacciare «Salva». Dal task 438 i bottoni «Salva» e «Annulla» non ci sono più: la modifica si
- * chiude e basta (finish*), e il passo indietro (revert*) rimette la versione di partenza senza
- * chiudere il campo.
+ * Live save (task 433): title and note save by themselves while you type, without
+ * hitting «Save». Since task 438 the «Save» and «Undo» buttons are gone: the edit just
+ * closes (finish*), and the step back (revert*) puts the starting version back without
+ * closing the field.
  */
 class AutosaveTest extends TestCase
 {
@@ -51,7 +51,7 @@ class AutosaveTest extends TestCase
         $m->assertDispatched('griglia-autosaved');
         $m->assertDontSee(__('griglia::t.autosaved'));
 
-        // La chiusura non salva niente di nuovo: quello che c'è nel campo è già salvato.
+        // Closing saves nothing new: what is in the field is already saved.
         $m->call('finishNotes')->call('finishTitle');
         $this->assertNull($m->get('notesDraft'));
         $this->assertNull($m->get('titleDraft'));
@@ -78,7 +78,7 @@ class AutosaveTest extends TestCase
         $m = Livewire::test(IngredientModal::class)->call('openFor', $this->todo->id);
 
         $m->call('editTitle')->set('titleDraft', 'Oops');
-        $m->assertSee(__('griglia::t.revert'), false); // il passo indietro compare solo se il testo è cambiato
+        $m->assertSee(__('griglia::t.revert'), false); // the step back only appears when the text changed
         $m->call('revertTitle');
         $this->assertSame('Task', $this->todo->fresh()->title);
         $this->assertSame('Task', $m->get('titleDraft'), 'the field stays open, on the old value');

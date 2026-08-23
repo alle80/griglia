@@ -19,10 +19,10 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 
 /**
- * Pagina /settings: impostazioni (spatie/laravel-settings), due gruppi:
- * «agent» = come lavora Claude (le legge da sviluppo:check), «app» = comportamento della board.
- * Ogni modifica salva subito. La pagina si veste con lo stile della lista da cui si arriva
- * (RememberStyle → Styles::settingsSkin), così «tutto è in stile».
+ * /settings page: settings (spatie/laravel-settings), two groups:
+ * «agent» = how the agent works (it reads them from griglia:check), «app» = behaviour of the board.
+ * Every change saves right away. The page dresses itself with the style of the list you come from
+ * (RememberStyle → Styles::settingsSkin), so «everything is in style».
  */
 class SettingsPage extends Component
 {
@@ -31,7 +31,7 @@ class SettingsPage extends Component
     /** Theme pack (zip) being uploaded. */
     public $themeZip = null;
 
-    /** Valori correnti: gruppo => [chiave => valore]. */
+    /** Current values: group => [key => value]. */
     public array $values = ['agent' => [], 'optimization' => [], 'app' => []];
 
     protected function groups(): array
@@ -68,7 +68,7 @@ class SettingsPage extends Component
         $this->dispatch('toast', message: __($settings->{$key} ? 'griglia::t.msg.setting_on' : 'griglia::t.msg.setting_off', ['label' => $field[0]]), type: $settings->{$key} ? 'success' : 'info');
     }
 
-    /** Salvataggio di select/int/text/time (wire:change). */
+    /** Save a select/int/text/time field (wire:change). */
     public function updatedValues($value, string $path): void
     {
         [$group, $key] = explode('.', $path, 2);
@@ -108,12 +108,12 @@ class SettingsPage extends Component
                 $settings->{$key} = trim((string) $value);
                 break;
             default:
-                return; // i bool passano da toggle()
+                return; // the bools go through toggle()
         }
 
         $settings->save();
         Mode::reset();
-        Locale::apply(); // cambiando lingua la pagina si ridisegna già tradotta
+        Locale::apply(); // when the language changes the page redraws itself already translated
         $this->values[$group][$key] = $settings->{$key};
         if ($group === 'agent' && $key === 'autonomy') {
             // The question level also lives in the agent context as a managed block (task 499)

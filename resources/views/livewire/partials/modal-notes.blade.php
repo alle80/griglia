@@ -11,7 +11,7 @@
 @php($label = $label ?? __('griglia::t.note'))
 <div class="{{ $boxClass }}">
     @if ($readonly)
-        {{-- Elemento completato: la nota si legge soltanto --}}
+            {{-- Completed item: the note is read-only --}}
         <span class="{{ $labelClass }}">{{ $label }}</span>
         @if ($todo->notes)
             <div class="{{ $textClass }} db-prose break-words">{!! \Alle80\Griglia\Support\Markdown::render($todo->notes) !!}</div>
@@ -43,7 +43,7 @@
         </form>
     @else
         <div class="flex items-start justify-between gap-3">
-            {{-- Tap/click sulla nota (o sul segnaposto) apre la modifica --}}
+            {{-- Tap/click on the note (or on the placeholder) opens the edit --}}
             <button
                 type="button"
                 wire:click="editNotes"
@@ -52,7 +52,7 @@
              aria-label="{{ __('griglia::t.note_tap') }}">
                 <span class="{{ $labelClass }}">{{ $label }}</span>
                 @if ($todo->notes)
-                    {{-- whitespace-pre-wrap + break-words: la nota si legge tutta, a capo compresi --}}
+                    {{-- whitespace-pre-wrap + break-words: the whole note is readable, line breaks included --}}
                     <div class="{{ $textClass }} db-prose break-words">{!! \Alle80\Griglia\Support\Markdown::render($todo->notes) !!}</div>
                 @else
                     <p class="{{ $textClass }} italic opacity-50">{{ __('griglia::t.note_empty') }}</p>
@@ -67,7 +67,7 @@
         </div>
     @endif
 
-    {{-- Commento dell'assistente (risposta a una richiesta): sola lettura, distinto dalla nota --}}
+    {{-- Comment of the assistant (answer to a request): read-only, distinct from the note --}}
     @if ($todo->claude_comment)
         <div class="mt-3 border-t-2 border-dashed border-current/30 pt-2">
             <span class="{{ $labelClass }} inline-flex items-center gap-1"><x-griglia::icon name="bot" /> {{ __('griglia::t.agent_box', ['agent' => \Alle80\Griglia\Agent::name()]) }}</span>
@@ -75,7 +75,7 @@
         </div>
     @endif
 
-    {{-- Statistiche del task: tempo di lavoro dell'agente (intervalli 🔧) + token riportati --}}
+    {{-- Statistics of the task: working time of the agent (🔧 intervals) + reported tokens --}}
     @if ($todo->hasStats())
         <dl class="db-stats mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t-2 border-dashed border-current/30 pt-2 text-xs opacity-80" title="{{ __('griglia::t.stats_hint') }}">
             <dt class="{{ $labelClass }} inline-flex items-center gap-1 text-xs"><x-griglia::icon name="chart" /> {{ __('griglia::t.stats') }}</dt>

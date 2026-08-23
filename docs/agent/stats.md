@@ -24,6 +24,10 @@ exhausted/over the limit). Data come from a snapshot imported with:
 php artisan griglia:agent-status-import --file=snapshot.json   # {updated_at, agents:[{key,name,plan,windows:[…]}]}
 ```
 
+Each window carries a `key` and a `label`. When the key is one the board knows (`five_hour`, `seven_day`,
+`seven_day_opus`, `seven_day_sonnet`, `primary`, `secondary`) the label shown is the translated one, so the page
+speaks the board's language; any other key falls back to the label in the snapshot.
+
 The package ships `scripts/agent-status.py` for Claude Code and Codex CLI: it reads Claude OAuth usage and Codex local rollout telemetry **on the host** and
 sends only percentages (cron every 5 minutes). Same for the tokens of a task: `scripts/claude-tokens.py --todo=ID
 --args`. See [the scripts](scripts.md).

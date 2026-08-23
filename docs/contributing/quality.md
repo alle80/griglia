@@ -117,7 +117,9 @@ proxy for.
 - **PHP**: Laravel Pint, the `laravel` preset, no local overrides. `composer format` fixes; CI only checks.
 - **Comments explain why**, in English, and are worth the line: this codebase prefers one paragraph that
   explains a trap to five lines that restate the code.
-- **English in the repository**, Italian only in the documentation site's `.it.md` pages.
+- **English in the repository**, Italian only in the documentation site's `.it.md` pages. A test walks the
+  comments of `src/`, `scripts/`, the views and the stylesheets looking for Italian words and fails on the
+  first one (`QualityStandardsTest`).
 - **Commits** in English with a conventional prefix (`feat:`, `fix:`, `docs:`, `chore:`, `ci:`,
   `refactor:`), one logical change per branch.
 - **No agent name in a string**: the board is agent-neutral, and `:agent` is the placeholder.

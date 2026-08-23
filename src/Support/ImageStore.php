@@ -10,15 +10,15 @@ use Illuminate\Support\Str;
 use RuntimeException;
 
 /**
- * Salva un'immagine caricata come allegato di un todo, ridimensionandola
- * con GD entro MAX_SIDE px (le foto da smartphone sono enormi) e
- * ricodificandola: così si normalizza il formato e si scartano metadati EXIF.
+ * Store an image uploaded as the attachment of a todo, resizing it
+ * with GD within MAX_SIDE px (smartphone photos are huge) and
+ * re-encoding it: that normalizes the format and drops the EXIF metadata.
  */
 class ImageStore
 {
     public const MAX_SIDE = 1600;
 
-    // Niente WebP: la GD del container non lo decodifica
+    // No WebP: the container's GD cannot decode it
     public const ALLOWED = ['image/jpeg', 'image/png', 'image/gif'];
 
     public static function store(Todo $todo, UploadedFile $file): Attachment
@@ -58,7 +58,7 @@ class ImageStore
     /** @return array{0:string,1:string,2:int,3:int,4:string} [bytes, ext, width, height, mime] */
     private static function process(string $realPath, string $mime): array
     {
-        // Le GIF (potenzialmente animate) passano intatte
+        // GIFs (potentially animated) go through untouched
         if ($mime === 'image/gif') {
             [$w, $h] = getimagesize($realPath);
 
@@ -74,7 +74,7 @@ class ImageStore
             throw new RuntimeException('Immagine non leggibile');
         }
 
-        // Le foto da telefono arrivano ruotate via EXIF: raddrizziamo prima di ridimensionare
+        // Phone photos arrive rotated through EXIF: straighten before resizing
         if ($mime === 'image/jpeg' && function_exists('exif_read_data')) {
             $exif = @exif_read_data($realPath);
             $src = match ($exif['Orientation'] ?? 1) {
@@ -101,7 +101,7 @@ class ImageStore
             [$w, $h] = [$nw, $nh];
         }
 
-        // PNG resta PNG (trasparenza), tutto il resto diventa JPEG di qualità 85
+        // PNG stays PNG (transparency), everything else becomes JPEG at quality 85
         ob_start();
         if ($mime === 'image/png') {
             imagepng($src, null, 6);

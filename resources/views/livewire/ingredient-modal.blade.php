@@ -4,7 +4,7 @@
             class="modal-shell fixed inset-0 z-50 flex items-center justify-center p-4"
             x-data
             x-on:keydown.escape.window="$wire.close()"
-            {{-- Frecce ← → : task precedente/successivo, ma non mentre si scrive (task 365) --}}
+            {{-- ← → arrows: previous/next task, but not while typing (task 365) --}}
             x-on:keydown.window.arrow-left="if (! $event.target.closest('input, textarea, select, [contenteditable]') && ! $event.metaKey && ! $event.ctrlKey && ! $event.altKey) { $event.preventDefault(); $wire.goSibling(-1) }"
             x-on:keydown.window.arrow-right="if (! $event.target.closest('input, textarea, select, [contenteditable]') && ! $event.metaKey && ! $event.ctrlKey && ! $event.altKey) { $event.preventDefault(); $wire.goSibling(1) }"
         >
@@ -14,7 +14,7 @@
             {{-- Pannello --}}
             <div class="tl-card tl-modal modal-panel relative w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl">
 
-                {{-- Testata: comandi/badge + chiudi (il titolo sta nel corpo, prima di «Task») --}}
+                {{-- Header: commands/badge + close (the title lives in the body, before «Task») --}}
                 <div class="modal-head tl-modal-head flex items-center gap-3 px-5 py-3">
                     @include('griglia::livewire.partials.modal-actions')
                     <button
@@ -42,7 +42,7 @@
 
                     @include('griglia::livewire.partials.modal-review')
 
-                    {{-- Domande dell'assistente (in cima: se ci sono, sono la prima cosa da vedere) --}}
+                    {{-- Questions of the assistant (on top: when there are any, they are the first thing to see) --}}
                     @include('griglia::livewire.partials.modal-questions', [
                         'boxClass' => 'tl-card relative px-4 py-3',
                         'labelClass' => 'tl-display tl-accent',
@@ -68,7 +68,7 @@
                         'cancelClass' => 'tl-check tl-display cursor-pointer px-3 py-1 active:translate-y-px',
                     ])
 
-                    {{-- Skills dell'agente per questo task (sotto al «prompt») --}}
+                    {{-- Skills of the agent for this task (below the «prompt») --}}
                     @include('griglia::livewire.partials.modal-skills', [
                         'boxClass' => 'tl-card relative px-4 py-3',
                         'labelClass' => 'tl-display tl-accent mr-1',

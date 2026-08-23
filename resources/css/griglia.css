@@ -9,49 +9,49 @@
  */
 [x-cloak] { display: none !important; }
 
-/* ==================== Accessibilità e touch (Web Interface Guidelines) ==================== */
-/* Molti controlli usano focus:outline-none per estetica: qui il sostituto visibile, solo da tastiera */
+/* ==================== Accessibility and touch (Web Interface Guidelines) ==================== */
+/* Many controls use focus:outline-none for looks: here is the visible replacement, keyboard only */
 :focus-visible { outline: 3px solid var(--tl-accent, #2563eb); outline-offset: 2px; border-radius: 4px; }
 button, [role="button"], a, input, textarea, select, summary, label { touch-action: manipulation; }
 body { -webkit-tap-highlight-color: transparent; }
-/* Lo scroll dentro modali e menu non deve trascinare la pagina sotto */
+/* Scrolling inside modals and menus must not drag the page underneath */
 .modal-body, details > div { overscroll-behavior: contain; }
-/* Notch e barre di sistema */
+/* Notch and system bars */
 .modal-panel { padding-bottom: env(safe-area-inset-bottom); }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
-/* Open to work: pallino verde acceso, sempre visibile */
+/* Open to work: bright green dot, always visible */
 .otw-on { opacity: 1; filter: drop-shadow(0 0 4px rgb(34 197 94 / 0.8)); }
 
-/* ==================== Righe della lista: due livelli, a ogni larghezza ==================== */
-/* Nata sul telefono e poi estesa a tutti i formati (task 328): la riga è
-   [maniglia · numero · check · … · azioni] sopra e titolo + badge a tutta larghezza sotto.
-   Su una riga sola il titolo restava schiacciato fra i comandi e i badge, con un buco in mezzo. */
+/* ==================== List rows: two levels, at every width ==================== */
+/* Born on the phone and then extended to every format (task 328): the row is
+   [handle · number · check · … · actions] on top and title + badge full width below.
+   On a single row the title was squeezed between commands and badges, with a hole in the middle. */
 .todo-row { flex-wrap: wrap; row-gap: 0.35rem; }
 .todo-row > .todo-title { order: 10; flex-basis: 100%; min-width: 0; }
 .todo-row > .todo-title > button { flex-wrap: wrap; row-gap: 0.25rem; }
-/* le azioni restano sulla prima riga, allineate a destra: tutto ciò che sta tra check e azioni si sposta */
+/* the actions stay on the first row, right aligned: everything between check and actions moves */
 .todo-row > .todo-action { margin-left: 0; }
 .todo-row > .todo-title ~ .todo-action:first-of-type,
 .todo-row > .todo-title + * { margin-left: auto; }
-/* il timbro (DAJE, K.O.!, GROG…) sulla riga a due livelli si sovrapporrebbe: in alto a destra, più piccolo */
+/* the stamp (DAJE, K.O.!, GROG…) would overlap on the two-level row: top right, smaller */
 .todo-row > [aria-hidden="true"][class*="stamp"],
 .todo-row > .hanko,
 .todo-row > .jac-slurp { top: 0.35rem; right: 4.5rem; transform: translateY(0) rotate(-12deg) scale(0.8); }
 
-/* Vista a card: ogni wrapper resta un singolo elemento Sortable e la card occupa tutta l'altezza. */
+/* Card view: every wrapper stays a single Sortable element and the card takes the full height. */
 .todo-grid > [data-todo-id] { display: flex; min-width: 0; flex-direction: column; }
 .todo-grid > [data-todo-id] > .todo-row { flex: 1 1 auto; align-content: flex-start; }
 .todo-grid > [data-todo-id] > div:first-child { flex: 0 0 auto; }
 .todo-grid > [wire\:key="gap-end"] { grid-column: 1 / -1; }
 
-/* Pagine a tutta larghezza (task 622): il contenitore condiviso riempie la finestra fino a un tetto leggibile
-   di 1920px e resta centrato (mx-auto). Sulla board, in vista card, le colonne non si fermano
-   a tre — da 1200px di finestra in su si moltiplicano da sole tenendo fissa la larghezza della card
-   (--tl-card-w, come le tre colonne di prima). Il pannello a scomparsa incornicia la stessa pagina in un
-   iframe stretto: lì la media query non scatta e restano le colonne di Tailwind. */
+/* Full-width pages (task 622): the shared container fills the window up to a readable ceiling
+   of 1920px and stays centred (mx-auto). On the board, in card view, the columns do not stop
+   at three — from a 1200px window up they multiply by themselves keeping the card width fixed
+   (--tl-card-w, like the three columns before). The slide-out panel frames the same page in a
+   narrow iframe: there the media query does not fire and Tailwind's columns stay. */
 .tl-page-wide { max-width: var(--tl-page-max, 120rem); --tl-card-w: 22rem; }
 @media (min-width: 1024px) {
     .tl-page-wide { padding-left: 1.5rem; padding-right: 1.5rem; }
@@ -60,48 +60,48 @@ body { -webkit-tap-highlight-color: transparent; }
     .tl-page-wide .todo-grid { grid-template-columns: repeat(auto-fill, minmax(var(--tl-card-w, 22rem), 1fr)); }
 }
 
-/* ==================== Layout mobile condiviso (< 640px) ==================== */
+/* ==================== Shared mobile layout (< 640px) ==================== */
 @media (max-width: 639px) {
-    /* target touch più generosi */
+    /* roomier touch targets */
     .todo-row > .todo-action { padding: 0.25rem 0.4rem; opacity: 0.55; }
 
-    /* Modale a tutto schermo (sopra i menu fissi) con contenuto scrollabile */
+    /* Full-screen modal (above the fixed menus) with scrollable content */
     .modal-shell { align-items: stretch !important; padding: 0 !important; z-index: 70 !important; }
-    /* height: 100% (non 100dvh): con la tastiera aperta il pannello segue .modal-shell, che è
-       fixed inset-0 sul layout viewport già ridimensionato (viewport interactive-widget=resizes-content).
-       Con 100dvh alcuni browser non ricalcolano in tempo e la testata finisce fuori schermo. */
+    /* height: 100% (not 100dvh): with the keyboard open the panel follows .modal-shell, which is
+       fixed inset-0 on the already resized layout viewport (viewport interactive-widget=resizes-content).
+       With 100dvh some browsers do not recompute in time and the header ends up off screen. */
     .modal-panel { max-width: none !important; width: 100% !important; height: 100%; max-height: 100%; display: flex; flex-direction: column; border-radius: 0 !important; transform: none !important; border-width: 0 !important; overflow: hidden; }
     .modal-body { max-height: none !important; flex: 1 1 auto; overflow-y: auto; overflow-x: hidden; padding-left: 0.9rem !important; padding-right: 0.9rem !important; }
     .modal-body [class*="rotate-"] { transform: none !important; }
     .modal-head { position: sticky; top: 0; z-index: 2; flex: 0 0 auto; padding-left: 0.9rem !important; padding-right: 0.9rem !important; }
     .modal-head h2 { font-size: 1.15rem !important; line-height: 1.2; }
-    /* Testata del modale su telefono (task 399): in fila ci stavano solo i primi comandi, il resto
-       (agente, sposta, archivia, elimina, chiudi) finiva fuori schermo. Tre righe: sopra lo stato con
-       ‹ 3/7 › e la X, poi la tendina dell'agente (task 440) e infine gli altri comandi, bersagli da 36px. */
+    /* Modal header on the phone (task 399): only the first commands fitted in a row, the rest
+       (agent, move, archive, delete, close) ended up off screen. Three rows: the state with
+       ‹ 3/7 › and the X on top, then the agent dropdown (task 440) and finally the other commands, 36px targets. */
     .modal-head { flex-wrap: wrap; row-gap: 0.4rem !important; column-gap: 0.5rem !important; }
     .modal-cmds { display: contents; }
-    /* La prima riga è tutta di «nav» + X: la base di «nav» vale la larghezza meno la X, così la targhetta
-       dell'id (task 510) non ci sta mai e va a capo — senza, «In lavorazione | ‹ 2/4 › | id:551» spingeva la X
-       su una seconda riga. Se il contenuto è più largo della base (telefoni da 320px) vince il contenuto e la X
-       va a capo come prima. */
+    /* The first row is all «nav» + X: the basis of «nav» is the width minus the X, so the id
+       badge (task 510) never fits and wraps — without it, «Working | ‹ 2/4 › | id:551» pushed the X
+       onto a second row. When the content is wider than the basis (320px phones) the content wins and the X
+       wraps as before. */
     .modal-cmds-nav { order: 1; margin-right: auto; flex-basis: calc(100% - 3.25rem); }
     .modal-head > .modal-close { order: 2; }
-    /* Ultima riga: targhetta dell'id a sinistra (senza il separatore «|»), comandi a destra. */
+    /* Last row: id badge on the left (without the «|» separator), commands on the right. */
     .modal-cmds-id { order: 4; }
     .modal-cmds-id .db-sep { display: none; }
     .modal-cmds-tools { order: 5; flex: 1 1 auto; justify-content: flex-end; gap: 0.15rem; }
     .modal-head .db-cmd { min-width: 2.25rem; min-height: 2.25rem; padding: 6px; }
-    /* decorazioni sporgenti (fiammelle, salami, sigilli) fuori dal pannello a schermo intero */
+    /* decorations sticking out (flames, salami, seals) outside the full-screen panel */
     .modal-panel > .pointer-events-none.absolute { display: none; }
 }
 
-/* Sfondo a retino (halftone) da manga: puntini a china nera */
+/* Manga halftone background: black ink dots */
 .halftone {
     background-image: radial-gradient(circle, rgb(0 0 0 / 0.08) 1.3px, transparent 1.3px);
     background-size: 11px 11px;
 }
 
-/* Linee cinetiche radiali (集中線): dense ai bordi, vuote al centro */
+/* Radial speed lines (集中線): dense at the edges, empty in the middle */
 .speed-lines {
     background: repeating-conic-gradient(
         from 0deg at 50% 50%,
@@ -112,7 +112,7 @@ body { -webkit-tap-highlight-color: transparent; }
     mask-image: radial-gradient(circle at 50% 50%, transparent 0 38%, #000 72%);
 }
 
-/* Balloon "esplosione" per le onomatopee (forma a stella) */
+/* «Explosion» balloon for the onomatopoeias (star shape) */
 .burst-wrap {
     display: inline-block;
     filter:
@@ -134,7 +134,7 @@ body { -webkit-tap-highlight-color: transparent; }
     );
 }
 
-/* Testo verticale in stile giapponese (縦書き), per i ゴゴゴ ai lati */
+/* Vertical Japanese-style text (縦書き), for the ゴゴゴ on the sides */
 .tategaki {
     writing-mode: vertical-rl;
     text-orientation: upright;
@@ -143,7 +143,7 @@ body { -webkit-tap-highlight-color: transparent; }
     user-select: none;
 }
 
-/* Timbro hanko rosso (判子) sui task completati */
+/* Red hanko stamp (判子) on completed tasks */
 .hanko {
     display: flex;
     align-items: center;
@@ -160,7 +160,7 @@ body { -webkit-tap-highlight-color: transparent; }
     mix-blend-mode: multiply;
 }
 
-/* Retino diagonale (screentone) sopra gli elementi completati */
+/* Diagonal screentone above the completed items */
 .screentone {
     background-image: repeating-linear-gradient(
         45deg,
@@ -169,9 +169,9 @@ body { -webkit-tap-highlight-color: transparent; }
     );
 }
 
-/* ==================== Sistema a temi (.tl-*) ==================== */
-/* Le rotte a stile (/monkey, /starwars, …) condividono le stesse viste;
-   ogni tema ridefinisce solo le variabili sulla propria classe .theme-X. */
+/* ==================== Theme system (.tl-*) ==================== */
+/* The style routes (/monkey, /starwars, …) share the same views;
+   every theme only redefines the variables on its own .theme-X class. */
 
 .tl-body {
     font-family: var(--tl-font, ui-sans-serif, system-ui, sans-serif);
@@ -247,8 +247,8 @@ body { -webkit-tap-highlight-color: transparent; }
 }
 
 .tl-done { opacity: 0.55; filter: var(--tl-done-filter, none); }
-/* I comandi partivano gia' attenuati e dentro una riga completata l'opacita' si moltiplicava
-   (0.55 x 0.30): su temi scuri archivio, riprendi ed elimina diventavano quasi invisibili. */
+/* The commands already started dimmed and inside a completed row the opacity multiplied
+   (0.55 x 0.30): on dark themes archive, resume and delete became almost invisible. */
 .tl-done > .todo-action {
     color: var(--tl-done-action, #e5e7eb);
     opacity: 0.9;
@@ -276,11 +276,11 @@ body { -webkit-tap-highlight-color: transparent; }
     background: var(--tl-head, transparent);
 }
 
-/* ---------- Pannelli con scroll proprio (desktop) ----------
-   Da lg le tabelle lunghe (storico, panoramica) scorrono dentro la loro card invece di
-   allungare la pagina; l'intestazione resta appesa in alto. Sotto lg scorre la pagina. */
+/* ---------- Panels with their own scroll (desktop) ----------
+   From lg the long tables (history, overview) scroll inside their card instead of
+   stretching the page; the header stays pinned on top. Below lg the page scrolls. */
 @media (min-width: 1024px) {
-    /* Altezza unica per i pannelli scrollabili: le colonne affiancate finiscono alla stessa quota. */
+    /* One height for the scrollable panels: side-by-side columns end at the same level. */
     :root { --db-panel-h: min(62vh, 38rem); }
     .db-panel-scroll { max-height: var(--db-panel-h); overflow-y: auto; }
     .db-sticky-head th {
@@ -289,18 +289,18 @@ body { -webkit-tap-highlight-color: transparent; }
     }
 }
 
-/* Da xl la panoramica divide la colonna col grafico: si accorcia per finire alla stessa quota
-   della tabella storico affiancata (niente colonna destra più lunga della sinistra). */
+/* From xl the overview shares the column with the chart: it gets shorter to end at the same level
+   as the history table next to it (no right column longer than the left one). */
 @media (min-width: 1280px) {
     .db-panel-overview { max-height: calc(var(--db-panel-h) - 12.5rem); }
 }
 
-/* Le ancore interne non devono finire sotto la barra fissa in alto. */
+/* Internal anchors must not end up under the fixed top bar. */
 html { scroll-padding-top: 6rem; }
 
-/* ---------- Chrome (barra in alto, pulsanti, menu a tendina) ----------
-   Selettore lista e notifiche stanno su OGNI pagina: prendono carta, bordo, raggio e font
-   dal tema corrente invece di avere un look proprio. I temi possono ritoccarli con
+/* ---------- Chrome (top bar, buttons, dropdown menus) ----------
+   List switcher and notifications are on EVERY page: they take paper, border, radius and font
+   from the current theme instead of having a look of their own. Themes can tweak them with
    --tl-chrome-bg / --tl-chrome-hover / --tl-menu-bg. */
 
 .tl-chrome { font-family: var(--tl-font, ui-sans-serif, system-ui, sans-serif); top: max(0.75rem, env(safe-area-inset-top)); }
@@ -348,7 +348,7 @@ details[open] > .tl-btn .tl-caret { transform: rotate(180deg); }
 .tl-menu-item.is-current { background: color-mix(in srgb, var(--tl-accent, #16a34a) 26%, transparent); }
 .tl-menu-sep { border-top: 1px solid color-mix(in srgb, var(--tl-bcol, #000) 55%, transparent); }
 
-/* Avanzamento di una lista: hairline sotto il nome nel menu e sotto il titolo in header. */
+/* Progress of a list: hairline under the name in the menu and under the title in the header. */
 .tl-meter { height: 3px; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, var(--tl-fg, #111) 16%, transparent); }
 .tl-meter > span { display: block; height: 100%; background: var(--tl-accent, #16a34a); transition: width .3s ease; }
 
@@ -369,8 +369,8 @@ details[open] > .tl-btn .tl-caret { transform: rotate(180deg); }
     --tl-done-filter: grayscale(1) brightness(0.8);
 }
 
-/* ---------- Pagina impostazioni (/settings): interruttori e campi ----------
-   I colori arrivano da CSS variables impostate per stile (Styles::settingsSkin → 'vars'). */
+/* ---------- Settings page (/settings): switches and fields ----------
+   The colours come from CSS variables set per style (Styles::settingsSkin → 'vars'). */
 .setting-switch {
     position: relative;
     display: inline-flex;
@@ -484,31 +484,31 @@ select.setting-input { appearance: auto; }
     opacity: .8; transition: opacity .15s ease, transform .15s ease, color .15s ease;
 }
 .db-cmd:hover { opacity: 1; transform: scale(1.15); }
-/* Testata del modale (task 421): la barra dei comandi prende tutta la larghezza disponibile e si divide
-   in due — stato e navigazione ‹ 3/7 › sul bordo sinistro, comandi e chiusura sul destro — invece di
-   ammassare tutto a destra lasciando vuota mezza riga. Su telefono vince .modal-cmds { display: contents }. */
+/* Modal header (task 421): the command bar takes all the available width and splits
+   in two — state and ‹ 3/7 › navigation on the left edge, commands and close on the right — instead of
+   piling everything on the right leaving half a row empty. On the phone .modal-cmds { display: contents } wins. */
 .modal-cmds { flex: 1 1 auto; justify-content: space-between; }
-/* La targhetta dell'id (task 510) sta accanto a ‹ 3/7 ›, non al centro della barra: il suo margine automatico
-   prende tutto lo spazio libero e spinge «tools» a destra. */
+/* The id badge (task 510) sits next to ‹ 3/7 ›, not in the middle of the bar: its automatic margin
+   takes all the free space and pushes «tools» to the right. */
 .modal-cmds-id { margin-right: auto; }
 .db-state-trigger { gap: 0.4rem; }
 
-/* La tendina dell'agente ha una riga tutta sua sotto i comandi, allineata a sinistra (task 440): stretta
-   fra le icone l'etichetta finiva tagliata, sul telefono soprattutto. La testata va quindi a capo. */
+/* The agent dropdown has a row of its own under the commands, left aligned (task 440): squeezed
+   between the icons the label ended up cut, on the phone above all. So the header wraps. */
 .modal-head { flex-wrap: wrap; }
 .modal-cmds-agent { order: 3; flex-basis: 100%; justify-content: flex-start; }
 .modal-cmds-agent .db-agent-select { max-width: 100%; }
 
-/* La tendina dell'agente ha etichette lunghe («Predefinito (Claude Code)»): tronca, non sfonda la testata */
+/* The agent dropdown has long labels («Default (Claude Code)»): truncate, do not break the header */
 .db-agent-select { max-width: 12rem; text-overflow: ellipsis; }
 
 .db-agent-select:hover { transform: none; }
-/* Nella riga la tendina fa da targhetta: niente freccia di sistema, larghezza da chip, nome dell'agente sempre visibile
-   (anche quando il task eredita quello della lista). Le option tornano ai colori di sistema, altrimenti su temi scuri
-   il menu a tendina resta testo chiaro su fondo chiaro. */
+/* In the row the dropdown acts as a badge: no system arrow, chip width, agent name always visible
+   (even when the task inherits the list's one). The options go back to the system colours, otherwise on dark
+   themes the dropdown menu stays light text on a light background. */
 .db-agent-chip { appearance: none; -webkit-appearance: none; letter-spacing: .04em; }
 .db-agent-chip:hover { opacity: 1; }
-/* Sotto il titolo la targhetta ha la riga tutta per sé: può respirare senza spingere via i comandi (task 427). */
+/* Under the title the badge has a whole row for itself: it can breathe without pushing the commands away (task 427). */
 .db-agent-row { line-height: 1; }
 .db-agent-row .db-agent-chip {
     field-sizing: content;
@@ -518,10 +518,10 @@ select.setting-input { appearance: auto; }
 }
 .db-agent-select option { color: CanvasText; background: Canvas; text-transform: none; }
 
-/* Id del task (task 510): lo stesso «id:N» che l'agente stampa in griglia:check, ultima targhetta della riga del titolo
-   (a destra) e nella testata del modale accanto a ‹ 3/7 › (sul telefono in testa alla riga dei comandi, .modal-cmds-id).
-   Un tocco copia il numero (copy.js, data-copy) e per
-   un attimo la targhetta dice «copiato». Il bersaglio del dito è più largo di quel che si vede (::before). */
+/* Task id (task 510): the same «id:N» the agent prints in griglia:check, last badge of the title row
+   (on the right) and in the modal header next to ‹ 3/7 › (on the phone at the start of the command row, .modal-cmds-id).
+   A tap copies the number (copy.js, data-copy) and for
+   a moment the badge says «copied». The finger target is wider than what you see (::before). */
 .db-id {
     position: relative; display: inline-flex; align-items: center;
     font-size: .72rem; font-weight: 500; line-height: 1; letter-spacing: .02em; text-transform: none;
@@ -555,8 +555,8 @@ select.setting-input { appearance: auto; }
     .db-status-filter select { line-height: 1.25rem; }
 }
 
-/* Il nome dello stato resta accanto all'icona anche sul telefono: il colore da solo non deve costringere
-   a ricordare la legenda, soprattutto per waiting/open to work e per gli stati dell'agente (task 508). */
+/* The state name stays next to the icon on the phone too: colour alone must not force you
+   to remember the legend, above all for waiting/open to work and for the agent states (task 508). */
 .db-state-name { display: inline; font-size: 0.75rem; opacity: 0.7; white-space: nowrap; }
 @media (min-width: 768px) {
     .db-agent-select { max-width: 16rem; }
@@ -601,7 +601,7 @@ select.setting-input { appearance: auto; }
 .db-prose pre { margin: .6em 0; padding: .7em .9em; overflow-x: auto; border-radius: 6px; background: var(--tl-input, rgb(0 0 0 / .12)); }
 .db-prose pre code { padding: 0; background: none; }
 
-/* «Copia» sui blocchi di codice di note e commenti (task 367) */
+/* «Copy» on the code blocks of notes and comments (task 367) */
 .db-prose pre.db-copy-host { position: relative; padding-top: 1.9em; }
 .db-copy {
     position: absolute; top: .35em; right: .35em;
