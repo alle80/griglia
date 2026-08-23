@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.13] - 2026-08-23
+
+### Documentation
+- Made concise, simple, immediate and scannable writing a project-wide editorial rule, reviewed the complete
+  English/Italian documentation corpus against it, and removed repeated positioning and setup content from
+  the public home page. The generated agent context now carries the same rule for future changes.
+
 ## [0.89.12] - 2026-08-23
 
 ### Added

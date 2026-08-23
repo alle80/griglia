@@ -80,26 +80,6 @@ trasformare un obiettivo in un piano ordinato, notificarti quando serve una risp
 
 </div>
 
-## Perché usarla invece della sola sessione CLI?
-
-Una sessione nel terminale è efficace mentre uno sviluppatore la segue, ma lo stato del lavoro tende a
-essere locale e temporaneo. Griglia aggiunge un piano di controllo persistente attorno all.agente CLI senza sostituirlo:
-
-- le richieste hanno una coda e un'autorizzazione a partire;
-- domande, avanzamento e risultati restano collegati al task;
-- il lavoro può proseguire in nuove sessioni o worker persistenti;
-- un altro dispositivo o membro del team può capire lo stato senza leggere il transcript del terminale.
-
-L'agente continua a modificare codice, eseguire test e usare Git con i suoi normali strumenti CLI. Griglia coordina il lavoro intorno a quella sessione.
-
-## Cosa non è Griglia
-
-Griglia non è un modello di coding autonomo, un IDE, un'interfaccia chat o un servizio agentico in hosting. Non invia prompt all'API di un provider e non elimina la necessità di revisionare le modifiche. Tu porti l.agente e decidi come eseguirlo; Griglia fornisce il flusso di task condiviso.
-
-## Open source per scelta
-
-Griglia è distribuita con [licenza MIT](contributing/license.md). Board, protocollo per gli agenti, migrazioni e documentazione sono nel sorgente del package: un team può ispezionare il flusso, adattarlo alla propria applicazione Laravel e tenere i dati operativi sull'infrastruttura che controlla.
-
 ## Come funziona in un minuto
 
 1. Scrivi una richiesta nella **lista dell'agente** (di default si chiama `dev`), con note, sotto-task e
@@ -108,12 +88,6 @@ Griglia è distribuita con [licenza MIT](contributing/license.md). Board, protoc
    passa a **working** — fa **domande** quando la richiesta è ambigua, aggiorna percentuale e fase, e lo
    **chiude** con un commento.
 3. La board mostra tutto dal vivo, ti avvisa, e tiene le statistiche di quanto è costato.
-
-```bash
-composer require alle80/griglia -W
-php artisan migrate
-php artisan vendor:publish --tag=griglia-agents    # le regole per il tuo agente
-```
 
 [Comincia in cinque minuti](getting-started/quickstart.md){ .md-button .md-button--primary }
 [Guarda tutte le funzioni](features/index.md){ .md-button }

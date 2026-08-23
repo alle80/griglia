@@ -80,26 +80,6 @@ goal into an ordered plan, notify you when input is needed, and retain working t
 
 </div>
 
-## Why use it instead of a CLI session alone?
-
-A terminal session is effective while one developer is watching it, but its task state is usually local and
-temporary. Griglia adds a durable control plane around the CLI agent without replacing it:
-
-- requests have an explicit queue and permission to start;
-- questions, progress and results remain attached to the task;
-- work can continue through fresh sessions or persistent workers;
-- another device or team member can understand the current state without reading a terminal transcript.
-
-The agent still edits code, runs tests and uses Git through its normal CLI tools. Griglia coordinates the work around that session.
-
-## What Griglia is not
-
-Griglia is not an autonomous coding model, an IDE, a chat interface or a hosted agent service. It does not send prompts to a model provider and it does not remove the need to review changes. You bring the coding agent and decide how it runs; Griglia supplies the shared task workflow.
-
-## Open source by design
-
-Griglia is released under the [MIT license](contributing/license.md). The board, agent protocol, migrations and documentation are available in the package source, so teams can inspect the workflow, adapt it to their Laravel application and keep operational data on infrastructure they control.
-
 ## How it works in one minute
 
 1. You write a request in the **agent list** (default name `dev`), with notes, sub-tasks and screenshots,
@@ -108,12 +88,6 @@ Griglia is released under the [MIT license](contributing/license.md). The board,
    to **working** — asks **questions** when the request is ambiguous, updates progress and phase, and
    **closes** it with a comment.
 3. The board shows all of it live, notifies you, and keeps the statistics of what it cost.
-
-```bash
-composer require alle80/griglia -W
-php artisan migrate
-php artisan vendor:publish --tag=griglia-agents    # the rules for your agent
-```
 
 [Get started in five minutes](getting-started/quickstart.md){ .md-button .md-button--primary }
 [See every feature](features/index.md){ .md-button }
