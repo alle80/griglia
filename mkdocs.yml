@@ -102,6 +102,7 @@ plugins:
             AI features: Funzioni AI
             Configuration: Configurazione
             Access, administrators and modes: Accessi, amministratori e modalità
+            Extending Griglia: Estendere Griglia
             Reference: Reference
             Artisan commands: Comandi artisan
             Configuration file: File di configurazione
@@ -172,6 +173,7 @@ nav:
   - Configuration:
       - configuration/index.md
       - Access, administrators and modes: configuration/access.md
+      - Extending Griglia: configuration/extending.md
   - Reference:
       - Artisan commands: reference/commands.md
       - Configuration file: reference/config.md

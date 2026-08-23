@@ -93,3 +93,4 @@ Notifications — in-app bell, Web Push and mail, each switchable in Settings. S
 
 - [Installation](../getting-started/installation.md#live-updates-optional) — Reverb and the channel.
 - [Notifications](../features/notifications.md)
+- [Extending Griglia](../configuration/extending.md#react-to-a-change) — the other seams of the package.

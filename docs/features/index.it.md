@@ -33,6 +33,7 @@ Tutto quello che fa la board, in una pagina. Segui un link quando vuoi il dettag
 | **Notifiche** | Campanella in-app, Web Push sui tuoi dispositivi, mail — ognuna si accende e si spegne. [Notifiche](notifications.md) |
 | **Aggiornamenti dal vivo** | Un qualunque broadcaster di Laravel (Reverb, Pusher…); senza, la board funziona lo stesso. [Eventi](../reference/events.md) |
 | **Temi** | Un sistema di temi a variabili CSS, il tema Slate integrato e pacchetti zip installabili. [Temi](themes.md) |
+| **Punti di estensione** | Pubblica le viste o le stringhe, aggiungi una lingua, registra uno stile tuo, ascolta gli eventi. [Estendere Griglia](../configuration/extending.md) |
 | **AI, facoltativa** | Descrizione delle immagini per la ricerca, dettatura su ogni campo, il costruttore di piani. [Funzioni AI](ai.md) |
 | **Modalità** | `server` (login, liste per utente) oppure `local` (niente autenticazione, solo la tua macchina). [Accessi e modalità](../configuration/access.md) |
 | **Board a tutta larghezza** | Su uno schermo grande la board usa tutta la finestra (tetto a 1920px, centrata), con le colonne della griglia che si moltiplicano, più una linguetta a scomparsa che la apre dalle altre pagine. [Usare la board](../board/usage.md#desktop-la-board-a-tutta-larghezza) |

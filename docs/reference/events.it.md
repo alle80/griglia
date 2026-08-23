@@ -95,3 +95,4 @@ Notifications di Laravel — campanella in-app, Web Push e mail, ognuna accendib
 
 - [Installazione](../getting-started/installation.md#aggiornamenti-dal-vivo-facoltativo) — Reverb e il canale.
 - [Notifiche](../features/notifications.md)
+- [Estendere Griglia](../configuration/extending.md#reagire-a-un-cambiamento) — le altre giunture del package.

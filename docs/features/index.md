@@ -33,6 +33,7 @@ Everything the board does, in one page. Follow a link when you want the detail.
 | **Notifications** | In-app bell, Web Push on your devices, mail — each one switchable. [Notifications](notifications.md) |
 | **Live updates** | Any Laravel broadcaster (Reverb, Pusher…); without one the board still works. [Events](../reference/events.md) |
 | **Themes** | A theme system with CSS variables, the built-in Slate theme and installable zip packs. [Themes](themes.md) |
+| **Extension points** | Publish the views or the strings, add a language, register a style of your own, listen to the events. [Extending Griglia](../configuration/extending.md) |
 | **AI, optional** | Image descriptions for search, speech to text on every field, the plan builder. [AI features](ai.md) |
 | **Modes** | `server` (login, lists per user) or `local` (no auth, your machine only). [Access & modes](../configuration/access.md) |
 | **Full-width board** | On a big screen the board uses the whole window (capped at 1920px and centred), with grid columns that multiply, plus a slide-out tab that opens it from any other page. [Using the board](../board/usage.md#desktop-the-full-width-board) |

@@ -66,4 +66,5 @@ Generato dal codice, così non resta mai indietro:
 - [Impostazioni da fare](../reference/config-and-settings.md) — quello che di proposito non c'è ancora.
 
 Accessi, amministratori e modalità locale hanno una pagina tutta loro:
-[Accessi e modalità](access.md).
+[Accessi e modalità](access.md); le giunture in cui la tua applicazione può innestarsi — viste, stringhe, temi,
+stili, eventi — stanno in [Estendere Griglia](extending.md).

@@ -132,6 +132,7 @@ are in [front-end assets](docs/getting-started/assets.md).
 | [Using the board](docs/board/usage.md) | States, modal, filters, archive |
 | [The agent side](docs/agent/index.md) | The command contract, workers, statistics |
 | [Features](docs/features/index.md) | Plans, notifications, themes, AI |
+| [Extending Griglia](docs/configuration/extending.md) | Views, strings and languages, themes and styles, events, access hooks |
 | [FAQ](docs/faq.md) · [Glossary](docs/glossary.md) | Short answers, and the words used here |
 | [Upgrading](docs/operations/upgrading.md) · [Troubleshooting](docs/operations/troubleshooting.md) | When a version moves, and when something breaks |
 | [Changelog](CHANGELOG.md) | What changed, version by version |

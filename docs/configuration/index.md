@@ -65,4 +65,6 @@ Generated from the code, so it never lags behind:
 - [Settings](../reference/settings.md) — every option of the three groups, with the help text of the page.
 - [Settings backlog](../reference/config-and-settings.md) — what is deliberately not there yet.
 
-Access, administrators and the local mode have their own page: [Access & modes](access.md).
+Access, administrators and the local mode have their own page: [Access & modes](access.md); the seams your
+app can hook into — views, strings, themes, styles, events — are in
+[Extending Griglia](extending.md).

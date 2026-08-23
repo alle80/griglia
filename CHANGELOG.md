@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.16] - 2026-08-23
+
+### Added
+- **«Extending Griglia», the page the extension points never had** (`docs/configuration/extending.md`, EN+IT,
+  in the nav and in the README). One working example per seam: publishing the views
+  (`vendor:publish --tag=griglia-views`, which overrides the Blade components too, file by file), publishing
+  the strings, **adding a third board language** (`lang/vendor/griglia/<locale>/t.php` — the selector in
+  Settings picks it up by itself), generic themes, a **dedicated style** with its own Livewire component and
+  its `#[Layout]`, the **settings skin** (`Themes::registerStyle` / `registerSkin`), listening to
+  `TodoChanged`, the access hooks (`canAccessGriglia`, `canManageGriglia`, `GRIGLIA_USER_MODEL`) and taking
+  over the routes (`register_routes`).
+- `ExtensionPointsTest` runs those recipes instead of trusting them: a published view really does win over
+  the package one, a published translation merges **key by key** (what you leave out keeps following the
+  package), a brand new locale really does show up in `Locale::available()` and in the settings selector,
+  and a registered style really does get its route and its skin.
+
+### Changed
+- **The themes guide is a guide again**: the three ways to add a theme in one table, the full inventory of the
+  `--tl-*` variables grouped by what they paint, and a four-step walkthrough of the sample pack — which is now
+  linked (`resources/themes/pollon`) instead of merely mentioned, with its `theme.json` and `theme.css` shown.
+
 ## [0.89.15] - 2026-08-23
 
 ### Added
@@ -2153,7 +2174,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.15...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.16...HEAD
+[0.89.16]: https://github.com/alle80/griglia/compare/v0.89.15...v0.89.16
 [0.89.15]: https://github.com/alle80/griglia/compare/v0.89.14...v0.89.15
 [0.89.14]: https://github.com/alle80/griglia/compare/v0.89.13...v0.89.14
 [0.89.13]: https://github.com/alle80/griglia/compare/v0.89.12...v0.89.13
