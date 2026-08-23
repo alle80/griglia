@@ -91,3 +91,4 @@ goal into an ordered plan, notify you when input is needed, and retain working t
 
 [Get started in five minutes](getting-started/quickstart.md){ .md-button .md-button--primary }
 [See every feature](features/index.md){ .md-button }
+[Questions and words](faq.md){ .md-button }

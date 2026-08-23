@@ -45,3 +45,4 @@ Hai completato l'intero ciclo di una richiesta Griglia.
 - [Usare la board](../board/usage.md) - aggiungi note, sotto-task e immagini; poni domande; archivia il lavoro.
 - [Worker persistenti](../agent/workers.md) - lascia un agente in attesa di nuovo lavoro e richieste di stop.
 - [Configurazione e impostazioni](../configuration/index.md) - cambia nome della lista e comportamento dell'agente.
+- [Domande frequenti](../faq.md) · [Glossario](../glossary.md) - risposte brevi e le parole usate in questa documentazione.

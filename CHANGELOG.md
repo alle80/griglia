@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.17] - 2026-08-23
+
+### Added
+- **A glossary that finally explains «Ingredient»** (`docs/glossary.md`, EN+IT): the sub-task seen from the
+  code — the `Ingredient` model, the `ingredients` table, the `IngredientModal` component — plus a headword
+  for the **agent** and its key, and one for a **style** next to the theme it goes beyond. The seven states
+  are now a table with the same dot icons the board draws, instead of a sentence.
+- **Four questions the FAQ was missing** (`docs/faq.md`, EN+IT), grouped under *Before you install*, *Using
+  the board* and *Working with agents*: why the first `griglia:check` says there is nothing to do (the task
+  is still waiting, or it is outside the `agent_list`), whether the agent can keep working unattended
+  (persistent workers), how the board reaches you when it asks or finishes (bell, Web Push, mail and the
+  `notify_on_*` settings), and what it costs in tokens — plus the ⚡ optimization settings that lower it.
+- `FaqAndGlossaryTest`: both pages exist in both languages with the same questions, the glossary defines
+  every word the interface uses and shows every state icon, the two pages are in the nav and in the README,
+  and none of their links points at a file that is not there.
+
+### Changed
+- The FAQ, the glossary, the home page and the quickstart now point at each other, so the two reference
+  pages are reachable from where the questions actually come up.
+
 ## [0.89.16] - 2026-08-23
 
 ### Added
@@ -2174,7 +2194,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.16...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.17...HEAD
+[0.89.17]: https://github.com/alle80/griglia/compare/v0.89.16...v0.89.17
 [0.89.16]: https://github.com/alle80/griglia/compare/v0.89.15...v0.89.16
 [0.89.15]: https://github.com/alle80/griglia/compare/v0.89.14...v0.89.15
 [0.89.14]: https://github.com/alle80/griglia/compare/v0.89.13...v0.89.14

@@ -44,3 +44,4 @@ You have completed the full Griglia request lifecycle.
 - [Using the board](../board/usage.md) - add notes, sub-tasks and images; ask questions; archive completed work.
 - [Persistent workers](../agent/workers.md) - keep an agent waiting for new work and stop requests.
 - [Configuration & settings](../configuration/index.md) - change the agent-list name and agent behaviour.
+- [FAQ](../faq.md) · [Glossary](../glossary.md) - short answers, and the words this documentation uses.
