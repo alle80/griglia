@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.11] - 2026-08-23
+
+### Documentation
+- Completed a repository-wide audit for agent-only operational rules in the public documentation. The remaining
+  imperative wording in the English and Italian agent overview now describes command effects instead of
+  duplicating behaviour already enforced by the generated repository context.
+
 ## [0.89.10] - 2026-08-23
 
 ### Documentation
@@ -19,13 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   contract, AI optional and off by default) explicit before the code is written. The Contributing page in
   both languages and `CONTRIBUTING.md` describe the forms, and `IssueTemplatesTest` guards their structure,
   their labels and the checklist they share with the documentation.
-
-## [0.89.10] - 2026-08-23
-
-### Documentation
-- Completed a repository-wide audit for agent-only operational rules in the public documentation. The remaining
-  imperative wording in the English and Italian agent overview now describes command effects instead of
-  duplicating behaviour already enforced by the generated repository context.
 
 ## [0.89.9] - 2026-08-23
 

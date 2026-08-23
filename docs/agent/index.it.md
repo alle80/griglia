@@ -7,32 +7,32 @@ poi lascia che usi la board tramite Artisan.
 ## Lavorare su un task
 
 ```bash
-# 1. Trova il lavoro e leggi le regole correnti
+# 1. Elenca il lavoro disponibile
 php artisan griglia:check --agent=codex
 
-# 2. Prendi il task prima di analizzarlo
+# 2. Segna un task come in lavorazione
 php artisan griglia:check --agent=codex --take=42
 
-# 3. Tieni informata la board
+# 3. Registra l’avanzamento
 php artisan griglia:check --agent=codex --take=42 --progress=60 --phase="testando"
 
-# 4. Chiudilo con una risposta utile
+# 4. Segna il task come completato e salva il risultato
 php artisan griglia:check --agent=codex --done=42 --comment="Implementato e testato."
 ```
 
 Sostituisci `codex` con la chiave configurata per il tuo agente. `check` mostra soltanto i task disponibili e
-attivi di quell'agente, compresi quelli dei piani avviati. Stampa anche le regole di lavoro correnti: vanno
-seguite.
+attivi di quell’agente, compresi quelli dei piani avviati. Stampa anche le impostazioni che regolano il flusso
+dell’agente; le istruzioni generate del repository spiegano come applicarle.
 
-Se la richiesta non è chiara, fai una domanda dalla board invece di indovinare:
+Lo stesso comando può collegare una domanda al task:
 
 ```bash
 php artisan griglia:check --agent=codex --ask=42 \
   --q="Quale layout devo aggiornare?" --choices="Board|Impostazioni"
 ```
 
-L'utente risponde nel modale e riapre il task. Usa `--pause=42` soltanto per una pausa temporanea dal lato
-agente, per esempio quando raggiunge un limite di utilizzo.
+L’utente risponde nel modale e riapre il task. `--pause=42` registra una pausa temporanea dal lato agente,
+per esempio quando raggiunge un limite di utilizzo.
 
 Per lavorare senza supervisione, avvia un [worker persistente](workers.it.md). Per reagire direttamente agli
 eventi della board usa `griglia:watch --agent=codex`; aggiungi `--once` per il polling da cron.
