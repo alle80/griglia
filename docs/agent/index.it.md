@@ -39,6 +39,7 @@ eventi della board usa `griglia:watch --agent=codex`; aggiungi `--once` per il p
 
 ## Per approfondire
 
+- [Architettura](../architecture.it.md) — la macchina a stati che questi comandi muovono, e le tabelle sotto.
 - [Primi cinque minuti](../getting-started/quickstart.it.md) — completa il primo task passo per passo.
 - [Reference dei comandi Artisan](../reference/commands.it.md) — tutti i comandi e le opzioni, comprese review ed esiti.
 - [Contesto dell'agente](context.it.md) — genera e mantieni i file di istruzioni.

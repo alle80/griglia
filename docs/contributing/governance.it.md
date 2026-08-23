@@ -33,6 +33,8 @@ Il progetto insegue cinque obiettivi, in quest'ordine:
 | Aggiornamenti dal vivo, notifiche, piani, temi, impostazioni e sito di documentazione | Un servizio ospitato, un'istanza demo pubblica o la gestione degli account |
 | Gli script per l'host pubblicati con `vendor:publish --tag=griglia-scripts` | Tutto ciò che appartiene all'applicazione ospite: autenticazione, amministrazione degli utenti, layout |
 
+Cosa è previsto dentro quel perimetro, e cosa è stato escluso di proposito, sta nella [roadmap](../roadmap.it.md).
+
 Una richiesta fuori perimetro non è un fallimento: di solito è un punto di estensione, una responsabilità
 dell'applicazione ospite o un package separato. Il maintainer dice quale, nella issue.
 

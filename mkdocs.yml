@@ -103,6 +103,7 @@ plugins:
             Configuration: Configurazione
             Access, administrators and modes: Accessi, amministratori e modalità
             Extending Griglia: Estendere Griglia
+            Architecture: Architettura
             Reference: Reference
             Artisan commands: Comandi artisan
             Configuration file: File di configurazione
@@ -112,6 +113,7 @@ plugins:
             Settings backlog: Impostazioni da fare
             FAQ: Domande frequenti
             Glossary: Glossario
+            Roadmap: Roadmap
             Operations: Esercizio
             Security: Sicurezza
             'Security assessment (2026-08-21)': 'Valutazione di sicurezza (21-08-2026)'
@@ -145,7 +147,12 @@ markdown_extensions:
   - pymdownx.snippets:
       base_path: ['.']
       check_paths: true
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        # Material ships Mermaid: the state diagram in docs/architecture.md needs this fence.
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
 
@@ -174,6 +181,7 @@ nav:
       - configuration/index.md
       - Access, administrators and modes: configuration/access.md
       - Extending Griglia: configuration/extending.md
+  - Architecture: architecture.md
   - Reference:
       - Artisan commands: reference/commands.md
       - Configuration file: reference/config.md
@@ -182,6 +190,7 @@ nav:
       - Changelog: reference/changelog.md
   - FAQ: faq.md
   - Glossary: glossary.md
+  - Roadmap: roadmap.md
   - Operations:
       - Security: operations/security.md
       - Upgrading: operations/upgrading.md

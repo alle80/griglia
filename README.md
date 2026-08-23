@@ -133,6 +133,8 @@ are in [front-end assets](docs/getting-started/assets.md).
 | [The agent side](docs/agent/index.md) | The command contract, workers, statistics |
 | [Features](docs/features/index.md) | Plans, notifications, themes, AI |
 | [Extending Griglia](docs/configuration/extending.md) | Views, strings and languages, themes and styles, events, access hooks |
+| [Architecture](docs/architecture.md) | The task cycle, the tables, the seams — how the package is put together |
+| [Roadmap](docs/roadmap.md) | What is coming, and what is out of scope by choice |
 | [FAQ](docs/faq.md) · [Glossary](docs/glossary.md) | Short answers, and the words used here |
 | [Upgrading](docs/operations/upgrading.md) · [Troubleshooting](docs/operations/troubleshooting.md) | When a version moves, and when something breaks |
 | [Changelog](CHANGELOG.md) | What changed, version by version |

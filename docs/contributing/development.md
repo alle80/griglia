@@ -1,6 +1,7 @@
 # Development
 
-This guide is for contributors changing the package source. Work in a clone with PHP 8.3+ and Composer; Node
+This guide is for contributors changing the package source. [Architecture](../architecture.md) is the map of
+what you are about to change. Work in a clone with PHP 8.3+ and Composer; Node
 22 is needed only for front-end assets. Never point the test process at an application database.
 
 ## The repository

@@ -31,6 +31,8 @@ The project pursues five goals, in this order:
 | Live updates, notifications, plans, themes, settings and the docs site | A hosted service, a public demo instance or account management |
 | Host-side helper scripts published with `vendor:publish --tag=griglia-scripts` | Anything that belongs to the host application: authentication, user administration, layout |
 
+What is planned inside that scope, and what was ruled out on purpose, is on the [roadmap](../roadmap.md).
+
 Requests that fall outside the scope are not failures — they are usually a good extension point, a host-app
 concern, or a separate package. The maintainer says which one in the issue.
 

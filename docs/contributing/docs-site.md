@@ -59,6 +59,12 @@ The command runs `mkdocs build` (or the Docker image) from the package directory
 MkDocs is missing (with the install hint) or when the build fails (stderr), and prints where the HTML went.
 Equivalent without artisan: `mkdocs build` in the package root.
 
+## Diagrams
+
+A diagram is a ```` ```mermaid ```` fence (see [architecture](../architecture.md)): Material renders it in the
+browser, loading Mermaid from a CDN, and a reader without that CDN still sees the source of the diagram. Keep
+the source readable for exactly that reason, and keep a diagram to what a table cannot say.
+
 ## The whole loop, for an agent
 
 Working on the package, the documentation is part of the change — not an afterthought:

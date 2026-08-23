@@ -92,3 +92,4 @@ trasformare un obiettivo in un piano ordinato, notificarti quando serve una risp
 [Comincia in cinque minuti](getting-started/quickstart.md){ .md-button .md-button--primary }
 [Guarda tutte le funzioni](features/index.md){ .md-button }
 [Domande e parole](faq.md){ .md-button }
+[Dove sta andando](roadmap.md){ .md-button }

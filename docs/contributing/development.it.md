@@ -1,6 +1,7 @@
 # Sviluppo
 
-Questa guida è per chi modifica il sorgente del package. Lavorare in un clone con PHP 8.3+ e Composer; Node 22
+Questa guida è per chi modifica il sorgente del package. L'[architettura](../architecture.it.md) è la mappa di
+quello che stai per cambiare. Lavorare in un clone con PHP 8.3+ e Composer; Node 22
 serve solo per gli asset front-end. Non puntare mai i test al database di un'applicazione.
 
 ## Il repository

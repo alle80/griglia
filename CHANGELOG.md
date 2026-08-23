@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.18] - 2026-08-23
+
+### Added
+- **An architecture page** (`docs/architecture.md`, EN+IT): the task cycle as a Mermaid state diagram — every
+  arrow with the command that moves it, from `--take` to `--approve` — plus the tables behind it: what lives
+  in each directory of `src/`, which table holds what, which columns you write and which ones the agent
+  writes, the three chains (`depends_on_id`, `parent_id`, `review_of_id`), the middleware chain of a request,
+  the broadcast path, and the line between `config/griglia.php` and the settings in the database. It closes
+  with what is deliberately absent: no HTTP API, no machine tokens, no webhooks, no MCP.
+- **A roadmap** (`docs/roadmap.md`, EN+IT) in three parts and with no dates: what already works, what comes
+  next (quality gate, first contact, `griglia:install`, zero-config access, task history, stuck tasks and
+  `griglia:doctor`, export/import with a versioned `--json`, file and link attachments, keyboard shortcuts,
+  the road to 1.0), and what is out of scope by choice — teams, PM fields, HTTP API/webhooks/MCP, chat
+  channels, PWA and offline, a login of its own — each with the reason behind the decision.
+- Mermaid diagrams in the documentation site (`pymdownx.superfences` custom fence), documented for
+  contributors in *Building this site*.
+- `ArchitectureAndRoadmapTest`: the diagram draws every state and every command that moves it, the page names
+  every table the migrations really create and every directory of the source, the roadmap keeps its three
+  answers apart and says where each closed branch stands, both pages are in the nav and in the README, and
+  none of their links points at a file that is not there.
+
+### Changed
+- The home page, the agent side, the development guide and the governance page now point at the two new
+  pages, so «how is this put together?» and «where is it going?» are one click from where they are asked.
+
 ## [0.89.17] - 2026-08-23
 
 ### Added
@@ -2194,7 +2219,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.17...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.18...HEAD
+[0.89.18]: https://github.com/alle80/griglia/compare/v0.89.17...v0.89.18
 [0.89.17]: https://github.com/alle80/griglia/compare/v0.89.16...v0.89.17
 [0.89.16]: https://github.com/alle80/griglia/compare/v0.89.15...v0.89.16
 [0.89.15]: https://github.com/alle80/griglia/compare/v0.89.14...v0.89.15

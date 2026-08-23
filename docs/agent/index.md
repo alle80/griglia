@@ -39,6 +39,7 @@ For unattended operation, run a [persistent worker](workers.md). To react to boa
 
 ## More detail
 
+- [Architecture](../architecture.md) — the state machine these commands move, and the tables behind it.
 - [Quickstart](../getting-started/quickstart.md) — complete the first task step by step.
 - [Artisan command reference](../reference/commands.md) — all commands and options, including reviews and outcomes.
 - [Agent context](context.md) — generate and maintain the instruction files.

@@ -59,6 +59,13 @@ Il comando esegue `mkdocs build` (o l'immagine Docker) dalla cartella del packag
 quando MkDocs manca (con il suggerimento per installarlo) o quando la build fallisce (stderr), e stampa dove
 è finito l'HTML. L'equivalente senza artisan: `mkdocs build` nella radice del package.
 
+## Diagrammi
+
+Un diagramma è un blocco ```` ```mermaid ```` (vedi l'[architettura](../architecture.it.md)): Material lo
+disegna nel browser, caricando Mermaid da una CDN, e chi non ha quella CDN vede comunque il sorgente del
+diagramma. Proprio per questo il sorgente va tenuto leggibile — e un diagramma va usato solo per ciò che una
+tabella non sa dire.
+
 ## Tutto il giro, per un agente
 
 Quando si lavora al package, la documentazione fa parte della modifica — non è un ripensamento:
