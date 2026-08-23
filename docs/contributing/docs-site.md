@@ -84,6 +84,9 @@ Working on the package, the documentation is part of the change — not an after
 `griglia:docs-build --strict` builds **both languages**: a broken link in the Italian tree fails the build
 exactly like one in the English tree.
 
+The production build uses directory URLs (`features/`); the preview uses explicit HTML files
+(`features/index.html`). Custom template links must support both forms and never append `/` to `index`.
+
 ## Publishing
 
 `.github/workflows/docs.yml` builds the site (`mkdocs build --strict`) and deploys it to **GitHub Pages** at

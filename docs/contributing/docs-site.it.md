@@ -86,6 +86,10 @@ Quando si lavora al package, la documentazione fa parte della modifica â€” non Ã
 `griglia:docs-build --strict` compila **tutte e due le lingue**: un link rotto nell'albero italiano fa
 fallire la build esattamente come uno nell'albero inglese.
 
+La build di produzione usa URL di directory (`features/`); l'anteprima usa file HTML espliciti
+(`features/index.html`). I link nei template personalizzati devono gestire entrambe le forme e non aggiungere
+mai `/` a `index`.
+
 ## Pubblicazione
 
 `.github/workflows/docs.yml` compila il sito (`mkdocs build --strict`) e lo pubblica su **GitHub Pages** a

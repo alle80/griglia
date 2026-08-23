@@ -71,4 +71,15 @@ class DocsTranslationsTest extends TestCase
             'the plugin must be part of the documented toolchain'
         );
     }
+
+    public function test_the_home_documentation_link_uses_the_index_directory_on_github_pages(): void
+    {
+        $template = file_get_contents(realpath(__DIR__.'/../../overrides').'/home.html');
+
+        $this->assertStringContainsString(
+            "'features/' if config.use_directory_urls else 'features/index.html'",
+            $template
+        );
+        $this->assertStringNotContainsString("'features/index' ~ ext", $template);
+    }
 }

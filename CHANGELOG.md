@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.21] - 2026-08-23
+
+### Fixed
+- The homepage **Documentation** button now points to the feature index both on GitHub Pages (directory URLs)
+  and in the dev preview (explicit `.html` URLs), instead of producing the nonexistent `/features/index/`.
+
 ## [0.89.20] - 2026-08-23
 
 ### Fixed
@@ -2261,7 +2267,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.20...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.21...HEAD
+[0.89.21]: https://github.com/alle80/griglia/compare/v0.89.20...v0.89.21
 [0.89.20]: https://github.com/alle80/griglia/compare/v0.89.19...v0.89.20
 [0.89.19]: https://github.com/alle80/griglia/compare/v0.89.18...v0.89.19
 [0.89.18]: https://github.com/alle80/griglia/compare/v0.89.17...v0.89.18
