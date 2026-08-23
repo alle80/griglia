@@ -21,6 +21,13 @@ grande di cui nessuno ha parlato prima, di solito, aspetta.
 | Un buco nella documentazione, un refuso, una frase italiana migliore | Una pull request su `docs/` — stesse regole, senza i test |
 | Del tempo | Rispondi alla issue di qualcun altro, o conferma un bug sulla tua installazione |
 
+GitHub ti apre il modulo giusto: **New issue** propone una segnalazione di bug, un'idea, un problema di
+documentazione e una domanda, e ogni modulo chiede esattamente quello che descrivono le sezioni qui sotto. Le
+issue vuote sono disattivate: se nessuno dei quattro moduli calza, prendi il più vicino e scrivi nella prima
+riga di che cosa si tratta davvero. Le pull request arrivano precompilate con il
+[template](https://github.com/alle80/griglia/blob/master/.github/PULL_REQUEST_TEMPLATE.md): il problema, che
+cosa è cambiato, come l'hai provato e la checklist in fondo a questa pagina.
+
 La vulnerabilità è l'eccezione: mai una issue pubblica, mai una pull request che la descrive — segui la
 [politica di sicurezza](../operations/security.md).
 
@@ -53,6 +60,9 @@ package installato, oppure un test che fallisce su `main`. Se non riesci a ripro
 applicazione, scrivilo: una segnalazione con un onesto «succede solo da me» vale comunque la pena di essere
 aperta.
 
+Il modulo **Bug report** chiede questo elenco un campo alla volta: compilarlo dall'alto in basso è il modo più
+rapido di scrivere una segnalazione su cui nessuno debba tornare a fare domande.
+
 ## Proporre una modifica
 
 Descrivi prima il **problema**: che cosa stavi facendo, che cosa ti ha costretto a fare la board, quanto
@@ -66,6 +76,9 @@ Due vincoli decidono molte proposte prima ancora che si scriva il codice:
   stringhe visibili usano il segnaposto `:agent`, mai un nome di prodotto.
 - **Le funzioni AI sono facoltative e disattivate di default.** Il package non chiama da solo un fornitore di
   modelli.
+
+Il modulo **Idea or feature request** ti fa dichiarare l'area a cui appartiene la modifica e confermare questi
+due vincoli prima di inviarla: sono le domande che altrimenti ti tornerebbero indietro una settimana dopo.
 
 Se la tua modifica aggiunge un'impostazione, spiega perché quelle esistenti non bastano: la pagina delle
 impostazioni è una superficie che va documentata, tradotta e mantenuta funzionante per sempre.
@@ -151,7 +164,8 @@ Una voce sotto **Unreleased** in
 - **Apri la pull request** con: il problema, che cosa hai cambiato, come l'hai provato e `Closes #123` se
   esiste una issue. Screenshot (prima/dopo) per qualsiasi cosa visiva.
 
-Da controllare prima di premere il bottone:
+Da controllare prima di premere il bottone — è la stessa lista che il template della pull request ti dà già
+da spuntare:
 
 - [ ] `composer lint` è pulito
 - [ ] `composer test` è verde

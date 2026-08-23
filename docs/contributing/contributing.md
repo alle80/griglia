@@ -20,6 +20,13 @@ that nobody discussed first usually waits.
 | A documentation gap, a typo, a better Italian sentence | A pull request on `docs/` — the same rules, minus the tests |
 | Time | Answer somebody else's issue, or confirm a bug on your setup |
 
+GitHub opens the right form for you: **New issue** offers a bug report, an idea, a documentation problem and a
+question, and each form asks for exactly what the sections below describe. Blank issues are disabled — if none
+of the four fits, take the closest one and say in the first line what it really is. Pull requests arrive
+prefilled with the
+[template](https://github.com/alle80/griglia/blob/master/.github/PULL_REQUEST_TEMPLATE.md): the problem, what
+changed, how you tested it, and the checklist at the end of this page.
+
 A vulnerability is the exception: never a public issue, never a pull request that describes it — follow the
 [security policy](../operations/security.md).
 
@@ -50,6 +57,9 @@ The best report carries a **minimal reproduction**: a fresh Laravel application 
 or a failing test against `main`. If you cannot reproduce it outside your application, say so — a report with
 an honest "only happens on my setup" is still worth opening.
 
+The **Bug report** form asks for this list one field at a time, so filling it in from top to bottom is the
+fastest way to write a report nobody has to ask questions about.
+
 ## Proposing a change
 
 Describe the **problem** first: what you were doing, what the board made you do instead, how often. Then
@@ -61,6 +71,9 @@ Two constraints decide many proposals before the code is written:
   `griglia:watch`. Nothing may hardcode an agent, a model or a provider: user-visible strings use the
   `:agent` placeholder, never a product name.
 - **AI features are optional and off by default.** The package does not call a model provider on its own.
+
+The **Idea or feature request** form makes you name the area your change belongs to and confirm those two
+constraints before you send it: they are the questions that would otherwise come back to you a week later.
 
 If your change adds a setting, say why the existing ones cannot express it: the settings page is a surface
 that has to be documented, translated and kept working forever.
@@ -146,7 +159,7 @@ migration step if there is one.
 - **Open the pull request** with: the problem, what you changed, how you tested it, and `Closes #123` when an
   issue exists. Screenshots (before/after) for anything visual.
 
-Checklist before you press the button:
+Checklist before you press the button — it is the same one the pull request template gives you to tick:
 
 - [ ] `composer lint` is clean
 - [ ] `composer test` is green

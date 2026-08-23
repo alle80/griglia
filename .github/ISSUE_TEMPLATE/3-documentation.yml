@@ -1,0 +1,50 @@
+name: Documentation problem
+description: A page that is wrong, missing, out of date, or an Italian sentence that can be better.
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The documentation is bilingual: every English page has an Italian one. A typo or a better sentence does
+        not need an issue — a pull request on `docs/` is welcome, same rules, minus the tests.
+
+        The three reference pages (`docs/reference/commands.md`, `config.md`, `settings.md`) are **generated**
+        from the code by `griglia:docs-generate`: if one of them is wrong, the fix is in the command, the config
+        file or the settings class.
+  - type: input
+    id: page
+    attributes:
+      label: Which page
+      description: The URL on the site, or the path under `docs/`.
+      placeholder: https://alle80.github.io/griglia/getting-started/installation/
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - English
+        - Italian
+        - Both
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing
+      description: Quote the sentence if it is a small thing, and say what the code actually does.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: What it should say
+      description: Optional — a draft is welcome, in either language.
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Code of conduct
+      options:
+        - label: I agree to follow this project's [code of conduct](https://github.com/alle80/griglia/blob/master/CODE_OF_CONDUCT.md).
+          required: true

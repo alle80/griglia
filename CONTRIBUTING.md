@@ -27,6 +27,10 @@ guide](docs/contributing/development.md) explains the guard that stops it.
 
 - **Open an issue first** for anything larger than a fix, and check the scope table in
   [GOVERNANCE.md](GOVERNANCE.md): what belongs to the host application does not belong here.
+- **Use the forms.** *New issue* offers a bug report, an idea, a documentation problem and a question
+  ([templates](.github/ISSUE_TEMPLATE)); pull requests open with a
+  [template](.github/PULL_REQUEST_TEMPLATE.md) that asks for the problem, the change, how you tested it and
+  the checklist below. They ask for what a review needs anyway.
 - **A bug report** carries versions (Griglia, Laravel, PHP), the mode (`server` or `local`), what you did,
   expected and got, and the error or command output.
 - **A change carries** a test that fails without it, documentation in English *and* Italian, a `CHANGELOG.md`

@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.10] - 2026-08-23
+
+### Documentation
+- **Issue and pull request templates** — the repository now answers with a form instead of an empty box:
+  four GitHub issue forms under `.github/ISSUE_TEMPLATE/` (bug report, idea or feature request, documentation
+  problem, question), a `config.yml` that disables blank issues and points a vulnerability to private
+  reporting and a first question to the FAQ, and a `.github/PULL_REQUEST_TEMPLATE.md` with the problem/what
+  changed/how you tested it sections and the contribution checklist. The bug form asks for the versions, the
+  mode and a reproduction; the idea form makes the scope and the two constraints (vendor-neutral agent
+  contract, AI optional and off by default) explicit before the code is written. The Contributing page in
+  both languages and `CONTRIBUTING.md` describe the forms, and `IssueTemplatesTest` guards their structure,
+  their labels and the checklist they share with the documentation.
+
+## [0.89.10] - 2026-08-23
+
+### Documentation
+- Completed a repository-wide audit for agent-only operational rules in the public documentation. The remaining
+  imperative wording in the English and Italian agent overview now describes command effects instead of
+  duplicating behaviour already enforced by the generated repository context.
+
 ## [0.89.9] - 2026-08-23
 
 ### Documentation

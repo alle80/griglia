@@ -1,0 +1,96 @@
+name: Bug report
+description: Something in the board, the commands or the agent side does not do what it says.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to write this down. A report someone else can reproduce is worth ten that
+        describe a feeling.
+
+        **Not a bug?** A vulnerability goes through the [security policy](https://github.com/alle80/griglia/security/policy),
+        never a public issue; a "how do I…" goes in the *Question* form; a missing or wrong page goes in the
+        *Documentation* form.
+  - type: checkboxes
+    id: homework
+    attributes:
+      label: Before you open it
+      options:
+        - label: I searched the [open and closed issues](https://github.com/alle80/griglia/issues?q=is%3Aissue) and this is not one of them.
+          required: true
+        - label: I checked the [troubleshooting page](https://alle80.github.io/griglia/operations/troubleshooting/).
+          required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What you did, what you expected, what happened
+      description: In that order. Three lines each is enough.
+      placeholder: |
+        I did: opened /settings and switched "Question level" to «paranoid».
+        I expected: the setting to be saved and shown by griglia:check.
+        It happened: the page reloaded with the old value and no error.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: >
+        Numbered, from a state someone else can reach. The best report carries a minimal reproduction: a fresh
+        Laravel application with the package installed, or a failing test. If it only happens on your setup,
+        say so — an honest report is still worth opening.
+      placeholder: |
+        1. composer require alle80/griglia
+        2. php artisan migrate
+        3. …
+    validations:
+      required: true
+  - type: input
+    id: griglia-version
+    attributes:
+      label: Griglia version
+      description: "`composer show alle80/griglia`"
+      placeholder: 0.89.9
+    validations:
+      required: true
+  - type: input
+    id: laravel-php
+    attributes:
+      label: Laravel and PHP versions
+      placeholder: Laravel 13.2, PHP 8.4.1
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      description: "`config('griglia.mode')`, or the `app.mode` setting."
+      options:
+        - server (login required)
+        - local (no authentication)
+        - not sure
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error, stack trace or command output
+      description: >
+        The exception with its trace, the browser console for a front-end problem, or the output of
+        `php artisan griglia:check --all` for an agent-side one. No need for backticks, this box is a code
+        block already.
+      render: shell
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else about your setup
+      description: >
+        Docker or a proxy, the theme or style you were using, several agents at once, a screenshot for
+        anything visual (drag it in here).
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Code of conduct
+      options:
+        - label: I agree to follow this project's [code of conduct](https://github.com/alle80/griglia/blob/master/CODE_OF_CONDUCT.md).
+          required: true

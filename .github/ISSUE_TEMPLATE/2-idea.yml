@@ -1,0 +1,84 @@
+name: Idea or feature request
+description: A change to the board, the agent contract or the settings.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the **problem** before the solution: what you were doing, what the board made you do instead,
+        how often. Most refused proposals are refused for scope, not for quality — the
+        [scope table](https://alle80.github.io/griglia/contributing/governance/#scope) says what belongs to the
+        package and what belongs to the application that hosts it.
+
+        Open this before writing the code: a pull request that arrives without a direction may be closed for
+        scope alone, and that is a bad way to spend an evening.
+  - type: checkboxes
+    id: homework
+    attributes:
+      label: Before you open it
+      options:
+        - label: I searched the [open and closed issues](https://github.com/alle80/griglia/issues?q=is%3Aissue), including the ones closed as out of scope.
+          required: true
+        - label: I read the [scope table](https://alle80.github.io/griglia/contributing/governance/#scope).
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you were doing, what happened instead, and how often it costs you.
+      placeholder: >
+        Every time I take a task I have to run two commands to set the percentage, so I end up not setting it.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you propose
+      description: The shape of the change, not the diff. Say what it would look like on the board or in the command.
+    validations:
+      required: true
+  - type: textarea
+    id: ruled-out
+    attributes:
+      label: What you already ruled out
+      description: >
+        An existing setting, a theme, a host-side script, doing it in your own application. If your change adds
+        a setting, say why the existing ones cannot express it: every setting has to be documented, translated
+        and kept working forever.
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Where does it belong?
+      description: See the [scope table](https://alle80.github.io/griglia/contributing/governance/#scope).
+      options:
+        - The board (lists, tasks, UI, settings)
+        - The agent contract (griglia:check, griglia:watch, the context file)
+        - The documentation site
+        - I am not sure
+    validations:
+      required: true
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: The two constraints that decide most proposals
+      options:
+        - label: My proposal does not hardcode an agent, a model or a provider — user-visible strings keep the `:agent` placeholder.
+          required: true
+        - label: If it uses AI, it stays optional and off by default; the package never calls a model provider on its own.
+          required: true
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Would you like to build it?
+      options:
+        - label: I am willing to open a pull request for this, once the direction is agreed.
+          required: false
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Code of conduct
+      options:
+        - label: I agree to follow this project's [code of conduct](https://github.com/alle80/griglia/blob/master/CODE_OF_CONDUCT.md).
+          required: true
