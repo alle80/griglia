@@ -20,10 +20,11 @@ that nobody discussed first usually waits.
 | A documentation gap, a typo, a better Italian sentence | A pull request on `docs/` — the same rules, minus the tests |
 | Time | Answer somebody else's issue, or confirm a bug on your setup |
 
-GitHub opens the right form for you: **New issue** offers a bug report, an idea, a documentation problem and a
-question, and each form asks for exactly what the sections below describe. Blank issues are disabled — if none
-of the four fits, take the closest one and say in the first line what it really is. Pull requests arrive
-prefilled with the
+GitHub opens the right form for you: **New issue** offers a bug report, an idea and a documentation problem,
+and each form asks for exactly what the sections below describe. Blank issues are disabled — if none of the
+three fits, take the closest one and say in the first line what it really is. A question is not an issue:
+[Discussions](https://github.com/alle80/griglia/discussions) is the place to ask, and the answer stays
+searchable for the next person. Pull requests arrive prefilled with the
 [template](https://github.com/alle80/griglia/blob/master/.github/PULL_REQUEST_TEMPLATE.md): the problem, what
 changed, how you tested it, and the checklist at the end of this page.
 

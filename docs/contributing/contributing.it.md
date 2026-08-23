@@ -21,10 +21,12 @@ grande di cui nessuno ha parlato prima, di solito, aspetta.
 | Un buco nella documentazione, un refuso, una frase italiana migliore | Una pull request su `docs/` — stesse regole, senza i test |
 | Del tempo | Rispondi alla issue di qualcun altro, o conferma un bug sulla tua installazione |
 
-GitHub ti apre il modulo giusto: **New issue** propone una segnalazione di bug, un'idea, un problema di
-documentazione e una domanda, e ogni modulo chiede esattamente quello che descrivono le sezioni qui sotto. Le
-issue vuote sono disattivate: se nessuno dei quattro moduli calza, prendi il più vicino e scrivi nella prima
-riga di che cosa si tratta davvero. Le pull request arrivano precompilate con il
+GitHub ti apre il modulo giusto: **New issue** propone una segnalazione di bug, un'idea e un problema di
+documentazione, e ogni modulo chiede esattamente quello che descrivono le sezioni qui sotto.
+Le issue vuote sono disattivate: se nessuno dei tre moduli calza, prendi il più vicino e scrivi nella prima
+riga di che cosa si tratta davvero. Una domanda non è una issue: si chiede nelle
+[Discussions](https://github.com/alle80/griglia/discussions), e la risposta resta cercabile per chi verrà
+dopo. Le pull request arrivano precompilate con il
 [template](https://github.com/alle80/griglia/blob/master/.github/PULL_REQUEST_TEMPLATE.md): il problema, che
 cosa è cambiato, come l'hai provato e la checklist in fondo a questa pagina.
 

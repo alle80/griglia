@@ -18,7 +18,6 @@ class IssueTemplatesTest extends TestCase
         '1-bug.yml' => 'bug',
         '2-idea.yml' => 'enhancement',
         '3-documentation.yml' => 'documentation',
-        '4-question.yml' => 'question',
     ];
 
     protected function root(): string
@@ -162,15 +161,6 @@ class IssueTemplatesTest extends TestCase
         }
     }
 
-    public function test_the_question_form_sends_the_reader_to_the_faq_first(): void
-    {
-        $form = $this->form('4-question.yml');
-
-        $this->assertStringContainsString('/faq/', $form);
-        $this->assertStringContainsString('operations/troubleshooting/', $form);
-        $this->assertStringContainsString('id: versions', $form, 'a question without versions cannot be answered');
-    }
-
     public function test_every_form_asks_for_the_code_of_conduct(): void
     {
         foreach (array_keys(self::FORMS) as $file) {
@@ -192,6 +182,8 @@ class IssueTemplatesTest extends TestCase
         $this->assertStringContainsString('blank_issues_enabled: false', $config);
         $this->assertStringContainsString('security/advisories/new', $config, 'a vulnerability is reported privately');
         $this->assertStringContainsString('https://alle80.github.io/griglia/', $config);
+        $this->assertStringContainsString('/discussions', $config, 'a question goes to Discussions, not to an issue');
+        $this->assertStringContainsString('/faq/', $config, 'the FAQ is read before asking');
 
         $names = substr_count($config, "\n  - name: ");
         $this->assertSame($names, substr_count($config, "\n    url: "), 'every contact link needs a url');
@@ -266,6 +258,18 @@ class IssueTemplatesTest extends TestCase
             foreach ($needles as $needle) {
                 $this->assertStringContainsString($needle, $text, "{$page} no longer mentions {$needle}");
             }
+        }
+
+        foreach ([
+            'docs/contributing/contributing.md',
+            'docs/contributing/contributing.it.md',
+            'CONTRIBUTING.md',
+        ] as $page) {
+            $this->assertStringContainsString(
+                'alle80/griglia/discussions',
+                $this->contents($page),
+                "{$page} must send a question to Discussions: there is no question form any more"
+            );
         }
     }
 }

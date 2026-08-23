@@ -1,0 +1,26 @@
+{
+    "_comment": "The GitHub settings that live outside the code. Apply them with .github/scripts/repo-metadata.php --apply; RepositoryMetadataTest keeps this file and the repository consistent with composer.json, mkdocs.yml and the docs.",
+    "repository": "alle80/griglia",
+    "description": "A Laravel + Livewire task board where you queue work for your coding agent and follow it live: states, questions, progress and results, in your own app and database.",
+    "homepage": "https://alle80.github.io/griglia/",
+    "topics": [
+        "laravel",
+        "laravel-package",
+        "livewire",
+        "php",
+        "tailwindcss",
+        "task-board",
+        "todo-list",
+        "kanban",
+        "ai-agents",
+        "coding-agent",
+        "claude-code",
+        "developer-tools",
+        "self-hosted"
+    ],
+    "has_issues": true,
+    "has_discussions": true,
+    "has_wiki": false,
+    "has_projects": false,
+    "social_preview": "docs/images/social-preview.png"
+}

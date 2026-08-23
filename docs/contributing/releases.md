@@ -95,6 +95,25 @@ For a contributor this changes nothing: branch from `master`, open the pull requ
 and merged there. What it adds is a maintainer step — carrying the merge back into the monorepo before the
 next release — and it is the reason `master` shows tags and merges rather than a long day-to-day history.
 
+## Repository metadata
+
+Description, homepage, topics and the feature switches of the GitHub repository are not in the code, so they
+drift without anybody noticing. They live in
+[`.github/repository.json`](https://github.com/alle80/griglia/blob/master/.github/repository.json), and a
+script writes them:
+
+```bash
+php .github/scripts/repo-metadata.php          # what differs from the live repository
+php .github/scripts/repo-metadata.php --apply  # write the file to GitHub, needs `gh auth login`
+```
+
+The description there and the one in `composer.json` are the same sentence, because GitHub and Packagist are
+the two places a stranger reads first; a test fails when they drift apart.
+
+The **social preview** is the exception: GitHub has no API for it. After changing
+`docs/images/social-preview.png` (1280×640 PNG) upload it once from *Settings → General → Social preview*.
+The same image is the `og:image` of every page of this site, through `overrides/main.html`.
+
 ## See also
 
 - [Contributing](contributing.md) — the change itself: tests, changelog entry, pull request.

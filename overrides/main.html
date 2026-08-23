@@ -5,6 +5,33 @@
   The home page hero is built on top of this file (see docs/index.md).
 #}
 
+{% block extrahead %}
+  {#
+    Link previews. Material writes no Open Graph tags of its own and the social plugin would add a
+    Python image toolchain to the docs build, so every page shares one card: the same image GitHub
+    shows for the repository (docs/images/social-preview.png, 1280x640). Title and description follow
+    the page, and the i18n plugin gives the Italian build its own site_name and site_description.
+  #}
+  {% set social_image = "https://alle80.github.io/griglia/images/social-preview.png" %}
+  {# `page` is not defined on the 404 page, so every read of it is guarded. #}
+  {% set social_title = (page.meta.title if page and page.meta and page.meta.title else (page.title if page and page.title else config.site_name)) %}
+  {% set social_description = (page.meta.description if page and page.meta and page.meta.description else config.site_description) %}
+  {% set social_url = (page.canonical_url if page and page.canonical_url else config.site_url) %}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ config.site_name }}">
+  <meta property="og:title" content="{{ social_title | striptags }}">
+  <meta property="og:description" content="{{ social_description | striptags }}">
+  <meta property="og:url" content="{{ social_url }}">
+  <meta property="og:image" content="{{ social_image }}">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta property="og:image:alt" content="Griglia — queue work for your coding agent, and watch it happen">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ social_title | striptags }}">
+  <meta name="twitter:description" content="{{ social_description | striptags }}">
+  <meta name="twitter:image" content="{{ social_image }}">
+{% endblock %}
+
 {% block footer %}
   {{ super() }}
   <div class="gr-docs-version" aria-label="Griglia documentation version">

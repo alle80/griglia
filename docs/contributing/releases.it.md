@@ -100,6 +100,25 @@ integrata. Quello che aggiunge è un passo per chi mantiene — riportare l'inte
 rilascio successivo — ed è il motivo per cui su `master` si vedono tag e merge invece di una lunga storia
 quotidiana.
 
+## Metadati del repository
+
+Descrizione, homepage, topic e gli interruttori delle funzioni del repository GitHub non stanno nel codice,
+quindi invecchiano senza che nessuno se ne accorga. Stanno in
+[`.github/repository.json`](https://github.com/alle80/griglia/blob/master/.github/repository.json), e li
+applica uno script:
+
+```bash
+php .github/scripts/repo-metadata.php          # che cosa è diverso dal repository vero
+php .github/scripts/repo-metadata.php --apply  # scrive il file su GitHub, serve `gh auth login`
+```
+
+La descrizione lì e quella di `composer.json` sono la stessa frase, perché GitHub e Packagist sono i due
+posti che uno sconosciuto legge per primi; se divergono un test fallisce.
+
+L'**immagine sociale** è l'eccezione: GitHub non ha un'API per caricarla. Dopo aver cambiato
+`docs/images/social-preview.png` (PNG 1280×640) caricala a mano da *Settings → General → Social preview*.
+La stessa immagine è l'`og:image` di ogni pagina di questo sito, tramite `overrides/main.html`.
+
 ## Vedi anche
 
 - [Contribuire](contributing.md) — la modifica in sé: test, voce di changelog, pull request.

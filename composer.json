@@ -1,16 +1,22 @@
 {
     "name": "alle80/griglia",
-    "description": "Griglia: a Livewire dev board where you queue requests for a coding agent (open to work → working → done, questions, stop, resume) — multiple lists, sub-tasks, notes, images, live updates, themes, settings.",
+    "description": "A Laravel + Livewire task board where you queue work for your coding agent and follow it live: states, questions, progress and results, in your own app and database.",
     "type": "library",
+    "homepage": "https://alle80.github.io/griglia/",
     "license": "MIT",
     "keywords": [
         "laravel",
+        "laravel-package",
         "livewire",
+        "task-board",
         "todo",
         "todolist",
-        "griglia",
+        "checklist",
+        "kanban",
         "agent",
-        "checklist"
+        "coding-agent",
+        "ai-agents",
+        "griglia"
     ],
     "authors": [
         {
@@ -18,6 +24,13 @@
             "email": "alle80@gmail.com"
         }
     ],
+    "support": {
+        "issues": "https://github.com/alle80/griglia/issues",
+        "forum": "https://github.com/alle80/griglia/discussions",
+        "source": "https://github.com/alle80/griglia",
+        "docs": "https://alle80.github.io/griglia/",
+        "security": "https://github.com/alle80/griglia/security/policy"
+    },
     "require": {
         "php": "^8.3",
         "ext-fileinfo": "*",

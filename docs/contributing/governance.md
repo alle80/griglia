@@ -97,7 +97,7 @@ next release, and releases are cut when there is something worth releasing.
 |---|---|
 | [GitHub issues](https://github.com/alle80/griglia/issues) | Bugs and concrete proposals, one per issue |
 | Private vulnerability reporting or e-mail | Anything with a security impact — never a public issue |
-| GitHub Discussions | Questions and open-ended ideas, once enabled; until then open an issue and say it is a question |
+| [GitHub Discussions](https://github.com/alle80/griglia/discussions) | Questions and open-ended ideas — ask here rather than opening an issue |
 
 In all of them the [code of conduct](code-of-conduct.md) applies: the Contributor Covenant 2.1, enforced by
 the maintainer, with reports read by them alone.

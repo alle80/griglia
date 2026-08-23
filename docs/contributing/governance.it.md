@@ -102,7 +102,7 @@ rilasciare.
 |---|---|
 | [Issue su GitHub](https://github.com/alle80/griglia/issues) | Bug e proposte concrete, una per issue |
 | Segnalazione privata di vulnerabilità o e-mail | Tutto ciò che ha impatto sulla sicurezza — mai una issue pubblica |
-| GitHub Discussions | Domande e idee aperte, quando saranno attive; fino ad allora apri una issue e dichiara che è una domanda |
+| [Discussions su GitHub](https://github.com/alle80/griglia/discussions) | Domande e idee aperte — chiedi lì invece di aprire una issue |
 
 In tutti vale il [codice di condotta](code-of-conduct.md): il Contributor Covenant 2.1, applicato dal
 manutentore, con le segnalazioni lette solo da lui.

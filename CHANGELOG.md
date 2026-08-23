@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.15] - 2026-08-23
+
+### Added
+- **The repository metadata is a reviewable file** — `.github/repository.json` holds the description, the
+  homepage, the topics and the feature switches of `alle80/griglia`, and
+  `.github/scripts/repo-metadata.php` compares them with the live repository (`--apply` writes them).
+  Metadata that lives only in a settings page drifts unnoticed; now a diff shows it and
+  `RepositoryMetadataTest` fails when the file, `composer.json` and the documentation stop agreeing.
+- **A social preview image** (`docs/images/social-preview.png`, 1280×640): the card GitHub shows when the
+  repository is shared, and the `og:image` of every page of the documentation site. `overrides/main.html`
+  now writes the Open Graph and Twitter card tags — title and description follow the page and the language,
+  so a link to the site stops rendering as a bare URL.
+- **GitHub Discussions is the place for questions.** The decision left open by the project plan is taken:
+  Discussions is on, issues stay for bugs and concrete proposals. The question issue form is gone, the issue
+  chooser links Discussions first, and Governance, Contributing and `CONTRIBUTING.md` say so.
+- **Packagist support links**: `composer.json` gains `homepage` and a `support` block (issues, forum, source,
+  docs, security policy), so the package page points somewhere.
+
+### Changed
+- The package description is now the same sentence on GitHub and on Packagist, and no longer mentions the
+  old «Agent Devboard» name. `composer.json` keywords cover what the package is (`task-board`,
+  `coding-agent`, `ai-agents`, `laravel-package`, `kanban`).
+
 ## [0.89.14] - 2026-08-23
 
 ### Added
@@ -2130,7 +2153,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.14...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.15...HEAD
+[0.89.15]: https://github.com/alle80/griglia/compare/v0.89.14...v0.89.15
 [0.89.14]: https://github.com/alle80/griglia/compare/v0.89.13...v0.89.14
 [0.89.13]: https://github.com/alle80/griglia/compare/v0.89.12...v0.89.13
 [0.89.12]: https://github.com/alle80/griglia/compare/v0.89.11...v0.89.12

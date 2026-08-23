@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Question, or an open-ended idea
+    url: https://github.com/alle80/griglia/discussions
+    about: Discussions is the place to ask. Issues are for bugs and for concrete proposals.
   - name: Security vulnerability
     url: https://github.com/alle80/griglia/security/advisories/new
     about: Never a public issue. Report it privately here, or by e-mail to the address in composer.json.
@@ -8,4 +11,4 @@ contact_links:
     about: Installation, configuration, the agent side, the reference pages and the changelog.
   - name: FAQ and troubleshooting
     url: https://alle80.github.io/griglia/faq/
-    about: Read these before opening an issue — most first questions are answered there.
+    about: Read these before asking — most first questions are answered there.
