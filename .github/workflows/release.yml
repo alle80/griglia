@@ -1,0 +1,77 @@
+name: release
+
+# A `vX.Y.Z` tag is the release: Packagist publishes it and this workflow turns it into a GitHub Release,
+# with the notes taken from the section the CHANGELOG already carries for that version. Nothing is written
+# twice by hand, so a release cannot end up described in two different ways.
+#
+# Re-running it on an existing tag (`workflow_dispatch`) rewrites the notes from the changelog of that tag.
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to publish or refresh, for example v0.89.12'
+        required: true
+
+# The only job that writes: creating a release needs it.
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Publish the GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Work out which tag we are releasing
+        id: tag
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+          case "$TAG" in
+            *-*) echo "prerelease=true" >> "$GITHUB_OUTPUT" ;;
+            *)   echo "prerelease=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.tag.outputs.tag }}
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      # A tag without its changelog section fails here instead of publishing an empty release.
+      - name: Build the notes from CHANGELOG.md
+        id: notes
+        run: |
+          php .github/scripts/changelog-notes.php "${{ steps.tag.outputs.version }}" > "$RUNNER_TEMP/notes.md"
+          PREVIOUS="$(php .github/scripts/changelog-notes.php "${{ steps.tag.outputs.version }}" --previous)"
+          if [ -n "$PREVIOUS" ]; then
+            {
+              echo
+              echo "**Full changelog**: https://github.com/${{ github.repository }}/compare/v$PREVIOUS...${{ steps.tag.outputs.tag }}"
+            } >> "$RUNNER_TEMP/notes.md"
+          fi
+
+      - name: Publish it
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --notes-file "$RUNNER_TEMP/notes.md" --title "$TAG"
+          else
+            gh release create "$TAG" --verify-tag --title "$TAG" \
+              --notes-file "$RUNNER_TEMP/notes.md" \
+              --prerelease=${{ steps.tag.outputs.prerelease }}
+          fi

@@ -77,9 +77,10 @@ and what to do when a check fails, is on [Quality standards](quality.md).
 
 ## Releasing
 
-Semantic versioning; every change goes in `CHANGELOG.md` (Keep a Changelog, with a **Security** section
-when relevant). A `vX.Y.Z` tag on GitHub is what Packagist publishes — so the tag is the release. Rebuild
-the precompiled assets before tagging when the CSS/JS or the views changed.
+Every change goes in `CHANGELOG.md` (Keep a Changelog, with a **Security** section when relevant), and a
+`vX.Y.Z` tag is the release: Packagist publishes it and the GitHub Release is generated from that changelog
+section. What a version number promises, what counts as public, and the four steps of cutting a release are on
+[Versioning and releases](releases.md).
 
 See also [Quality standards](quality.md) — the bar a change has to clear and what each CI job protects —
 [Contributing](contributing.md) and [Building this site](docs-site.md).

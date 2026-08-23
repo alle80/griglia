@@ -184,7 +184,8 @@ naming before anything else. Silence past those times is not a rejection — pin
 Accepted work is merged by the maintainer, usually squashed, with your authorship intact. It ships in the
 next release: a `vX.Y.Z` tag is what Packagist publishes, the *Unreleased* entry moves under that version,
 and the documentation site is rebuilt from `master`. Releases are cut when there is something worth
-releasing, not on a calendar.
+releasing, not on a calendar — [Versioning and releases](releases.md) has the whole policy, including what a
+minor bump is allowed to break.
 
 If the change is refused, the reason is written in the pull request. Scope refusals often come with a better
 home for the work: an extension point, a host-side script, or your own package.

@@ -42,6 +42,9 @@ guide](docs/contributing/development.md) explains the guard that stops it.
 - **Nothing hardcodes an agent**: user-visible strings use the `:agent` placeholder, never a product name.
 - **Commits in English** with a conventional prefix (`feat:`, `fix:`, `docs:`…), one logical change per
   branch, branched from an up-to-date `master`.
+- **Versions**: the project is on `0.x`, where a **minor** may break and a **patch** never does, and only the
+  newest minor is supported. The policy and the release procedure are on the
+  [versioning and releases page](docs/contributing/releases.md).
 - **Written with a coding agent?** Welcome, and no disclaimer needed — but the person who opens the pull
   request answers for it: read the diff.
 - **Conduct**: the [Contributor Covenant 2.1](CODE_OF_CONDUCT.md) — reviews are direct about the code, never

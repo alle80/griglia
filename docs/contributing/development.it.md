@@ -80,9 +80,10 @@ controllo fallisce, è nella pagina [Standard di qualità](quality.md).
 
 ## Rilasciare
 
-Versionamento semantico; ogni modifica va in `CHANGELOG.md` (Keep a Changelog, con una sezione **Security**
-quando serve). È il tag `vX.Y.Z` su GitHub quello che Packagist pubblica — quindi il tag è il rilascio.
-Ricompila gli asset precompilati prima di taggare, quando sono cambiati CSS/JS o le viste.
+Ogni modifica va in `CHANGELOG.md` (Keep a Changelog, con una sezione **Security** quando serve), e il tag
+`vX.Y.Z` è il rilascio: Packagist lo pubblica e la GitHub Release viene generata da quella sezione del
+changelog. Cosa promette un numero di versione, che cosa è pubblico e i quattro passi per fare un rilascio
+stanno in [Versioni e rilasci](releases.md).
 
 Vedi anche [Standard di qualità](quality.md) — l'asticella che una modifica deve superare e che cosa protegge
 ogni job della CI — [Contribuire](contributing.md) e [Costruire questo sito](docs-site.md).

@@ -122,6 +122,7 @@ plugins:
             License: Licenza
             Development: Sviluppo
             Quality standards: Standard di qualità
+            Versioning and releases: Versioni e rilasci
             Building this site: Costruire questo sito
             Translations: Traduzioni
   - search
@@ -190,5 +191,6 @@ nav:
       - License: contributing/license.md
       - Development: contributing/development.md
       - Quality standards: contributing/quality.md
+      - Versioning and releases: contributing/releases.md
       - Building this site: contributing/docs-site.md
       - Translations: contributing/translations.md

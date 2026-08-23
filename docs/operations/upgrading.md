@@ -24,10 +24,11 @@ published package views, compare those overrides with the new package sources be
 
 ## Versioning
 
-The package follows [semantic versioning](https://semver.org). While it is on `0.x`, the **minor** number
-is where breaking changes may appear: pin what you are comfortable with (`^0.45.0`) and read the
-[CHANGELOG](https://github.com/alle80/griglia/blob/master/CHANGELOG.md) before bumping it — every release
-documents what changed and what to do about it.
+While the package is on `0.x`, the **minor** number is where breaking changes may appear: pin what you are
+comfortable with (`^0.89.0`) and read the
+[CHANGELOG](https://github.com/alle80/griglia/blob/master/CHANGELOG.md) before bumping it. The full policy —
+what counts as public, how deprecations are announced, which versions are supported — is on
+[Versioning and releases](../contributing/releases.md).
 
 ## Verify the upgrade
 

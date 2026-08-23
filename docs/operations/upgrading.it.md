@@ -23,11 +23,11 @@ sono state pubblicate viste, confrontare gli override con i nuovi sorgenti prima
 
 ## Versioni
 
-Il package segue il [versionamento semantico](https://semver.org). Finché resta sullo `0.x`, è il numero
-**minor** il posto dove possono comparire cambiamenti che rompono: fissa il vincolo che ti fa stare tranquillo
-(`^0.45.0`) e leggi il
-[CHANGELOG](https://github.com/alle80/griglia/blob/master/CHANGELOG.md) prima di alzarlo — ogni rilascio
-documenta cosa è cambiato e cosa farci.
+Finché il package resta sullo `0.x`, è il numero **minor** il posto dove possono comparire cambiamenti che
+rompono: fissa il vincolo che ti fa stare tranquillo (`^0.89.0`) e leggi il
+[CHANGELOG](https://github.com/alle80/griglia/blob/master/CHANGELOG.md) prima di alzarlo. La politica completa
+— che cosa è pubblico, come si annunciano le deprecazioni, quali versioni sono supportate — sta in
+[Versioni e rilasci](../contributing/releases.md).
 
 ## Verificare l'aggiornamento
 

@@ -135,6 +135,7 @@ are in [front-end assets](docs/getting-started/assets.md).
 | [FAQ](docs/faq.md) · [Glossary](docs/glossary.md) | Short answers, and the words used here |
 | [Upgrading](docs/operations/upgrading.md) · [Troubleshooting](docs/operations/troubleshooting.md) | When a version moves, and when something breaks |
 | [Changelog](CHANGELOG.md) | What changed, version by version |
+| [Versioning and releases](docs/contributing/releases.md) | What a `0.x` version promises, and how a release is cut |
 
 ## Contributing and support
 

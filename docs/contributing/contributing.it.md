@@ -192,7 +192,8 @@ request.
 Il lavoro accettato viene integrato dal manutentore, di solito con uno squash e con la tua paternità intatta.
 Esce con il rilascio successivo: un tag `vX.Y.Z` è ciò che Packagist pubblica, la voce *Unreleased* si sposta
 sotto quella versione e il sito della documentazione viene ricostruito da `master`. I rilasci si fanno quando
-c'è qualcosa che vale la pena rilasciare, non a calendario.
+c'è qualcosa che vale la pena rilasciare, non a calendario — la politica completa, compreso che cosa una
+minor può permettersi di rompere, sta in [Versioni e rilasci](releases.md).
 
 Se la modifica viene rifiutata, la ragione è scritta nella pull request. I rifiuti per perimetro arrivano
 spesso con una casa migliore per quel lavoro: un punto di estensione, uno script lato host o un package tuo.

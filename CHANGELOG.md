@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.14] - 2026-08-23
+
+### Added
+- **Versioning and release policy, written down** — a new page in English and Italian ([Versioning and
+  releases](https://alle80.github.io/griglia/contributing/releases/)) states what a `0.x` version number
+  promises (a minor may break, a patch never does), what counts as public surface and therefore breaking,
+  how deprecations are announced, which versions are supported, and the four manual steps of cutting a
+  release before GitHub takes over. `README.md`, `CONTRIBUTING.md`, the Development, Contributing and
+  Upgrading pages point at it instead of restating a piece of it each.
+- **A GitHub Release for every tag, generated from this file** (`.github/workflows/release.yml`): pushing a
+  `vX.Y.Z` tag publishes a release whose notes are the section that version already has here, followed by a
+  compare link. A tag whose version has no section fails the workflow instead of publishing an empty release,
+  and re-running the workflow by hand on an existing tag refreshes its notes. The 210 tags released before
+  this one were backfilled the same way, and the two tags that never had an entry — `0.12.1` and `0.54.1` —
+  were written from their commits so that every tag is described here.
+- **`.github/scripts/changelog-notes.php`** — the one place that reads this file: the notes of a version
+  (`changelog-notes.php 0.89.12`), the version released before it (`--previous`), its date (`--date`), and
+  the whole `[x.y.z]: …/compare/…` block that closes the file (`--links`).
+
+### Fixed
+- The link definitions at the end of this file covered 60 of the 210 released versions and the `[Unreleased]`
+  one still compared from `v0.88.11`, so most version headings rendered as plain bracketed text. The block is
+  generated now, and `ReleaseProcessTest` fails when it no longer matches.
+
 ## [0.89.13] - 2026-08-23
 
 ### Documentation
@@ -1032,6 +1056,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`--take` on a completed task reopens it.** The agent taking a task back left the row saying «done» while
   it was being worked on; the command now clears the completed state (and any stale question) and says so.
 
+## [0.54.1] - 2026-08-20
+
+### Fixed
+- The notice about paused plans no longer ends up in the output of `griglia:check --json`, where it broke
+  whatever was parsing it.
+
 ## [0.54.0] - 2026-08-20
 
 ### Fixed
@@ -1852,6 +1882,11 @@ env keys to `GRIGLIA_*`; re-publish the assets (`--tag=griglia-assets`) and upda
 - The **«+» between rows** now creates the task *at that position* (making room) and opens the modal in
   title editing, like the «New task» button — instead of the inline title form (`createNew(?int $position)`).
 
+## [0.12.1] - 2026-08-19
+
+### Fixed
+- The skills picked for a task are listed at the top of the accordion, before the ones that are not.
+
 ## [0.12.0] - 2026-08-19
 
 ### Added
@@ -2095,16 +2130,75 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.88.11...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.14...HEAD
+[0.89.14]: https://github.com/alle80/griglia/compare/v0.89.13...v0.89.14
+[0.89.13]: https://github.com/alle80/griglia/compare/v0.89.12...v0.89.13
+[0.89.12]: https://github.com/alle80/griglia/compare/v0.89.11...v0.89.12
+[0.89.11]: https://github.com/alle80/griglia/compare/v0.89.10...v0.89.11
+[0.89.10]: https://github.com/alle80/griglia/compare/v0.89.9...v0.89.10
+[0.89.9]: https://github.com/alle80/griglia/compare/v0.89.8...v0.89.9
+[0.89.8]: https://github.com/alle80/griglia/compare/v0.89.7...v0.89.8
+[0.89.7]: https://github.com/alle80/griglia/compare/v0.89.6...v0.89.7
+[0.89.6]: https://github.com/alle80/griglia/compare/v0.89.5...v0.89.6
+[0.89.5]: https://github.com/alle80/griglia/compare/v0.89.4...v0.89.5
+[0.89.4]: https://github.com/alle80/griglia/compare/v0.89.3...v0.89.4
+[0.89.3]: https://github.com/alle80/griglia/compare/v0.89.2...v0.89.3
+[0.89.2]: https://github.com/alle80/griglia/compare/v0.89.1...v0.89.2
+[0.89.1]: https://github.com/alle80/griglia/compare/v0.89.0...v0.89.1
+[0.89.0]: https://github.com/alle80/griglia/compare/v0.88.13...v0.89.0
+[0.88.13]: https://github.com/alle80/griglia/compare/v0.88.12...v0.88.13
+[0.88.12]: https://github.com/alle80/griglia/compare/v0.88.11...v0.88.12
 [0.88.11]: https://github.com/alle80/griglia/compare/v0.88.10...v0.88.11
+[0.88.10]: https://github.com/alle80/griglia/compare/v0.88.9...v0.88.10
+[0.88.9]: https://github.com/alle80/griglia/compare/v0.88.8...v0.88.9
+[0.88.8]: https://github.com/alle80/griglia/compare/v0.88.7...v0.88.8
 [0.88.7]: https://github.com/alle80/griglia/compare/v0.88.6...v0.88.7
+[0.88.6]: https://github.com/alle80/griglia/compare/v0.88.5...v0.88.6
+[0.88.5]: https://github.com/alle80/griglia/compare/v0.88.4...v0.88.5
 [0.88.4]: https://github.com/alle80/griglia/compare/v0.88.3...v0.88.4
+[0.88.3]: https://github.com/alle80/griglia/compare/v0.88.2...v0.88.3
+[0.88.2]: https://github.com/alle80/griglia/compare/v0.88.1...v0.88.2
+[0.88.1]: https://github.com/alle80/griglia/compare/v0.88.0...v0.88.1
+[0.88.0]: https://github.com/alle80/griglia/compare/v0.87.18...v0.88.0
+[0.87.18]: https://github.com/alle80/griglia/compare/v0.87.17...v0.87.18
+[0.87.17]: https://github.com/alle80/griglia/compare/v0.87.16...v0.87.17
+[0.87.16]: https://github.com/alle80/griglia/compare/v0.87.15...v0.87.16
+[0.87.15]: https://github.com/alle80/griglia/compare/v0.87.14...v0.87.15
+[0.87.14]: https://github.com/alle80/griglia/compare/v0.87.13...v0.87.14
+[0.87.13]: https://github.com/alle80/griglia/compare/v0.87.12...v0.87.13
+[0.87.12]: https://github.com/alle80/griglia/compare/v0.87.11...v0.87.12
+[0.87.11]: https://github.com/alle80/griglia/compare/v0.87.10...v0.87.11
+[0.87.10]: https://github.com/alle80/griglia/compare/v0.87.9...v0.87.10
+[0.87.9]: https://github.com/alle80/griglia/compare/v0.87.8...v0.87.9
+[0.87.8]: https://github.com/alle80/griglia/compare/v0.87.7...v0.87.8
+[0.87.7]: https://github.com/alle80/griglia/compare/v0.87.6...v0.87.7
+[0.87.6]: https://github.com/alle80/griglia/compare/v0.87.5...v0.87.6
+[0.87.5]: https://github.com/alle80/griglia/compare/v0.87.4...v0.87.5
+[0.87.4]: https://github.com/alle80/griglia/compare/v0.87.3...v0.87.4
+[0.87.3]: https://github.com/alle80/griglia/compare/v0.87.2...v0.87.3
+[0.87.2]: https://github.com/alle80/griglia/compare/v0.87.1...v0.87.2
+[0.87.1]: https://github.com/alle80/griglia/compare/v0.87.0...v0.87.1
+[0.87.0]: https://github.com/alle80/griglia/compare/v0.86.0...v0.87.0
+[0.86.0]: https://github.com/alle80/griglia/compare/v0.85.3...v0.86.0
+[0.85.3]: https://github.com/alle80/griglia/compare/v0.85.2...v0.85.3
+[0.85.2]: https://github.com/alle80/griglia/compare/v0.85.1...v0.85.2
+[0.85.1]: https://github.com/alle80/griglia/compare/v0.85.0...v0.85.1
 [0.85.0]: https://github.com/alle80/griglia/compare/v0.84.0...v0.85.0
+[0.84.0]: https://github.com/alle80/griglia/compare/v0.83.1...v0.84.0
+[0.83.1]: https://github.com/alle80/griglia/compare/v0.83.0...v0.83.1
+[0.83.0]: https://github.com/alle80/griglia/compare/v0.82.0...v0.83.0
 [0.82.0]: https://github.com/alle80/griglia/compare/v0.81.4...v0.82.0
+[0.81.4]: https://github.com/alle80/griglia/compare/v0.81.3...v0.81.4
+[0.81.3]: https://github.com/alle80/griglia/compare/v0.81.2...v0.81.3
+[0.81.2]: https://github.com/alle80/griglia/compare/v0.81.1...v0.81.2
+[0.81.1]: https://github.com/alle80/griglia/compare/v0.81.0...v0.81.1
+[0.81.0]: https://github.com/alle80/griglia/compare/v0.80.3...v0.81.0
 [0.80.3]: https://github.com/alle80/griglia/compare/v0.80.2...v0.80.3
 [0.80.2]: https://github.com/alle80/griglia/compare/v0.80.1...v0.80.2
 [0.80.1]: https://github.com/alle80/griglia/compare/v0.80.0...v0.80.1
-[0.80.0]: https://github.com/alle80/griglia/compare/v0.79.1...v0.80.0
+[0.80.0]: https://github.com/alle80/griglia/compare/v0.79.3...v0.80.0
+[0.79.3]: https://github.com/alle80/griglia/compare/v0.79.2...v0.79.3
+[0.79.2]: https://github.com/alle80/griglia/compare/v0.79.1...v0.79.2
 [0.79.1]: https://github.com/alle80/griglia/compare/v0.79.0...v0.79.1
 [0.79.0]: https://github.com/alle80/griglia/compare/v0.78.1...v0.79.0
 [0.78.1]: https://github.com/alle80/griglia/compare/v0.78.0...v0.78.1
@@ -2117,6 +2211,9 @@ monorepo into a standalone, installable Composer package.
 [0.74.2]: https://github.com/alle80/griglia/compare/v0.74.1...v0.74.2
 [0.74.1]: https://github.com/alle80/griglia/compare/v0.74.0...v0.74.1
 [0.74.0]: https://github.com/alle80/griglia/compare/v0.73.3...v0.74.0
+[0.73.3]: https://github.com/alle80/griglia/compare/v0.73.2...v0.73.3
+[0.73.2]: https://github.com/alle80/griglia/compare/v0.73.1...v0.73.2
+[0.73.1]: https://github.com/alle80/griglia/compare/v0.73.0...v0.73.1
 [0.73.0]: https://github.com/alle80/griglia/compare/v0.72.0...v0.73.0
 [0.72.0]: https://github.com/alle80/griglia/compare/v0.71.0...v0.72.0
 [0.71.0]: https://github.com/alle80/griglia/compare/v0.70.2...v0.71.0
@@ -2133,6 +2230,98 @@ monorepo into a standalone, installable Composer package.
 [0.62.0]: https://github.com/alle80/griglia/compare/v0.61.0...v0.62.0
 [0.61.0]: https://github.com/alle80/griglia/compare/v0.60.0...v0.61.0
 [0.60.0]: https://github.com/alle80/griglia/compare/v0.59.1...v0.60.0
+[0.59.1]: https://github.com/alle80/griglia/compare/v0.59.0...v0.59.1
+[0.59.0]: https://github.com/alle80/griglia/compare/v0.58.0...v0.59.0
+[0.58.0]: https://github.com/alle80/griglia/compare/v0.57.0...v0.58.0
+[0.57.0]: https://github.com/alle80/griglia/compare/v0.56.0...v0.57.0
+[0.56.0]: https://github.com/alle80/griglia/compare/v0.55.0...v0.56.0
+[0.55.0]: https://github.com/alle80/griglia/compare/v0.54.1...v0.55.0
+[0.54.1]: https://github.com/alle80/griglia/compare/v0.54.0...v0.54.1
+[0.54.0]: https://github.com/alle80/griglia/compare/v0.53.0...v0.54.0
+[0.53.0]: https://github.com/alle80/griglia/compare/v0.52.1...v0.53.0
+[0.52.1]: https://github.com/alle80/griglia/compare/v0.52.0...v0.52.1
+[0.52.0]: https://github.com/alle80/griglia/compare/v0.51.0...v0.52.0
+[0.51.0]: https://github.com/alle80/griglia/compare/v0.50.0...v0.51.0
+[0.50.0]: https://github.com/alle80/griglia/compare/v0.49.0...v0.50.0
+[0.49.0]: https://github.com/alle80/griglia/compare/v0.48.1...v0.49.0
+[0.48.1]: https://github.com/alle80/griglia/compare/v0.48.0...v0.48.1
+[0.48.0]: https://github.com/alle80/griglia/compare/v0.47.3...v0.48.0
+[0.47.3]: https://github.com/alle80/griglia/compare/v0.47.2...v0.47.3
+[0.47.2]: https://github.com/alle80/griglia/compare/v0.47.1...v0.47.2
+[0.47.1]: https://github.com/alle80/griglia/compare/v0.47.0...v0.47.1
+[0.47.0]: https://github.com/alle80/griglia/compare/v0.46.0...v0.47.0
+[0.46.0]: https://github.com/alle80/griglia/compare/v0.45.0...v0.46.0
+[0.45.0]: https://github.com/alle80/griglia/compare/v0.44.0...v0.45.0
+[0.44.0]: https://github.com/alle80/griglia/compare/v0.43.0...v0.44.0
+[0.43.0]: https://github.com/alle80/griglia/compare/v0.42.0...v0.43.0
+[0.42.0]: https://github.com/alle80/griglia/compare/v0.41.0...v0.42.0
+[0.41.0]: https://github.com/alle80/griglia/compare/v0.40.0...v0.41.0
+[0.40.0]: https://github.com/alle80/griglia/compare/v0.39.0...v0.40.0
+[0.39.0]: https://github.com/alle80/griglia/compare/v0.38.1...v0.39.0
+[0.38.1]: https://github.com/alle80/griglia/compare/v0.38.0...v0.38.1
+[0.38.0]: https://github.com/alle80/griglia/compare/v0.37.0...v0.38.0
+[0.37.0]: https://github.com/alle80/griglia/compare/v0.36.0...v0.37.0
+[0.36.0]: https://github.com/alle80/griglia/compare/v0.35.0...v0.36.0
+[0.35.0]: https://github.com/alle80/griglia/compare/v0.34.1...v0.35.0
+[0.34.1]: https://github.com/alle80/griglia/compare/v0.34.0...v0.34.1
+[0.34.0]: https://github.com/alle80/griglia/compare/v0.33.4...v0.34.0
+[0.33.4]: https://github.com/alle80/griglia/compare/v0.33.3...v0.33.4
+[0.33.3]: https://github.com/alle80/griglia/compare/v0.33.2...v0.33.3
+[0.33.2]: https://github.com/alle80/griglia/compare/v0.33.1...v0.33.2
+[0.33.1]: https://github.com/alle80/griglia/compare/v0.33.0...v0.33.1
+[0.33.0]: https://github.com/alle80/griglia/compare/v0.32.1...v0.33.0
+[0.32.1]: https://github.com/alle80/griglia/compare/v0.32.0...v0.32.1
+[0.32.0]: https://github.com/alle80/griglia/compare/v0.31.1...v0.32.0
+[0.31.1]: https://github.com/alle80/griglia/compare/v0.31.0...v0.31.1
+[0.31.0]: https://github.com/alle80/griglia/compare/v0.30.2...v0.31.0
+[0.30.2]: https://github.com/alle80/griglia/compare/v0.30.1...v0.30.2
+[0.30.1]: https://github.com/alle80/griglia/compare/v0.30.0...v0.30.1
+[0.30.0]: https://github.com/alle80/griglia/compare/v0.29.4...v0.30.0
+[0.29.4]: https://github.com/alle80/griglia/compare/v0.29.3...v0.29.4
+[0.29.3]: https://github.com/alle80/griglia/compare/v0.29.2...v0.29.3
+[0.29.2]: https://github.com/alle80/griglia/compare/v0.29.1...v0.29.2
+[0.29.1]: https://github.com/alle80/griglia/compare/v0.29.0...v0.29.1
+[0.29.0]: https://github.com/alle80/griglia/compare/v0.28.0...v0.29.0
+[0.28.0]: https://github.com/alle80/griglia/compare/v0.27.1...v0.28.0
+[0.27.1]: https://github.com/alle80/griglia/compare/v0.27.0...v0.27.1
+[0.27.0]: https://github.com/alle80/griglia/compare/v0.26.3...v0.27.0
+[0.26.3]: https://github.com/alle80/griglia/compare/v0.26.2...v0.26.3
+[0.26.2]: https://github.com/alle80/griglia/compare/v0.26.1...v0.26.2
+[0.26.1]: https://github.com/alle80/griglia/compare/v0.26.0...v0.26.1
+[0.26.0]: https://github.com/alle80/griglia/compare/v0.25.0...v0.26.0
+[0.25.0]: https://github.com/alle80/griglia/compare/v0.24.1...v0.25.0
+[0.24.1]: https://github.com/alle80/griglia/compare/v0.24.0...v0.24.1
+[0.24.0]: https://github.com/alle80/griglia/compare/v0.23.0...v0.24.0
+[0.23.0]: https://github.com/alle80/griglia/compare/v0.22.3...v0.23.0
+[0.22.3]: https://github.com/alle80/griglia/compare/v0.22.2...v0.22.3
+[0.22.2]: https://github.com/alle80/griglia/compare/v0.22.1...v0.22.2
+[0.22.1]: https://github.com/alle80/griglia/compare/v0.22.0...v0.22.1
+[0.22.0]: https://github.com/alle80/griglia/compare/v0.21.3...v0.22.0
+[0.21.3]: https://github.com/alle80/griglia/compare/v0.21.2...v0.21.3
+[0.21.2]: https://github.com/alle80/griglia/compare/v0.21.1...v0.21.2
+[0.21.1]: https://github.com/alle80/griglia/compare/v0.21.0...v0.21.1
+[0.21.0]: https://github.com/alle80/griglia/compare/v0.20.1...v0.21.0
+[0.20.1]: https://github.com/alle80/griglia/compare/v0.20.0...v0.20.1
+[0.20.0]: https://github.com/alle80/griglia/compare/v0.19.0...v0.20.0
+[0.19.0]: https://github.com/alle80/griglia/compare/v0.18.1...v0.19.0
+[0.18.1]: https://github.com/alle80/griglia/compare/v0.18.0...v0.18.1
+[0.18.0]: https://github.com/alle80/griglia/compare/v0.17.1...v0.18.0
+[0.17.1]: https://github.com/alle80/griglia/compare/v0.17.0...v0.17.1
+[0.17.0]: https://github.com/alle80/griglia/compare/v0.16.1...v0.17.0
+[0.16.1]: https://github.com/alle80/griglia/compare/v0.16.0...v0.16.1
+[0.16.0]: https://github.com/alle80/griglia/compare/v0.15.5...v0.16.0
+[0.15.5]: https://github.com/alle80/griglia/compare/v0.15.4...v0.15.5
+[0.15.4]: https://github.com/alle80/griglia/compare/v0.15.3...v0.15.4
+[0.15.3]: https://github.com/alle80/griglia/compare/v0.15.2...v0.15.3
+[0.15.2]: https://github.com/alle80/griglia/compare/v0.15.1...v0.15.2
+[0.15.1]: https://github.com/alle80/griglia/compare/v0.15.0...v0.15.1
+[0.15.0]: https://github.com/alle80/griglia/compare/v0.14.2...v0.15.0
+[0.14.2]: https://github.com/alle80/griglia/compare/v0.14.1...v0.14.2
+[0.14.1]: https://github.com/alle80/griglia/compare/v0.14.0...v0.14.1
+[0.14.0]: https://github.com/alle80/griglia/compare/v0.13.0...v0.14.0
+[0.13.0]: https://github.com/alle80/griglia/compare/v0.12.2...v0.13.0
+[0.12.2]: https://github.com/alle80/griglia/compare/v0.12.1...v0.12.2
+[0.12.1]: https://github.com/alle80/griglia/compare/v0.12.0...v0.12.1
 [0.12.0]: https://github.com/alle80/griglia/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/alle80/griglia/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/alle80/griglia/compare/v0.9.3...v0.10.0
