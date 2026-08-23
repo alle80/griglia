@@ -1,0 +1,64 @@
+# Dependency updates. Griglia is maintained by one person: the point of this file is that a security
+# release or a broken constraint is noticed by the repository instead of by a user, so the schedule is
+# weekly and the pull requests are grouped — a wall of single-dependency PRs is noise nobody reads.
+#
+# Only development dependencies can be bumped here: the runtime constraints in `composer.json` are wide
+# ranges (`^12.0|^13.0`) that a host application resolves, and Dependabot must not narrow them. Every
+# update runs the full matrix in `tests.yml` before it can be merged.
+version: 2
+
+updates:
+  # Pint, PHPStan, PHPUnit, Testbench — the toolchain the quality gate is made of.
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Rome
+    open-pull-requests-limit: 5
+    versioning-strategy: increase-if-necessary
+    allow:
+      - dependency-type: development
+    groups:
+      dev-tools:
+        patterns: ['*']
+        update-types: [minor, patch]
+    commit-message:
+      prefix: chore
+      include: scope
+    labels: ['dependencies']
+
+  # The actions used by tests.yml and docs.yml. An unmaintained pinned action is how a workflow starts
+  # failing on a runner image change.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Rome
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: ci
+      include: scope
+    labels: ['dependencies']
+
+  # Vite and Tailwind, used to build the precompiled assets shipped in public/build.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+      timezone: Europe/Rome
+    open-pull-requests-limit: 3
+    groups:
+      front-end:
+        patterns: ['*']
+        update-types: [minor, patch]
+    commit-message:
+      prefix: chore
+      include: scope
+    labels: ['dependencies']

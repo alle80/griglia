@@ -1,9 +1,7 @@
 parameters:
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true
     ignoreErrors:
         # Symfony Console declares option values more narrowly than the runtime values accepted here.
-        - { identifier: notIdentical.alwaysTrue, path: src/Console/GrigliaCheck.php }
-        - { identifier: arrayValues.list, path: src/Console/GrigliaCheck.php }
         - { identifier: argument.type, path: src/Console/GrigliaCheck.php }
         # These guarded fallbacks intentionally tolerate partially populated command payloads and missing rows.
         - { identifier: nullCoalesce.offset, path: src/Console/GrigliaCheck.php }
@@ -34,7 +32,6 @@ parameters:
 
         # Defensive nullsafe/fallback branches support older or user-supplied data despite inferred non-null types.
         - { identifier: nullCoalesce.offset, path: src/Http/Controllers/ThemeAssetController.php }
-        - { identifier: nullsafe.neverNull, path: src/Livewire/DashboardTodoList.php }
         - { identifier: nullsafe.neverNull, path: src/Livewire/IngredientModal.php }
         - { identifier: nullsafe.neverNull, path: src/Livewire/StatsPage.php }
         - { identifier: nullsafe.neverNull, path: src/Livewire/ThemedTodoList.php }

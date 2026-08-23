@@ -19,7 +19,9 @@ tests/          orchestra/testbench + phpunit
 
 ```bash
 composer install
+composer qa                        # lint + test + docs:check: the whole gate, in CI's order
 composer lint                      # Laravel Pint + Larastan level 5
+composer format                    # applies the style instead of reporting it
 composer test                      # testbench, sqlite in memory
 vendor/bin/testbench serve         # a bare Laravel app with the package mounted
 npm install && npm run build       # precompiled assets → public/build
@@ -68,8 +70,10 @@ The models resolve their package factory namespace directly, so no factory-name 
 application or in Testbench.
 
 `composer lint` runs formatting checks first and then `vendor/bin/phpstan analyse` on `src/`. Larastan is configured
-at level 5 without a baseline. The small, counted exception list in `phpstan-ignores.neon` documents framework
-inference gaps individually; unmatched exceptions fail the analysis instead of silently becoming permanent debt.
+at level 5 without a baseline. The small exception list in `phpstan-ignores.neon` documents framework inference
+gaps individually, each scoped to one identifier and one file; `reportUnmatchedIgnoredErrors` is on, so an
+exception that stops matching fails the analysis instead of silently becoming permanent debt. The whole policy,
+and what to do when a check fails, is on [Quality standards](quality.md).
 
 ## Releasing
 
@@ -77,11 +81,12 @@ Semantic versioning; every change goes in `CHANGELOG.md` (Keep a Changelog, with
 when relevant). A `vX.Y.Z` tag on GitHub is what Packagist publishes — so the tag is the release. Rebuild
 the precompiled assets before tagging when the CSS/JS or the views changed.
 
-See also [Contributing](contributing.md) and [Building this site](docs-site.md).
+See also [Quality standards](quality.md) — the bar a change has to clear and what each CI job protects —
+[Contributing](contributing.md) and [Building this site](docs-site.md).
 
 ## Verify before opening a change
 
-Run `composer lint`, `composer test`, and `vendor/bin/testbench griglia:docs-build --strict`. Expect zero
+Run `composer qa` (lint, suite, generated pages) and `composer docs:build` for the site. Expect zero
 Pint/PHPStan errors, a green PHPUnit suite, and a strict bilingual docs build. Use an explicit SQLite connection
 if the shell inherits application `DB_*` variables, as described above. Record any missing prerequisite instead
 of reporting an unexecuted check as verified.

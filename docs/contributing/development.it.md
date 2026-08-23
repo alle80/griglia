@@ -19,7 +19,9 @@ tests/          orchestra/testbench + phpunit
 
 ```bash
 composer install
+composer qa                        # lint + test + docs:check: tutto il cancello, nell'ordine della CI
 composer lint                      # Laravel Pint + Larastan livello 5
+composer format                    # applica lo stile invece di segnalarlo
 composer test                      # testbench, sqlite in memoria
 vendor/bin/testbench serve         # un'applicazione Laravel nuda con il package montato
 npm install && npm run build       # asset precompilati → public/build
@@ -70,9 +72,11 @@ I modelli risolvono direttamente il namespace delle factory del package, quindi 
 dei nomi nell'applicazione ospite o in Testbench.
 
 `composer lint` esegue prima i controlli di formattazione e poi `vendor/bin/phpstan analyse` su `src/`. Larastan è
-configurato al livello 5 senza baseline. Il piccolo elenco di eccezioni conteggiate in `phpstan-ignores.neon`
-documenta singolarmente i limiti di inferenza del framework; le eccezioni non più corrispondenti fanno fallire
-l'analisi invece di trasformarsi silenziosamente in debito permanente.
+configurato al livello 5 senza baseline. Il piccolo elenco di eccezioni in `phpstan-ignores.neon` documenta
+singolarmente i limiti di inferenza del framework, ognuna vincolata a un identificatore e a un file;
+`reportUnmatchedIgnoredErrors` è attivo, quindi un'eccezione che smette di corrispondere fa fallire l'analisi
+invece di trasformarsi silenziosamente in debito permanente. La politica completa, e cosa fare quando un
+controllo fallisce, è nella pagina [Standard di qualità](quality.md).
 
 ## Rilasciare
 
@@ -80,11 +84,12 @@ Versionamento semantico; ogni modifica va in `CHANGELOG.md` (Keep a Changelog, c
 quando serve). È il tag `vX.Y.Z` su GitHub quello che Packagist pubblica — quindi il tag è il rilascio.
 Ricompila gli asset precompilati prima di taggare, quando sono cambiati CSS/JS o le viste.
 
-Vedi anche [Contribuire](contributing.md) e [Costruire questo sito](docs-site.md).
+Vedi anche [Standard di qualità](quality.md) — l'asticella che una modifica deve superare e che cosa protegge
+ogni job della CI — [Contribuire](contributing.md) e [Costruire questo sito](docs-site.md).
 
 ## Verificare prima di proporre una modifica
 
-Eseguire `composer lint`, `composer test` e `vendor/bin/testbench griglia:docs-build --strict`. Il risultato
+Eseguire `composer qa` (lint, suite, pagine generate) e `composer docs:build` per il sito. Il risultato
 atteso è zero errori Pint/PHPStan, suite PHPUnit verde e build strict bilingue. Usare una connessione SQLite
 esplicita se la shell eredita variabili `DB_*` dell’applicazione, come descritto sopra. Annotare un prerequisito
 mancante invece di dichiarare verificato un controllo non eseguito.

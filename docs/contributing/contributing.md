@@ -86,8 +86,7 @@ You need PHP 8.3+ and Composer; Node 22 only if you touch the front-end assets.
 git clone https://github.com/alle80/griglia.git
 cd griglia
 composer install
-composer test          # phpunit through orchestra/testbench, SQLite in memory
-composer lint          # Laravel Pint + Larastan level 5
+composer qa            # lint + test + docs:check — everything a pull request must pass
 ```
 
 `vendor/bin/testbench serve` gives you a bare Laravel application with the package mounted, which is the
@@ -96,6 +95,9 @@ Testbench and MySQL recipes, the factories and — read this one before running 
 never be pointed at a real database**.
 
 ## What a change must carry
+
+The whole bar in one page, with what each check protects and what to do when one fails, is
+[Quality standards](quality.md). What follows is the short version.
 
 ### Code
 

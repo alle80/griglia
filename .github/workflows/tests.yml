@@ -4,6 +4,19 @@ on:
   push:
     branches: [master]
   pull_request:
+  workflow_dispatch:
+
+# The workflow only reads the repository: nothing here publishes, comments or tags. Declaring it makes the
+# default token read-only even if the repository default is permissive, which is what a fork's pull request
+# runs with.
+permissions:
+  contents: read
+
+# A new push to the same branch makes the running matrix pointless: cancel it instead of paying for it.
+# Never on master, where a cancelled run would leave the branch without a verdict.
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
   tests:

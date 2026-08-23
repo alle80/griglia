@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.12] - 2026-08-23
+
+### Added
+- **Quality standards, written down** — a new documentation page in English and Italian ([Quality
+  standards](https://alle80.github.io/griglia/contributing/quality/)) states the bar a change has to clear:
+  the seven rules and who checks each of them, the commands to run, what every CI job protects and the local
+  equivalent, the static analysis and dependency policies, the position on coverage, and a table of what a
+  failing check usually means. `CONTRIBUTING.md`, the Contributing page and the Development page link it.
+- **`composer qa`** — one command for the whole gate (`lint`, `test`, `docs:check`), in the order CI runs it
+  and with nothing but PHP and Composer required. New scripts alongside it: `format` (applies Pint instead of
+  reporting), `test:coverage` (needs pcov or xdebug; report in `build/coverage`), `docs:check` (the generated
+  reference pages still match the code) and `docs:build` (the strict bilingual site). Every script now carries
+  a description, so `composer run --list` explains itself.
+- **Dependabot** (`.github/dependabot.yml`) — grouped weekly pull requests for the development toolchain and
+  for the GitHub Actions, monthly ones for the front-end toolchain. Runtime constraints are deliberately
+  excluded: they are wide ranges the host application resolves, and narrowing one would be a breaking change.
+
+### Changed
+- `tests.yml` declares a read-only token, adds `workflow_dispatch`, and cancels a run superseded by a new push
+  on the same branch — never on `master`, where every commit keeps a verdict of its own.
+- PHPStan now reports unmatched ignore entries (`reportUnmatchedIgnoredErrors: true`), which is what the
+  documentation already claimed. Three entries that no longer matched anything were removed, one of them for a
+  file deleted long ago; the analysis stays green at level 5 without a baseline.
+
+### Documentation
+- The Development page no longer describes the ignore list as *counted*, and points to the new quality page
+  for the whole policy.
+- `QualityStandardsTest` guards the setup itself: the Composer scripts and their descriptions, what `qa` runs,
+  the workflow jobs and permissions, the Dependabot ecosystems, the presence of the page in both languages and
+  in the navigation, and that no ignore entry excuses a file that no longer exists.
+
 ## [0.89.11] - 2026-08-23
 
 ### Documentation

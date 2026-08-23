@@ -16,9 +16,12 @@ happens after you open it — live on the documentation site and are not duplica
 git clone https://github.com/alle80/griglia.git
 cd griglia
 composer install
-composer lint    # Laravel Pint + Larastan level 5
-composer test    # phpunit through orchestra/testbench, SQLite in memory
+composer qa      # lint + test + docs:check: everything a pull request must pass
 ```
+
+`composer qa` is Pint, PHPStan level 5, the PHPUnit suite through Testbench on in-memory SQLite, and the check
+that the generated reference pages still match the code. The bar it enforces — and what is deliberately left
+to review — is the [quality standards page](docs/contributing/quality.md).
 
 Never point the test suite at a database that holds real data — the [development
 guide](docs/contributing/development.md) explains the guard that stops it.

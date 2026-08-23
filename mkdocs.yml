@@ -121,6 +121,7 @@ plugins:
             Code of conduct: Codice di condotta
             License: Licenza
             Development: Sviluppo
+            Quality standards: Standard di qualità
             Building this site: Costruire questo sito
             Translations: Traduzioni
   - search
@@ -188,5 +189,6 @@ nav:
       - Code of conduct: contributing/code-of-conduct.md
       - License: contributing/license.md
       - Development: contributing/development.md
+      - Quality standards: contributing/quality.md
       - Building this site: contributing/docs-site.md
       - Translations: contributing/translations.md

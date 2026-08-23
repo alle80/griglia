@@ -91,8 +91,7 @@ Servono PHP 8.3+ e Composer; Node 22 solo se tocchi gli asset di front-end.
 git clone https://github.com/alle80/griglia.git
 cd griglia
 composer install
-composer test          # phpunit via orchestra/testbench, SQLite in memoria
-composer lint          # Laravel Pint + Larastan livello 5
+composer qa            # lint + test + docs:check — tutto quello che una pull request deve superare
 ```
 
 `vendor/bin/testbench serve` ti dà un'applicazione Laravel spoglia con il package montato: è il modo più
@@ -101,6 +100,9 @@ repository, le ricette per Testbench e MySQL, le factory e — questa leggila pr
 **perché la suite non deve mai puntare a un database vero**.
 
 ## Che cosa deve portare con sé una modifica
+
+L'asticella completa, con quello che protegge ogni controllo e cosa fare quando uno fallisce, è la pagina
+[Standard di qualità](quality.md). Qui c'è la versione breve.
 
 ### Codice
 
