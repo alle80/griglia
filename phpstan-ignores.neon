@@ -3,13 +3,17 @@ parameters:
     ignoreErrors:
         # Symfony Console declares option values more narrowly than the runtime values accepted here.
         - { identifier: argument.type, path: src/Console/GrigliaCheck.php }
+        # Larastan reports these two only when it finds a booted Testbench skeleton that already registers the
+        # package (after `composer docs:check`), and not on a clean checkout — so neither state may fail the run.
+        - { identifier: notIdentical.alwaysTrue, path: src/Console/GrigliaCheck.php, reportUnmatched: false }
+        - { identifier: arrayValues.list, path: src/Console/GrigliaCheck.php, reportUnmatched: false }
         # These guarded fallbacks intentionally tolerate partially populated command payloads and missing rows.
         - { identifier: nullCoalesce.offset, path: src/Console/GrigliaCheck.php }
         - { identifier: nullsafe.neverNull, path: src/Console/GrigliaCheck.php }
 
         # Eloquent relation create/find/query results keep the concrete model at runtime; Larastan loses it here.
         # Livewire render methods select registered package views dynamically.
-        - { identifier: argument.type, message: '#Parameter \#1 \$view of function view expects view-string\|null, string given\.#', path: src/Livewire/* }
+        - { identifier: argument.type, message: '#Parameter \#1 \$view of function view expects view-string\|null, string given\.#', path: src/Livewire/*, reportUnmatched: false }
 
         - { identifier: return.type, path: src/Domain/ReviewWorkflow.php }
         - { identifier: method.notFound, path: src/Livewire/ChecklistSwitcher.php }

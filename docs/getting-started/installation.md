@@ -35,7 +35,8 @@ they do not already exist.
 
 Sign in to the host application and open `/`. Griglia should display a first list. Routes are registered behind
 the `web` middleware and Griglia's access middleware; in `server` mode an unauthenticated request redirects to
-the host login route.
+the host login route — an application with no authentication at all answers `Route [login] not defined`, so
+add a login flow first or, on a trusted machine, use `GRIGLIA_MODE=local`.
 
 If `/` belongs to the host application, publish `griglia.php`, disable `home_route`, and use the configured
 dashboard route instead. See [access and modes](../configuration/access.md) for gates, administrators and local
@@ -94,6 +95,7 @@ Web Push requires HTTPS, VAPID keys and a user model with the subscription trait
 |---|---|---|
 | Composer reports a `brick/math` conflict | transitive packages are locked | repeat the require command with `-W` |
 | `/` redirects to login | normal `server`-mode protection | sign in or configure access deliberately |
+| `/` answers 500 with `Route [login] not defined` | the host application has no authentication at all | add a starter kit or a route named `login`, or use `GRIGLIA_MODE=local` on a trusted machine |
 | `/` is 404 after installation | stale route cache | run `php artisan route:cache` or clear the cache during setup |
 | CSS or JavaScript is missing | assets were not published or mode is inconsistent | republish `laravel-assets` or follow the Vite guide |
 | The agent list is empty | its name differs from `GRIGLIA_AGENT_LIST` | rename the list or update the configuration |

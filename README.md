@@ -59,7 +59,8 @@ result you can read. Nothing is hidden in a terminal you were not watching.
 
 - PHP 8.3 or later, Laravel 12 or 13, and Livewire 4.4 or later
 - `ext-gd`, `ext-fileinfo` and `ext-zip`
-- an authenticated user in the default `server` mode
+- a login route and an authenticated user in the default `server` mode — without any authentication the host
+  application answers `Route [login] not defined`; `GRIGLIA_MODE=local` removes the requirement on a trusted machine
 - Tailwind CSS 4 only when choosing the optional `vite` asset mode
 
 Optional integrations include `laravel/ai` for image descriptions, plans and transcription, and a Laravel

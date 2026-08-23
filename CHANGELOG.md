@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.89.20] - 2026-08-23
+
+### Fixed
+- **The `tests` badge is green again.** `v0.89.19` was tagged without regenerating the link block at the end
+  of this file, so `ReleaseProcessTest` failed on `master` and on every fresh clone — the first thing an
+  external contributor runs (`composer qa`) came back red for a reason that had nothing to do with their
+  change. The block is regenerated, and the release procedure now refreshes it before tagging instead of
+  trusting a manual step.
+- **`composer qa` survives being run twice.** The suite leaves the Testbench skeleton without this package, so
+  the next `composer docs:check` answered `There are no commands defined in the "griglia" namespace`; it now
+  rebuilds the manifest first. The mirror image of the same state made PHPStan report three errors CI never
+  sees, because Larastan analyses a skeleton that registers the package: those three exceptions are now
+  tolerated in either state (`reportUnmatched: false`) instead of failing the run.
+
+### Added
+- **Troubleshooting: `Route [login] not defined`** (EN+IT). Installing the package into a Laravel application
+  that has no authentication at all and opening `/` answers 500, because `server` mode redirects to a `login`
+  route that does not exist. The page, the installation tutorial and the README requirements now name the
+  symptom and the two ways out: add a login flow, or `GRIGLIA_MODE=local` on a trusted machine.
+- `private_vulnerability_reporting` is part of `.github/repository.json` and of `repo-metadata.php`, so the
+  private reporting channel that `SECURITY.md` and the issue templates point at is checked like the other
+  repository metadata instead of depending on a switch somebody remembered to flip.
+
 ## [0.89.19] - 2026-08-23
 
 ### Changed
@@ -2238,7 +2261,9 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.18...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.20...HEAD
+[0.89.20]: https://github.com/alle80/griglia/compare/v0.89.19...v0.89.20
+[0.89.19]: https://github.com/alle80/griglia/compare/v0.89.18...v0.89.19
 [0.89.18]: https://github.com/alle80/griglia/compare/v0.89.17...v0.89.18
 [0.89.17]: https://github.com/alle80/griglia/compare/v0.89.16...v0.89.17
 [0.89.16]: https://github.com/alle80/griglia/compare/v0.89.15...v0.89.16

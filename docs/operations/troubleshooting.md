@@ -9,6 +9,14 @@ ships `0.18`. Install with `-W` so composer may downgrade that single transitive
 composer require alle80/griglia -W
 ```
 
+## Opening `/` answers 500: `Route [login] not defined`
+
+In `server` mode an unauthenticated visitor is sent to the host application's `login` route, and a Laravel
+application installed without a starter kit does not have one — so the redirect throws instead of showing a
+form. Add an authentication flow (a Laravel starter kit, Breeze, Fortify, or your own route named `login`) and
+sign in. On a trusted machine you can also skip authentication entirely with `GRIGLIA_MODE=local`, which makes
+lists global: never expose that mode to a network.
+
 ## The board has no styles, or the drag & drop does nothing
 
 The assets are not in place. In `precompiled` mode run

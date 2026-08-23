@@ -70,7 +70,9 @@ esistente dietro una spunta verde e cresce in silenzio; l'alternativa è la picc
   problema diverso da un'altra parte;
 - `reportUnmatchedIgnoredErrors` resta attivo, quindi un'eccezione che smette di corrispondere — perché il
   codice è stato sistemato o il file è stato cancellato — **fa fallire** l'analisi invece di diventare debito
-  permanente;
+  permanente; le tre voci marcate `reportUnmatched: false` sono l'eccezione all'eccezione: Larastan le segnala
+  solo quando trova uno scheletro Testbench che registra già il package, quindi pretendere che corrispondano
+  farebbe dipendere il risultato dall'ultimo comando lanciato;
 - ogni voce dichiara quale limite di inferenza del framework sta aggirando, nel commento sopra il suo gruppo.
 
 Alzare il livello è benvenuto come pull request a sé, mai come effetto collaterale di una funzione.

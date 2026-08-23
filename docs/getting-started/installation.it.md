@@ -35,7 +35,8 @@ sottoscrizioni push.
 
 Accedere all'applicazione ospite e aprire `/`. Griglia deve mostrare una prima lista. Le rotte usano il middleware
 `web` e il middleware di accesso di Griglia; in modalità `server` una richiesta non autenticata viene reindirizzata
-al login dell'applicazione.
+al login dell'applicazione — un'applicazione senza nessuna autenticazione risponde `Route [login] not defined`,
+quindi aggiungere prima un flusso di login oppure, su una macchina fidata, usare `GRIGLIA_MODE=local`.
 
 Se `/` appartiene già all'applicazione ospite, pubblicare `griglia.php`, disattivare `home_route` e usare la rotta
 dashboard configurata. Consultare [accessi e modalità](../configuration/access.md) per gate, amministratori e
@@ -95,6 +96,7 @@ Web Push richiede HTTPS, chiavi VAPID e il trait di sottoscrizione sul modello u
 |---|---|---|
 | Composer segnala un conflitto su `brick/math` | dipendenze transitive bloccate | ripetere il comando con `-W` |
 | `/` reindirizza al login | protezione normale della modalità `server` | autenticarsi o configurare l'accesso intenzionalmente |
+| `/` risponde 500 con `Route [login] not defined` | l'applicazione ospite non ha nessuna autenticazione | aggiungere uno starter kit o una rotta chiamata `login`, oppure usare `GRIGLIA_MODE=local` su una macchina fidata |
 | `/` restituisce 404 dopo l'installazione | cache delle rotte vecchia | eseguire `php artisan route:cache` o pulire la cache durante il setup |
 | CSS o JavaScript mancano | asset non pubblicati o modalità incoerente | ripubblicare `laravel-assets` o seguire la guida Vite |
 | La lista dell'agente è vuota | il nome non coincide con `GRIGLIA_AGENT_LIST` | rinominare la lista o aggiornare la configurazione |

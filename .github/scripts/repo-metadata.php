@@ -24,6 +24,9 @@ $apply = in_array('--apply', array_slice($argv, 1), true);
 /** The keys of `repository.json` that PATCH /repos accepts, in the order they are shown. */
 const PATCHABLE = ['description', 'homepage', 'has_issues', 'has_discussions', 'has_wiki', 'has_projects'];
 
+/** Private vulnerability reporting is not in PATCH /repos: it has an endpoint of its own. */
+const VULNERABILITY_REPORTING = 'private_vulnerability_reporting';
+
 function fail(string $message): never
 {
     fwrite(STDERR, $message.PHP_EOL);
@@ -60,6 +63,12 @@ foreach (PATCHABLE as $key) {
     }
 }
 
+$liveReporting = json_decode(gh('api', 'repos/'.$repository.'/'.str_replace('_', '-', VULNERABILITY_REPORTING)), true);
+
+if (($liveReporting['enabled'] ?? null) !== $wanted[VULNERABILITY_REPORTING]) {
+    $differences[VULNERABILITY_REPORTING] = [$liveReporting['enabled'] ?? null, $wanted[VULNERABILITY_REPORTING]];
+}
+
 $liveTopics = $live['topics'] ?? [];
 sort($liveTopics);
 $wantedTopics = $wanted['topics'];
@@ -70,7 +79,7 @@ if ($liveTopics !== $wantedTopics) {
 }
 
 if ($differences === []) {
-    echo "{$repository}: description, homepage, topics and features already match .github/repository.json".PHP_EOL;
+    echo "{$repository}: description, homepage, topics, features and security reporting already match .github/repository.json".PHP_EOL;
     exit(0);
 }
 
@@ -93,6 +102,9 @@ foreach (PATCHABLE as $key) {
 }
 
 gh(...array_slice($patch, 1));
+
+gh('api', '-X', $wanted[VULNERABILITY_REPORTING] ? 'PUT' : 'DELETE',
+    'repos/'.$repository.'/'.str_replace('_', '-', VULNERABILITY_REPORTING));
 
 $topics = ['api', '-X', 'PUT', 'repos/'.$repository.'/topics'];
 

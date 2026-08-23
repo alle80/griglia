@@ -163,8 +163,34 @@ class ReleaseProcessTest extends TestCase
             trim($generated),
             implode("\n", $block),
             'the link block at the end of CHANGELOG.md is stale: regenerate it with '
-            .'`php '.self::SCRIPT.' --links`'
+            .'`php '.self::SCRIPT.' --links --write`'
         );
+    }
+
+    /**
+     * The block is refreshed by a command, not by hand: a release that forgets it turns `master` red for
+     * everybody, which is exactly how v0.89.19 shipped.
+     */
+    public function test_the_link_block_can_be_written_back(): void
+    {
+        $copy = tempnam(sys_get_temp_dir(), 'changelog');
+        file_put_contents($copy, "# Changelog\n\n## [Unreleased]\n\n## [1.1.0] - 2026-01-02\n\n## [1.0.0] - 2026-01-01\n\n[Unreleased]: https://example.test/stale\n");
+
+        [$status, $output] = $this->notes('--links', '--write', '--file='.$copy);
+        $written = (string) file_get_contents($copy);
+
+        $this->assertSame(0, $status);
+        $this->assertStringContainsString('refreshed', $output);
+        $this->assertStringNotContainsString('example.test/stale', $written);
+        $this->assertStringContainsString('[1.1.0]: https://github.com/alle80/griglia/compare/v1.0.0...v1.1.0', $written);
+        $this->assertStringContainsString('[1.0.0]: https://github.com/alle80/griglia/releases/tag/v1.0.0', $written);
+
+        [, $again] = $this->notes('--links', '--write', '--file='.$copy);
+
+        $this->assertStringContainsString('already up to date', $again, 'writing twice must change nothing');
+        $this->assertSame($written, (string) file_get_contents($copy));
+
+        unlink($copy);
     }
 
     public function test_every_released_version_has_a_link_definition(): void

@@ -89,8 +89,14 @@
         "format": "vendor/bin/pint",
         "test": "vendor/bin/phpunit",
         "test:coverage": "@php -d pcov.enabled=1 -d xdebug.mode=coverage vendor/bin/phpunit --coverage-text --coverage-html=build/coverage",
-        "docs:check": "vendor/bin/testbench griglia:docs-generate --check",
-        "docs:build": "vendor/bin/testbench griglia:docs-build --strict",
+        "docs:check": [
+            "vendor/bin/testbench package:discover --quiet",
+            "vendor/bin/testbench griglia:docs-generate --check"
+        ],
+        "docs:build": [
+            "vendor/bin/testbench package:discover --quiet",
+            "vendor/bin/testbench griglia:docs-build --strict"
+        ],
         "qa": [
             "@lint",
             "@test",
@@ -102,7 +108,7 @@
         "format": "Applies the coding style instead of only reporting it.",
         "test": "The PHPUnit suite through Testbench, on in-memory SQLite.",
         "test:coverage": "The suite with a code coverage report; needs the pcov or xdebug extension.",
-        "docs:check": "Fails when the generated reference pages no longer match the code.",
+        "docs:check": "Fails when the generated reference pages no longer match the code (it rebuilds the Testbench manifest first: the suite leaves it without this package).",
         "docs:build": "Builds the bilingual documentation site with MkDocs, warnings treated as errors.",
         "qa": "Everything a pull request must pass, in the order CI runs it."
     },

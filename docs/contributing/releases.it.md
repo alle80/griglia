@@ -55,8 +55,9 @@ diversi.
 Anche le definizioni dei link che chiudono il file sono generate:
 
 ```bash
-php .github/scripts/changelog-notes.php --links   # tutto il blocco [x.y.z]: …/compare/…
-php .github/scripts/changelog-notes.php 0.89.12   # le note di una versione, come vengono pubblicate
+php .github/scripts/changelog-notes.php --links           # stampa tutto il blocco [x.y.z]: …/compare/…
+php .github/scripts/changelog-notes.php --links --write   # lo riscrive in fondo al changelog
+php .github/scripts/changelog-notes.php 0.89.12           # le note di una versione, come vengono pubblicate
 ```
 
 `ReleaseProcessTest` fallisce se il blocco non corrisponde più, quindi non può marcire in silenzio.
@@ -68,10 +69,10 @@ Quattro passi a mano, poi prosegue GitHub.
 ```bash
 # 1. Sposta le voci di Unreleased sotto un titolo loro, con la data di oggi.
 #    ## [0.90.0] - 2026-08-23
-php .github/scripts/changelog-notes.php --links   # 2. rigenera il blocco di link in fondo al file
+php .github/scripts/changelog-notes.php --links --write   # 2. rigenera il blocco di link in fondo al file
 
-npm run build                                     # 3. solo se sono cambiati CSS, JS o viste
-composer qa                                       # 4. stile, suite, pagine di reference generate
+npm run build                                             # 3. solo se sono cambiati CSS, JS o viste
+composer qa                                               # 4. stile, suite, pagine di reference generate
 
 git tag v0.90.0 && git push origin master v0.90.0
 ```
@@ -102,8 +103,8 @@ quotidiana.
 
 ## Metadati del repository
 
-Descrizione, homepage, topic e gli interruttori delle funzioni del repository GitHub non stanno nel codice,
-quindi invecchiano senza che nessuno se ne accorga. Stanno in
+Descrizione, homepage, topic, gli interruttori delle funzioni e la segnalazione privata delle vulnerabilità non
+stanno nel codice, quindi invecchiano senza che nessuno se ne accorga. Stanno in
 [`.github/repository.json`](https://github.com/alle80/griglia/blob/master/.github/repository.json), e li
 applica uno script:
 

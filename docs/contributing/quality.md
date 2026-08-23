@@ -68,7 +68,10 @@ alternative, and it is deliberately uncomfortable to use:
 - every entry is scoped to one error identifier **and** one file, so it cannot quietly cover a different
   problem somewhere else;
 - `reportUnmatchedIgnoredErrors` stays on, so an exception that stops matching — because the code was fixed,
-  or the file was deleted — **fails** the analysis instead of becoming permanent debt;
+  or the file was deleted — **fails** the analysis instead of becoming permanent debt; the three entries marked
+  `reportUnmatched: false` are the exception to the exception: Larastan only reports them when it finds a
+  Testbench skeleton that already registers the package, so requiring them to match would make the result
+  depend on which command you ran last;
 - each entry says which framework inference gap it works around, in a comment above its group.
 
 Raising the level is welcome as its own pull request, never as a side effect of a feature.

@@ -52,8 +52,9 @@ different ways.
 The link definitions that close the file are generated too:
 
 ```bash
-php .github/scripts/changelog-notes.php --links   # the whole [x.y.z]: …/compare/… block
-php .github/scripts/changelog-notes.php 0.89.12   # the notes for one version, as published
+php .github/scripts/changelog-notes.php --links           # print the whole [x.y.z]: …/compare/… block
+php .github/scripts/changelog-notes.php --links --write   # write it back at the end of the changelog
+php .github/scripts/changelog-notes.php 0.89.12           # the notes for one version, as published
 ```
 
 `ReleaseProcessTest` fails when the block no longer matches, so it cannot silently rot.
@@ -65,10 +66,10 @@ Four manual steps, then GitHub takes over.
 ```bash
 # 1. Move the Unreleased entries under a heading of their own, dated today.
 #    ## [0.90.0] - 2026-08-23
-php .github/scripts/changelog-notes.php --links   # 2. refresh the link block at the end of the file
+php .github/scripts/changelog-notes.php --links --write   # 2. refresh the link block at the end of the file
 
-npm run build                                     # 3. only when CSS, JS or views changed
-composer qa                                       # 4. lint, suite, generated reference pages
+npm run build                                             # 3. only when CSS, JS or views changed
+composer qa                                               # 4. lint, suite, generated reference pages
 
 git tag v0.90.0 && git push origin master v0.90.0
 ```
@@ -97,8 +98,8 @@ next release — and it is the reason `master` shows tags and merges rather than
 
 ## Repository metadata
 
-Description, homepage, topics and the feature switches of the GitHub repository are not in the code, so they
-drift without anybody noticing. They live in
+Description, homepage, topics, the feature switches and private vulnerability reporting are not in the code,
+so they drift without anybody noticing. They live in
 [`.github/repository.json`](https://github.com/alle80/griglia/blob/master/.github/repository.json), and a
 script writes them:
 

@@ -10,6 +10,14 @@ indiretta:
 composer require alle80/griglia -W
 ```
 
+## Aprendo `/` arriva un 500: `Route [login] not defined`
+
+In modalità `server` chi non è autenticato viene mandato alla rotta `login` dell'applicazione ospite, e
+un'applicazione Laravel installata senza starter kit non ce l'ha: il redirect solleva un'eccezione invece di
+mostrare un modulo. Aggiungi un flusso di autenticazione (uno starter kit di Laravel, Breeze, Fortify o una tua
+rotta chiamata `login`) e accedi. Su una macchina fidata puoi anche saltare del tutto l'autenticazione con
+`GRIGLIA_MODE=local`, che rende le liste globali: non esporre mai quella modalità in rete.
+
 ## La board è senza stili, o il trascinamento non fa niente
 
 Gli asset non sono al loro posto. In modalità `precompiled` lancia

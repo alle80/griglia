@@ -12,11 +12,12 @@
  *   php .github/scripts/changelog-notes.php v0.89.12 --previous  # the version released before it
  *   php .github/scripts/changelog-notes.php 0.89.12 --date       # its release date
  *   php .github/scripts/changelog-notes.php --links              # the whole link reference block
+ *   php .github/scripts/changelog-notes.php --links --write      # …written back into the changelog
  *
  * Options: --previous (print the preceding released version instead of the notes, nothing when it is the
  * first one) · --date (print the release date) · --links (print the `[x.y.z]: …compare…` block that closes
- * the changelog, so it never has to be maintained by hand; takes no version) · --file=PATH (another
- * changelog).
+ * the changelog, so it never has to be maintained by hand; takes no version) · --write (with --links, replace
+ * the block at the end of the file instead of printing it) · --file=PATH (another changelog).
  *
  * Exit codes: 0 found · 2 wrong usage · 3 no section for that version.
  */
@@ -24,14 +25,17 @@ $args = array_slice($argv, 1);
 $version = null;
 $file = dirname(__DIR__, 2).'/CHANGELOG.md';
 $want = 'notes';
+$write = false;
 
 foreach ($args as $arg) {
     if ($arg === '--previous' || $arg === '--date' || $arg === '--links') {
         $want = ltrim($arg, '-');
+    } elseif ($arg === '--write') {
+        $write = true;
     } elseif (str_starts_with($arg, '--file=')) {
         $file = substr($arg, 7);
     } elseif ($arg === '-h' || $arg === '--help') {
-        fwrite(STDOUT, "usage: changelog-notes.php <version> [--previous] [--date] [--file=PATH]\n");
+        fwrite(STDOUT, "usage: changelog-notes.php <version> [--previous] [--date] [--links [--write]] [--file=PATH]\n");
         exit(0);
     } elseif ($version === null && ! str_starts_with($arg, '-')) {
         $version = ltrim($arg, 'v');
@@ -104,7 +108,22 @@ if ($want === 'links') {
             : "[{$released}]: {$repository}/compare/v{$previous}...v{$released}\n";
     }
 
-    fwrite(STDOUT, $out);
+    if (! $write) {
+        fwrite(STDOUT, $out);
+        exit(0);
+    }
+
+    // --write puts the block back where it belongs: the tail of the file, replacing the previous one.
+    $body = $lines;
+
+    while ($body !== [] && (trim((string) end($body)) === '' || preg_match('/^\[[^\]]+\]:\s+http/', (string) end($body)))) {
+        array_pop($body);
+    }
+
+    $updated = rtrim(implode("\n", $body))."\n\n".$out;
+    $changed = file_get_contents($file) !== $updated;
+    file_put_contents($file, $updated);
+    fwrite(STDOUT, $changed ? "link block refreshed in {$file}\n" : "link block already up to date\n");
     exit(0);
 }
 

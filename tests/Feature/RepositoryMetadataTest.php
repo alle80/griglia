@@ -52,7 +52,7 @@ class RepositoryMetadataTest extends TestCase
         $this->assertSame(self::SITE, $metadata['homepage'], 'the homepage is the documentation site');
         $this->assertSame(self::SOCIAL_PREVIEW, $metadata['social_preview']);
 
-        foreach (['has_issues' => true, 'has_discussions' => true, 'has_wiki' => false, 'has_projects' => false] as $feature => $expected) {
+        foreach (['has_issues' => true, 'has_discussions' => true, 'has_wiki' => false, 'has_projects' => false, 'private_vulnerability_reporting' => true] as $feature => $expected) {
             $this->assertSame($expected, $metadata[$feature], "{$feature} is part of the decision, not a default");
         }
     }
@@ -192,6 +192,7 @@ class RepositoryMetadataTest extends TestCase
         $this->assertStringContainsString('.github/repository.json', $script);
         $this->assertStringContainsString('--apply', $script);
         $this->assertStringContainsString('/topics', $script, 'topics need their own endpoint');
+        $this->assertStringContainsString('private_vulnerability_reporting', $script, 'security reporting needs its own endpoint');
         $this->assertTrue(is_executable($this->root().'/.github/scripts/repo-metadata.php'));
     }
 }
