@@ -38,15 +38,56 @@ def project_root():
 
 REPO = project_root()
 CONTAINER = os.environ.get('GRIGLIA_CONTAINER', 'laravel-dev-app')
-# Artisan transport: 'docker' (default, `docker exec <container>`) or 'local' (PHP on the host, no Docker)
-TRANSPORT = os.environ.get('GRIGLIA_TRANSPORT', 'docker')
+# Artisan transport: 'auto' (default: the container when it is running, PHP on this machine otherwise),
+# 'docker' (`docker exec <container>`) or 'local' (`php artisan` from the project root, no Docker at all)
+TRANSPORT = os.environ.get('GRIGLIA_TRANSPORT', 'auto')
+_TRANSPORT = None
+
+
+def container_running():
+    """True when the Docker daemon answers and $GRIGLIA_CONTAINER is up; false on any failure (no docker
+    binary, daemon down, container stopped) — that is the signal to fall back to PHP on this machine."""
+    try:
+        probe = subprocess.run(['docker', 'inspect', '-f', '{{.State.Running}}', CONTAINER],
+                               text=True, capture_output=True, timeout=20)
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return probe.returncode == 0 and probe.stdout.strip() == 'true'
+
+
+def transport():
+    """The transport actually in use, decided once per run: GRIGLIA_TRANSPORT when it names one, otherwise
+    Docker only if the container answers. So a machine without Docker — Laravel served by `composer dev`,
+    Apache or nginx — works out of the box, as long as `artisan` sits in the project root."""
+    global _TRANSPORT
+    if _TRANSPORT is None:
+        if TRANSPORT in ('docker', 'local'):
+            _TRANSPORT = TRANSPORT
+        elif container_running():
+            _TRANSPORT = 'docker'
+        else:
+            _TRANSPORT = 'local' if os.path.isfile(os.path.join(REPO, 'artisan')) else 'docker'
+    return _TRANSPORT
 
 
 def artisan_command(*args):
-    """`php artisan …` through `docker exec` or, with GRIGLIA_TRANSPORT=local, with GRIGLIA_PHP on the host."""
-    if TRANSPORT == 'local':
+    """`php artisan …` through `docker exec` or, with the local transport, with GRIGLIA_PHP on this machine."""
+    if transport() == 'local':
         return [os.environ.get('GRIGLIA_PHP', 'php'), 'artisan', *args]
     return ['docker', 'exec', CONTAINER, 'php', 'artisan', *args]
+
+
+def artisan_cwd():
+    """Working directory of Artisan: the project root when PHP runs here, the container's own when it is Docker."""
+    return REPO if transport() == 'local' else None
+
+
+def transport_hint():
+    """One line naming the transport that just failed and the variable that changes it."""
+    if transport() == 'local':
+        php = os.environ.get('GRIGLIA_PHP', 'php')
+        return f'artisan ran here as `{php} artisan` in {REPO}: set GRIGLIA_PHP, or GRIGLIA_TRANSPORT=docker to use a container'
+    return f'artisan ran through `docker exec {CONTAINER}`: set GRIGLIA_CONTAINER, or GRIGLIA_TRANSPORT=local to use PHP on this machine'
 
 
 # Claude Code stores transcripts under ~/.claude/projects/<repo path with / replaced by ->/
@@ -71,7 +112,10 @@ def parse_ts(s: str) -> datetime:
 
 
 def working_since_of(todo_id: int) -> str:
-    out = subprocess.check_output(artisan_command('griglia:check', '--json', '--all'), text=True, cwd=REPO if TRANSPORT == 'local' else None)
+    try:
+        out = subprocess.check_output(artisan_command('griglia:check', '--json', '--all'), text=True, cwd=artisan_cwd())
+    except (OSError, subprocess.CalledProcessError) as e:
+        sys.exit(f'cannot read the board: {e}\n{transport_hint()}')
     for t in json.loads(out):
         if int(t['id']) == todo_id:
             if not t.get('working_since'):

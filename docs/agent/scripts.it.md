@@ -17,20 +17,22 @@ php artisan vendor:publish --tag=griglia-scripts   # → scripts/ nel tuo proget
 | `agent-status.py` | legge le credenziali OAuth dell'agente e manda **solo percentuali** delle finestre del piano | `griglia:agent-status-import` |
 | `griglia-agent-worker.py` | controlla il lavoro assegnato e lancia Codex, Claude Code o una CLI a scelta; il template systemd lo tiene vivo | `griglia:check` |
 
-A tutti gli script sull'host serve `python3`, e raggiungono Artisan attraverso uno di due **trasporti**. Quello
-di default è Docker (`docker exec <container> php artisan`, container da `GRIGLIA_CONTAINER`, di default
-`laravel-dev-app`); dove Laravel gira direttamente sulla macchina, imposta `GRIGLIA_TRANSPORT=local` e gli
-script eseguiranno `php artisan` dalla radice del progetto, con `GRIGLIA_PHP` a dire qual è l'eseguibile quando
-non è semplicemente `php`:
+A tutti gli script sull'host serve `python3`, e raggiungono Artisan attraverso un **trasporto**, scelto da
+`GRIGLIA_TRANSPORT`: `docker` (`docker exec <container> php artisan`, container da `GRIGLIA_CONTAINER`, di
+default `laravel-dev-app`), `local` (`php artisan` dalla radice del progetto, con `GRIGLIA_PHP` a dire qual è
+l'eseguibile quando non è semplicemente `php`) oppure — il default — `auto`, che usa il container quando è in
+esecuzione e altrimenti PHP su questa macchina. Un host senza Docker fa girare tutta la catena senza nessuna
+configurazione; fissa la scelta dove la verifica è solo peso o dove i due ambienti convivono:
 
 ```dotenv
 GRIGLIA_TRANSPORT=local
 GRIGLIA_PHP=/usr/bin/php8.4
 ```
 
-Quindi basta un host senza Docker per far girare tutta la catena. Gli script di sincronizzazione hanno modalità
-«stampa» e «controlla»; al worker invece serve accesso al trasporto scelto **e** alla CLI dell'agente che
-lancia. Legge le stesse due variabili e accetta valori diversi per ogni istanza — vedi
+I dettagli e tutto il resto che cambia fuori da un container stanno in
+[Usare Griglia senza Docker](../getting-started/without-docker.md). Gli script di sincronizzazione hanno
+modalità «stampa» e «controlla»; al worker invece serve accesso al trasporto scelto **e** alla CLI dell'agente
+che lancia. Legge le stesse variabili e accetta valori diversi per ogni istanza — vedi
 [Worker persistenti](workers.md).
 
 ## Dove pensano di essere

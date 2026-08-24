@@ -12,7 +12,7 @@ carries `agents` (the GRIGLIA_AGENTS keys allowed to use it, inferred from the f
 ~/.agents/skills is the folder shared between different CLIs → no constraint; the same skill found in several folders
 merges the agents.
 
-Usage:  scripts/sync-skills.py            # import into the container (docker exec -i … griglia:skills-import)
+Usage:  scripts/sync-skills.py            # collect and import them (griglia:skills-import, see GRIGLIA_TRANSPORT)
         scripts/sync-skills.py --print    # only print the JSON
 """
 import glob, json, os, re, subprocess, sys
@@ -35,15 +35,56 @@ def project_root():
 HOME = os.path.expanduser('~')
 ROOT = project_root()
 CONTAINER = os.environ.get('GRIGLIA_CONTAINER', 'laravel-dev-app')
-# Artisan transport: 'docker' (default, `docker exec <container>`) or 'local' (PHP on the host, no Docker)
-TRANSPORT = os.environ.get('GRIGLIA_TRANSPORT', 'docker')
+# Artisan transport: 'auto' (default: the container when it is running, PHP on this machine otherwise),
+# 'docker' (`docker exec <container>`) or 'local' (`php artisan` from the project root, no Docker at all)
+TRANSPORT = os.environ.get('GRIGLIA_TRANSPORT', 'auto')
+_TRANSPORT = None
+
+
+def container_running():
+    """True when the Docker daemon answers and $GRIGLIA_CONTAINER is up; false on any failure (no docker
+    binary, daemon down, container stopped) — that is the signal to fall back to PHP on this machine."""
+    try:
+        probe = subprocess.run(['docker', 'inspect', '-f', '{{.State.Running}}', CONTAINER],
+                               text=True, capture_output=True, timeout=20)
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return probe.returncode == 0 and probe.stdout.strip() == 'true'
+
+
+def transport():
+    """The transport actually in use, decided once per run: GRIGLIA_TRANSPORT when it names one, otherwise
+    Docker only if the container answers. So a machine without Docker — Laravel served by `composer dev`,
+    Apache or nginx — works out of the box, as long as `artisan` sits in the project root."""
+    global _TRANSPORT
+    if _TRANSPORT is None:
+        if TRANSPORT in ('docker', 'local'):
+            _TRANSPORT = TRANSPORT
+        elif container_running():
+            _TRANSPORT = 'docker'
+        else:
+            _TRANSPORT = 'local' if os.path.isfile(os.path.join(ROOT, 'artisan')) else 'docker'
+    return _TRANSPORT
 
 
 def artisan_command(*args):
-    """`php artisan …` through `docker exec` or, with GRIGLIA_TRANSPORT=local, with GRIGLIA_PHP on the host."""
-    if TRANSPORT == 'local':
+    """`php artisan …` through `docker exec` or, with the local transport, with GRIGLIA_PHP on this machine."""
+    if transport() == 'local':
         return [os.environ.get('GRIGLIA_PHP', 'php'), 'artisan', *args]
     return ['docker', 'exec', '-i', '-u', os.environ.get('GRIGLIA_USER', 'www-data'), CONTAINER, 'php', 'artisan', *args]
+
+
+def artisan_cwd():
+    """Working directory of Artisan: the project root when PHP runs here, the container's own when it is Docker."""
+    return ROOT if transport() == 'local' else None
+
+
+def transport_hint():
+    """One line naming the transport that just failed and the variable that changes it."""
+    if transport() == 'local':
+        php = os.environ.get('GRIGLIA_PHP', 'php')
+        return f'artisan ran here as `{php} artisan` in {ROOT}: set GRIGLIA_PHP, or GRIGLIA_TRANSPORT=docker to use a container'
+    return f'artisan ran through `docker exec {CONTAINER}`: set GRIGLIA_CONTAINER, or GRIGLIA_TRANSPORT=local to use PHP on this machine'
 
 
 def frontmatter(path):
@@ -118,7 +159,12 @@ def main():
     data = json.dumps(collect(), ensure_ascii=False, indent=1)
     if '--print' in sys.argv:
         print(data); return
-    r = subprocess.run(artisan_command('griglia:skills-import'), input=data, text=True, cwd=ROOT if TRANSPORT == 'local' else None)
+    try:
+        r = subprocess.run(artisan_command('griglia:skills-import'), input=data, text=True, cwd=artisan_cwd())
+    except OSError as e:
+        sys.exit(f'cannot run the import: {e}\n{transport_hint()}')
+    if r.returncode:
+        print(transport_hint(), file=sys.stderr)
     sys.exit(r.returncode)
 
 

@@ -64,7 +64,9 @@ result you can read. Nothing is hidden in a terminal you were not watching.
 - Tailwind CSS 4 only when choosing the optional `vite` asset mode
 
 Optional integrations include `laravel/ai` for image descriptions, plans and transcription, and a Laravel
-broadcaster such as Reverb for live updates.
+broadcaster such as Reverb for live updates. Docker is not one of them: the board runs wherever your
+application runs, and the host scripts reach Artisan through a container only when one is there — see
+[Run Griglia without Docker](docs/getting-started/without-docker.md).
 
 ## Install
 

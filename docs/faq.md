@@ -25,6 +25,12 @@ No. The board, the agent workflow, notifications and themes work with no AI prov
 descriptions, plans built from a prompt and voice transcription are optional and only run when `laravel/ai`
 is configured. See [AI features](features/ai.md).
 
+### Do I need Docker?
+
+No. Griglia runs wherever your Laravel application runs — `composer dev`, `php artisan serve`, Apache, nginx
+with PHP-FPM or a container. The host scripts detect it: they use the container when one answers and plain
+`php artisan` otherwise. See [Run Griglia without Docker](getting-started/without-docker.md).
+
 ### Do I need Node, Vite or Tailwind?
 
 Not in the default setup: Griglia ships precompiled CSS and JavaScript. If you prefer to compile the package

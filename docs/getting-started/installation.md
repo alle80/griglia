@@ -170,8 +170,9 @@ file. Keep it up to date without thinking about it:
 ```
 
 `GRIGLIA_CONTEXT_TARGETS="CLAUDE.md,AGENTS.md,GEMINI.md"` adds a target file. The host scripts reach Artisan
-through `docker exec` by default; when Laravel runs directly on the machine, set `GRIGLIA_TRANSPORT=local` —
-see [host scripts](../agent/scripts.md) and [agent context](../agent/context.md).
+through the container when there is one and through `php artisan` on this machine otherwise — see
+[Run Griglia without Docker](without-docker.md), [host scripts](../agent/scripts.md) and
+[agent context](../agent/context.md).
 
 ## 6. Start the agent
 

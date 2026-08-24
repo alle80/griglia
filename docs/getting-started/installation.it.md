@@ -171,8 +171,9 @@ non il file. Per tenerlo aggiornato senza pensarci:
 ```
 
 `GRIGLIA_CONTEXT_TARGETS="CLAUDE.md,AGENTS.md,GEMINI.md"` aggiunge un file di destinazione. Gli script host
-raggiungono Artisan via `docker exec` per default; se Laravel gira direttamente sulla macchina, impostare
-`GRIGLIA_TRANSPORT=local` — vedi [script sull'host](../agent/scripts.md) e [contesto dell'agente](../agent/context.md).
+raggiungono Artisan dentro il container quando c'è, altrimenti con `php artisan` su questa macchina — vedi
+[Usare Griglia senza Docker](without-docker.md), [script sull'host](../agent/scripts.md) e
+[contesto dell'agente](../agent/context.md).
 
 ## 6. Avviare l'agente
 

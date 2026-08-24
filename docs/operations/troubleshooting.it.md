@@ -46,6 +46,14 @@ Non c'è un broadcaster configurato, oppure il canale privato non è autorizzato
   service worker e stato della sottoscrizione.
 - Su iOS le notifiche funzionano solo quando l'app è stata **aggiunta alla schermata Home**.
 
+## Uno script sull'host risponde «Cannot connect to the Docker daemon»
+
+Gli script verificano `$GRIGLIA_CONTAINER` e, se non risponde, usano `php artisan` su questa macchina: quel
+messaggio vuol dire che la verifica è stata saltata, cioè che `GRIGLIA_TRANSPORT` è fissato su `docker` da
+qualche parte (shell, crontab, `EnvironmentFile`). Togli la variabile, oppure imposta
+`GRIGLIA_TRANSPORT=local`. La riga stampata sotto l'errore dice sempre quale trasporto è in uso — vedi
+[Usare Griglia senza Docker](../getting-started/without-docker.md).
+
 ## `griglia:docs-build` dice che manca MkDocs
 
 Installa la catena di strumenti (`pip install -r requirements-docs.txt` — Material più il plugin i18n che

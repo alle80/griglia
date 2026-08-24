@@ -28,16 +28,22 @@ class ScriptsTest extends TestCase
             $this->assertStringContainsString('def project_root()', (string) file_get_contents($dir.'/'.$script));
         }
 
-        // No Docker required: every host script can reach Artisan through local PHP (task 389)
+        // No Docker required: every host script can reach Artisan through local PHP (task 389) and picks the
+        // transport by itself when GRIGLIA_TRANSPORT does not name one (task 645)
         foreach (['sync-skills.py', 'sync-context.py', 'claude-tokens.py', 'agent-status.py'] as $script) {
             $source = (string) file_get_contents($dir.'/'.$script);
-            $this->assertStringContainsString("os.environ.get('GRIGLIA_TRANSPORT', 'docker')", $source, "$script must support the local transport");
+            $this->assertStringContainsString("os.environ.get('GRIGLIA_TRANSPORT', 'auto')", $source, "$script must default to the automatic transport");
+            $this->assertStringContainsString('def container_running():', $source, "$script must probe the container before using Docker");
+            $this->assertStringContainsString('def transport():', $source, "$script must resolve the transport in one place");
+            $this->assertStringContainsString('def transport_hint():', $source, "$script must tell which transport failed");
             $this->assertStringContainsString("os.environ.get('GRIGLIA_PHP', 'php')", $source, "$script must honour GRIGLIA_PHP");
             $this->assertStringNotContainsString("'laravel-dev-app'", str_replace("os.environ.get('GRIGLIA_CONTAINER', 'laravel-dev-app')", '', $source), "$script must not hardcode the container name");
         }
 
         $worker = (string) file_get_contents($dir.'/griglia-agent-worker.py');
         $this->assertStringContainsString('choices=("codex", "claude", "custom")', $worker);
+        $this->assertStringContainsString('choices=("auto", "docker", "local")', $worker, 'the worker must accept the automatic transport');
+        $this->assertStringContainsString('resolve_transport(args)', $worker, 'the automatic transport must be resolved before the first board call');
         $this->assertStringContainsString('GRIGLIA_WORKER_TRANSPORT', $worker);
         $this->assertStringContainsString('GRIGLIA_WORKER_PHP', $worker);
         $this->assertStringContainsString('["docker", "exec", args.container, "php", *artisan]', $worker);
@@ -98,5 +104,76 @@ class ScriptsTest extends TestCase
             exec(escapeshellarg($python).' -c '.escapeshellarg('import ast, sys; ast.parse(open(sys.argv[1]).read(), sys.argv[1])').' '.escapeshellarg($dir.'/'.$script).' 2>&1', $output, $code);
             $this->assertSame(0, $code, "$script does not parse: ".implode("\n", $output));
         }
+    }
+
+    public function test_transport_is_docker_or_local_depending_on_the_machine(): void
+    {
+        // Task 645: on a machine without Docker — Laravel served by `composer dev`, Apache or nginx — the
+        // scripts must reach Artisan anyway, without the user knowing that GRIGLIA_TRANSPORT exists.
+        $python = trim((string) shell_exec('command -v python3 2>/dev/null'));
+        if ($python === '') {
+            $this->markTestSkipped('python3 is not available on this runner');
+        }
+        $dir = dirname(__DIR__, 2).'/scripts';
+        $root = $this->tempProject();
+        $withDocker = $root.'/fake-bin';   // a `docker` reporting the container up
+
+        foreach (['sync-skills.py', 'sync-context.py', 'claude-tokens.py', 'agent-status.py'] as $script) {
+            $this->assertSame('local', $this->transportOf($python, $dir.'/'.$script, $root, ''), "$script must fall back to local PHP where Docker cannot answer");
+            $this->assertSame('docker', $this->transportOf($python, $dir.'/'.$script, $root, $withDocker), "$script must use the container when it is running");
+            $this->assertSame('docker', $this->transportOf($python, $dir.'/'.$script, $root, '', 'docker'), "$script must obey an explicit GRIGLIA_TRANSPORT");
+            $this->assertSame('local', $this->transportOf($python, $dir.'/'.$script, $root, $withDocker, 'local'), "$script must obey an explicit GRIGLIA_TRANSPORT");
+        }
+
+        // The worker resolves the same way, through its own --transport auto
+        $code = 'import importlib.util, pathlib, sys, types;'
+            .'spec = importlib.util.spec_from_file_location("worker", sys.argv[1]);'
+            .'m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m);'
+            .'print(m.resolve_transport(types.SimpleNamespace(transport="auto", container="griglia-test", repo=pathlib.Path(sys.argv[2]))))';
+        $this->assertSame('local', $this->runPython($python, $code, [$dir.'/griglia-agent-worker.py', $root], ''));
+        $this->assertSame('docker', $this->runPython($python, $code, [$dir.'/griglia-agent-worker.py', $root], $withDocker));
+    }
+
+    /** Resolved transport of a host script, with `artisan` in $root and $path prepended to PATH. */
+    private function transportOf(string $python, string $script, string $root, string $path, ?string $forced = null): string
+    {
+        $code = 'import importlib.util, sys;'
+            .'spec = importlib.util.spec_from_file_location("script", sys.argv[1]);'
+            .'m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m);'
+            .'print(m.transport())';
+
+        return $this->runPython($python, $code, [$script], $path, [
+            'GRIGLIA_PROJECT_ROOT' => $root,
+            'GRIGLIA_CONTAINER' => 'griglia-test',
+        ] + ($forced === null ? [] : ['GRIGLIA_TRANSPORT' => $forced]));
+    }
+
+    private function runPython(string $python, string $code, array $arguments, string $path, array $environment = []): string
+    {
+        $command = '';
+        foreach ($environment + ['GRIGLIA_CONTAINER' => 'griglia-test', 'PATH' => $path] as $name => $value) {
+            $command .= $name.'='.escapeshellarg($value).' ';
+        }
+        $command .= escapeshellarg($python).' -c '.escapeshellarg($code);
+        foreach ($arguments as $argument) {
+            $command .= ' '.escapeshellarg($argument);
+        }
+        $output = [];
+        exec($command.' 2>&1', $output, $status);
+        $this->assertSame(0, $status, 'python failed: '.implode("\n", $output));
+
+        return trim((string) end($output));
+    }
+
+    /** A project root the scripts can accept (it holds `artisan`) plus a fake `docker` saying the container is up. */
+    private function tempProject(): string
+    {
+        $root = sys_get_temp_dir().'/griglia-transport-'.getmypid();
+        @mkdir($root.'/fake-bin', 0777, true);
+        file_put_contents($root.'/artisan', "#!/usr/bin/env php\n");
+        file_put_contents($root.'/fake-bin/docker', "#!/bin/sh\necho true\n");
+        chmod($root.'/fake-bin/docker', 0755);
+
+        return $root;
     }
 }

@@ -44,6 +44,13 @@ No broadcaster is configured, or the private channel is not authorised. Set the 
   worker and subscription state.
 - On iOS notifications only work when the app has been **added to the Home screen**.
 
+## A host script answers «Cannot connect to the Docker daemon»
+
+The scripts probe `$GRIGLIA_CONTAINER` and use `php artisan` on this machine when it does not answer, so this
+message means the probe was skipped: `GRIGLIA_TRANSPORT` is pinned to `docker` somewhere (shell, crontab,
+`EnvironmentFile`). Unset it, or set `GRIGLIA_TRANSPORT=local`. The line printed under the error always names
+the transport in use — see [Run Griglia without Docker](../getting-started/without-docker.md).
+
 ## `griglia:docs-build` says MkDocs is missing
 
 Install the toolchain (`pip install -r requirements-docs.txt` — Material plus the i18n plugin the bilingual

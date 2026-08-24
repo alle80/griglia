@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.94.0] - 2026-08-24
+
+### Changed
+- **The host scripts find Artisan by themselves** (task 645). `GRIGLIA_TRANSPORT` now defaults to `auto`:
+  `sync-context.py`, `sync-skills.py`, `claude-tokens.py`, `agent-status.py` and the persistent worker
+  (`--transport auto|docker|local`, printed at startup) probe `$GRIGLIA_CONTAINER` once and, when no daemon or
+  no container answers, run `php artisan` from the project root. A machine that serves Laravel with
+  `composer dev`, Apache or nginx needs no configuration at all, instead of failing with «Cannot connect to the
+  Docker daemon»; `GRIGLIA_TRANSPORT=docker|local` still pins the choice. Every failure now prints the
+  transport in use and the variable that changes it.
+
+### Added
+- Documentation: **[Run Griglia without Docker](https://alle80.github.io/griglia/getting-started/without-docker/)**
+  — the transports, cron and systemd environments, file ownership between the web user and the agent, the
+  scheduler entry `griglia:auto-archive` needs, caches, assets and live updates outside a container.
+
 ## [0.93.0] - 2026-08-24
 
 ### Added
@@ -2393,7 +2409,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.93.0...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.94.0...HEAD
+[0.94.0]: https://github.com/alle80/griglia/compare/v0.93.0...v0.94.0
 [0.93.0]: https://github.com/alle80/griglia/compare/v0.92.1...v0.93.0
 [0.92.1]: https://github.com/alle80/griglia/compare/v0.92.0...v0.92.1
 [0.92.0]: https://github.com/alle80/griglia/compare/v0.91.4...v0.92.0

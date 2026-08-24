@@ -33,9 +33,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--driver", choices=("codex", "claude", "custom"), default=os.getenv("GRIGLIA_WORKER_DRIVER"))
     parser.add_argument(
         "--transport",
-        choices=("docker", "local"),
-        default=os.getenv("GRIGLIA_WORKER_TRANSPORT", os.getenv("GRIGLIA_TRANSPORT", "docker")),
-        help="How to invoke Artisan (default: docker); GRIGLIA_TRANSPORT is the shared fallback",
+        choices=("auto", "docker", "local"),
+        default=os.getenv("GRIGLIA_WORKER_TRANSPORT", os.getenv("GRIGLIA_TRANSPORT", "auto")),
+        help="How to invoke Artisan: auto (default: the container when it runs, PHP here otherwise), docker or local; GRIGLIA_TRANSPORT is the shared fallback",
     )
     parser.add_argument("--container", default=os.getenv("GRIGLIA_WORKER_CONTAINER", os.getenv("GRIGLIA_CONTAINER", "laravel-dev-app")))
     parser.add_argument("--php", default=os.getenv("GRIGLIA_WORKER_PHP", os.getenv("GRIGLIA_PHP", "php")), help="PHP executable for local transport")
@@ -51,6 +51,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--adopt", default="", help=argparse.SUPPRESS)
     parser.add_argument("--lock-fd", type=int, default=None, help=argparse.SUPPRESS)
     return parser.parse_args()
+
+
+def container_running(container: str) -> bool:
+    """True when the Docker daemon answers and `container` is up; false on any failure (no docker binary,
+    daemon down, container stopped)."""
+    try:
+        probe = subprocess.run(["docker", "inspect", "-f", "{{.State.Running}}", container],
+                               text=True, capture_output=True, timeout=20, check=False)
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return probe.returncode == 0 and probe.stdout.strip() == "true"
+
+
+def resolve_transport(args: argparse.Namespace) -> str:
+    """Turn `--transport auto` into the transport this machine can actually use: Docker only when the
+    container answers, otherwise `php artisan` from the repository — a host without Docker needs no setting."""
+    if args.transport == "auto":
+        args.transport = "docker" if container_running(args.container) else ("local" if (args.repo / "artisan").is_file() else "docker")
+    return args.transport
 
 
 def board_command(args: argparse.Namespace, all_items: bool = False) -> list[str]:
@@ -327,6 +346,7 @@ class DrainRequest:
 def main() -> int:
     args = parse_args()
     args.repo = args.repo.resolve()
+    print(f"artisan transport: {resolve_transport(args)}", flush=True)
     lock = acquire_lock(args)
     if lock is None:
         print(f"worker for {args.agent} in {args.repo} is already running", file=sys.stderr)

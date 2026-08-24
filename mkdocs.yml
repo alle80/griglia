@@ -87,6 +87,7 @@ plugins:
             Installation: Installazione
             Quickstart: Primi cinque minuti
             Front-end assets: Asset front-end
+            Without Docker: Senza Docker
             Using the board: Usare la board
             The agent side: Il lato agente
             Start the agent: Avviare l'agente
@@ -163,6 +164,7 @@ nav:
       - Installation: getting-started/installation.md
       - Quickstart: getting-started/quickstart.md
       - Front-end assets: getting-started/assets.md
+      - Without Docker: getting-started/without-docker.md
   - Using the board: board/usage.md
   - The agent side:
       - agent/index.md

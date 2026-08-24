@@ -95,14 +95,14 @@ GRIGLIA_WORKER_DRIVER=codex
 GRIGLIA_WORKER_INTERVAL=10
 GRIGLIA_WORKER_RETRY_DELAY=30
 GRIGLIA_WORKER_MAX_PARALLEL=2
-GRIGLIA_WORKER_TRANSPORT=docker
+GRIGLIA_WORKER_TRANSPORT=auto
 GRIGLIA_WORKER_CONTAINER=laravel-dev-app
 GRIGLIA_WORKER_REPO=/srv/my-project
 ```
 
-Il trasporto Docker è quello di default ed esegue `docker exec <container> php artisan`. Se Laravel gira
-direttamente sull'host del worker, usa il trasporto locale; Artisan parte con il repository come cartella di
-lavoro, così Docker non compare da nessuna parte nel giro:
+Il trasporto di default è `auto`: all'avvio il worker verifica `<container>`, esegue `docker exec <container>
+php artisan` se risponde e altrimenti `php artisan` dentro il repository, stampando quale ha scelto. Fissalo su
+`local` dove Laravel gira direttamente sull'host del worker — così Docker non compare da nessuna parte nel giro:
 
 ```dotenv
 GRIGLIA_WORKER_TRANSPORT=local
@@ -118,7 +118,7 @@ flag, comodo per un lancio una tantum:
 
 | Flag | Variabile d'ambiente | Default |
 | --- | --- | --- |
-| `--transport docker\|local` | `GRIGLIA_WORKER_TRANSPORT`, `GRIGLIA_TRANSPORT` | `docker` |
+| `--transport auto\|docker\|local` | `GRIGLIA_WORKER_TRANSPORT`, `GRIGLIA_TRANSPORT` | `auto` |
 | `--container` | `GRIGLIA_WORKER_CONTAINER`, `GRIGLIA_CONTAINER` | `laravel-dev-app` |
 | `--php` | `GRIGLIA_WORKER_PHP`, `GRIGLIA_PHP` | `php` |
 | `--repo` | `GRIGLIA_WORKER_REPO` | cartella corrente |

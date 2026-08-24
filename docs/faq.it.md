@@ -25,6 +25,12 @@ No. La board, il flusso con l'agente, le notifiche e i temi funzionano senza alc
 delle immagini, i piani costruiti da un prompt e la trascrizione vocale sono opzionali e si attivano solo se
 `laravel/ai` è configurato. Vedi [funzioni AI](features/ai.md).
 
+### Serve Docker?
+
+No. Griglia gira dove gira la tua applicazione Laravel — `composer dev`, `php artisan serve`, Apache, nginx con
+PHP-FPM o un container. Gli script sull'host se ne accorgono da soli: usano il container quando c'è e
+altrimenti `php artisan`. Vedi [Usare Griglia senza Docker](getting-started/without-docker.md).
+
 ### Servono Node, Vite o Tailwind?
 
 Non nella configurazione predefinita: Griglia distribuisce CSS e JavaScript già compilati. Se preferisci
