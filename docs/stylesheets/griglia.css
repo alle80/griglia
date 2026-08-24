@@ -205,3 +205,10 @@
   letter-spacing: .08em;
   text-align: center;
 }
+
+/* The message to paste into the agent CLI: one line in the source so the copy button hands over
+   a single paste, wrapped here so it stays readable instead of scrolling sideways. */
+.md-typeset .agent-prompt code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

@@ -189,8 +189,9 @@ claude            # Claude Code · `codex` per Codex CLI · `gemini` per Gemini 
 
 Mandargli il primo messaggio:
 
-> Leggi AGENTS.md e lavora sulla board Griglia come agente `claude`: esegui `php artisan griglia:check
-> --agent=claude`, prendi in carico il primo task open to work e segui il workflow fino alla chiusura.
+```{ .text .agent-prompt title="Primo messaggio — copialo" }
+Leggi AGENTS.md e lavora sulla board Griglia come agente claude: esegui php artisan griglia:check --agent=claude, prendi in carico il primo task open to work e segui il workflow fino alla chiusura.
+```
 
 Risultato atteso: `griglia:check` stampa le impostazioni di comportamento e la coda della lista dell'agente, e il
 pallino del task diventa **working** sulla board. Lo stesso comando si può lanciare a mano in qualsiasi momento

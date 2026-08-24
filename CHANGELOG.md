@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.91.3] - 2026-08-24
+
+### Changed
+- **The first message to the agent is now copyable**: on [Start the agent](https://alle80.github.io/griglia/agent/running/)
+  and in step 6 of the [installation](https://alle80.github.io/griglia/getting-started/installation/) the message to
+  paste into the CLI is a code block with a copy button, on a single line, instead of a quote to select by hand.
+
 ## [0.91.2] - 2026-08-24
 
 ### Added
@@ -2349,7 +2356,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.2...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.3...HEAD
+[0.91.3]: https://github.com/alle80/griglia/compare/v0.91.2...v0.91.3
 [0.91.2]: https://github.com/alle80/griglia/compare/v0.91.1...v0.91.2
 [0.91.1]: https://github.com/alle80/griglia/compare/v0.91.0...v0.91.1
 [0.91.0]: https://github.com/alle80/griglia/compare/v0.90.1...v0.91.0

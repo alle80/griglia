@@ -34,8 +34,9 @@ La directory è tutto il trucco: l'agente legge il file di istruzioni dalla dire
 
 Poi mandagli il primo messaggio:
 
-> Leggi AGENTS.md e lavora sulla board Griglia come agente `claude`: esegui `php artisan griglia:check
-> --agent=claude`, prendi in carico il primo task open to work e segui il workflow fino alla chiusura.
+```{ .text .agent-prompt title="Primo messaggio — copialo" }
+Leggi AGENTS.md e lavora sulla board Griglia come agente claude: esegui php artisan griglia:check --agent=claude, prendi in carico il primo task open to work e segui il workflow fino alla chiusura.
+```
 
 L'agente esegue `griglia:check` e il pallino del task diventa **working** sulla board sotto i tuoi occhi. Da lì
 il ciclo è affar suo — avanzamento, domande, commento di chiusura — e il tuo è rispondere quando ti interpella.

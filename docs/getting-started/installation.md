@@ -188,8 +188,9 @@ claude            # Claude Code · `codex` for Codex CLI · `gemini` for Gemini 
 
 Give it the first message:
 
-> Read AGENTS.md and work on the Griglia board as agent `claude`: run `php artisan griglia:check
-> --agent=claude`, take the first task that is open to work, and follow the workflow through to closing it.
+```{ .text .agent-prompt title="First message — copy it" }
+Read AGENTS.md and work on the Griglia board as agent claude: run php artisan griglia:check --agent=claude, take the first task that is open to work, and follow the workflow through to closing it.
+```
 
 Expected result: `griglia:check` prints the behaviour settings and the queue of the agent list, and the task dot
 turns to **working** on the board. You can run the same command yourself at any time to see what the agent sees.

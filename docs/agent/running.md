@@ -34,8 +34,9 @@ The directory is the whole trick: the agent reads the instruction file from the 
 
 Then send the first message:
 
-> Read AGENTS.md and work on the Griglia board as agent `claude`: run `php artisan griglia:check
-> --agent=claude`, take the first task that is open to work, and follow the workflow through to closing it.
+```{ .text .agent-prompt title="First message — copy it" }
+Read AGENTS.md and work on the Griglia board as agent claude: run php artisan griglia:check --agent=claude, take the first task that is open to work, and follow the workflow through to closing it.
+```
 
 The agent runs `griglia:check`, and the task dot turns to **working** on the board while you watch. From there
 the lifecycle is its job — progress, questions, completion comment — and yours is to answer when it asks. The
