@@ -79,17 +79,79 @@ class Agent
         return self::all()[$key] ?? ($key ?: self::name());
     }
 
+    /**
+     * The agent key behind whatever the caller wrote: a key, its label, another spelling («CLAUDE», «Claude
+     * Code», «Claude»). A name is not a key — `--agent=Claude` used to fall through to the default agent, so
+     * the ownership guard compared two spellings of the SAME agent and refused every task (task 652).
+     * Returns null when nothing matches, or when the text matches more than one agent.
+     */
+    public static function resolve(?string $keyOrLabel): ?string
+    {
+        $raw = trim((string) $keyOrLabel);
+        if ($raw === '') {
+            return null;
+        }
+
+        $all = self::all();
+        if (isset($all[$raw])) {
+            return $raw;
+        }
+
+        $norm = fn (string $s) => (string) preg_replace('/[^a-z0-9]+/', '', mb_strtolower($s));
+        $want = $norm($raw);
+        if ($want === '') {
+            return null;
+        }
+
+        $exact = [];
+        $prefix = [];
+        foreach ($all as $key => $label) {
+            $forms = array_filter([$norm((string) $key), $norm((string) $label)]);
+            if (in_array($want, $forms, true)) {
+                $exact[(string) $key] = true;
+            } elseif (array_filter($forms, fn ($f) => str_starts_with($f, $want))) {
+                $prefix[(string) $key] = true;
+            }
+        }
+
+        $hit = $exact ?: $prefix;
+
+        return count($hit) === 1 ? (string) array_key_first($hit) : null;
+    }
+
+    /**
+     * The agent key a command runs as, from its `--agent` option: any spelling of a configured agent, else
+     * the default when several are configured, else '' (one agent = no filter, no ownership guard).
+     * Returns null when the option names no configured agent and there are several: the caller must stop
+     * rather than run as nobody — with an unknown key every task looks like somebody else's (task 652).
+     */
+    public static function fromOption(?string $option): ?string
+    {
+        $raw = trim((string) $option);
+        if ($raw === '') {
+            return self::many() ? self::defaultKey() : '';
+        }
+
+        return self::resolve($raw) ?? (self::many() ? null : '');
+    }
+
+    /** «claude (Claude Code), codex (Codex CLI)» — the configured agents, for error messages. */
+    public static function listing(): string
+    {
+        return implode(', ', array_map(fn ($k, $l) => $k === $l ? $k : sprintf('%s (%s)', $k, $l), array_keys(self::all()), self::all()));
+    }
+
     /** Effective agent key of a todo: its own, else its list's, else the default. */
     public static function effective(Todo $todo, ?Checklist $list = null): string
     {
         $list ??= $todo->checklist;
-        $known = self::all();
 
         // A key that is not configured any more (agent removed from GRIGLIA_AGENTS) would belong to nobody:
         // the task would be invisible to every agent, waiting forever. It falls back instead (task 347).
+        // A label stored where a key belongs («Claude Code») still resolves to its key (task 652).
         foreach ([$todo->agent, $list?->agent] as $key) {
-            if ($key && isset($known[$key])) {
-                return (string) $key;
+            if ($key && ($resolved = self::resolve((string) $key)) !== null) {
+                return $resolved;
             }
         }
 

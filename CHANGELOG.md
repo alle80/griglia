@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.92.1] - 2026-08-24
+
+### Fixed
+- **A name is not a key**: `griglia:check --agent=` and `griglia:watch --agent=` now match the configured
+  agents by key *or* label, in any case (`Claude Code`, `Claude`, `CLAUDE` → `claude`), and an agent nobody
+  configured stops the command with the list of the real ones. Before, an unrecognised text ran as itself and
+  the ownership guard compared it with the resolved owner, so every task was refused with a message where the
+  two agents looked like the same one («belongs to agent «Claude», you are «claude»»). On a board with a
+  single agent the option is now decoration instead of a refusal. A label stored where a key belongs
+  (`todos.agent` / `checklists.agent`) resolves to its agent as well, instead of falling back to the default.
+
 ## [0.92.0] - 2026-08-24
 
 ### Added
@@ -2371,7 +2382,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.92.0...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.92.1...HEAD
+[0.92.1]: https://github.com/alle80/griglia/compare/v0.92.0...v0.92.1
 [0.92.0]: https://github.com/alle80/griglia/compare/v0.91.4...v0.92.0
 [0.91.4]: https://github.com/alle80/griglia/compare/v0.91.3...v0.91.4
 [0.91.3]: https://github.com/alle80/griglia/compare/v0.91.2...v0.91.3

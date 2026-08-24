@@ -60,7 +60,7 @@ php artisan griglia:check [--all] [--json] [--worker-json] [--take [TAKE]] [--pa
 | `--choices` | Pipe-separated closed choices for the corresponding --q, repeatable; free text remains available | _array_ |
 | `--tokens-in` | Input tokens spent since the last --take (with any task action) | — |
 | `--tokens-out` | Output tokens spent since the last --take (with any task action) | — |
-| `--agent` | Only the tasks of this agent key (multi-agent; default: GRIGLIA_AGENT_KEY, or every task when one agent) | — |
+| `--agent` | Only the tasks of this agent — its key or its label, any case (multi-agent; default: GRIGLIA_AGENT_KEY, or every task when one agent) | — |
 | `--force` | Act on a task that belongs to another agent, or take again a task the user stopped (--take/--done/--ask refuse it otherwise) | flag |
 
 ## `griglia:context`
@@ -186,7 +186,7 @@ php artisan griglia:watch [--interval [INTERVAL]] [--list [LIST]] [--agent [AGEN
 |---|---|---|
 | `--interval` | Seconds between polls | `10` |
 | `--list` | List name to watch (default: config griglia.agent_list) | — |
-| `--agent` | Only events for this agent key (default: GRIGLIA_AGENT_KEY, or the default configured agent) | — |
+| `--agent` | Only events for this agent — its key or its label, any case (default: GRIGLIA_AGENT_KEY, or the default configured agent) | — |
 | `--once` | Poll once and exit (for testing/cron) | flag |
 | `--no-initial` | Do not list the items already open to work when starting | flag |
 

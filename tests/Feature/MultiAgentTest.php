@@ -20,6 +20,34 @@ class MultiAgentTest extends TestCase
         $this->assertSame('agent', Agent::defaultKey());
     }
 
+    /** Task 652: key, label, case and unique prefix all resolve; anything else is nobody. */
+    public function test_resolve_maps_names_to_keys(): void
+    {
+        config(['griglia.agents' => 'claude:Claude Code,codex:Codex CLI']);
+
+        $this->assertSame('claude', Agent::resolve('claude'));
+        $this->assertSame('claude', Agent::resolve('Claude Code'));
+        $this->assertSame('claude', Agent::resolve('  CLAUDE  '));
+        $this->assertSame('claude', Agent::resolve('claude-code'));
+        $this->assertSame('codex', Agent::resolve('Codex'));
+        $this->assertNull(Agent::resolve('gemini'));
+        $this->assertNull(Agent::resolve(''));
+        $this->assertNull(Agent::resolve(null));
+
+        // ambiguous text belongs to nobody rather than to the first match
+        config(['griglia.agents' => 'claude:Claude Code,claudia:Claudia']);
+        $this->assertNull(Agent::resolve('claud'));
+
+        // fromOption: the running key of a command
+        config(['griglia.agents' => 'claude:Claude Code,codex:Codex CLI']);
+        $this->assertSame('claude', Agent::fromOption(null));
+        $this->assertSame('codex', Agent::fromOption('Codex CLI'));
+        $this->assertNull(Agent::fromOption('gemini'), 'several agents: an unknown key must stop the command');
+        config(['griglia.agents' => null]);
+        $this->assertSame('', Agent::fromOption('claude'), 'one agent: the option is decoration');
+        $this->assertSame('', Agent::fromOption(null));
+    }
+
     public function test_assignment_and_check_filter(): void
     {
         config(['griglia.agents' => 'claude:Claude Code,codex:Codex CLI']);

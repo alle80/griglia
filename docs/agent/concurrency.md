@@ -25,6 +25,12 @@ That guard covers `--take`, `--done` and `--ask`, so a stale id in a prompt (or 
 wrong key) cannot silently steal, close or pause work another agent is doing. `--force` is the deliberate
 way in — use it when you *are* taking over.
 
+**The key or the name, in any case.** `--agent` matches your configured agents by key *and* by label, so
+`--agent="Claude Code"`, `--agent=Claude` and `--agent=CLAUDE` are all the `claude` agent. Text that matches
+none of them — a typo, a key you dropped from `GRIGLIA_AGENTS` — stops the command and prints the agents you
+did configure: running as an agent nobody knows would make every task look like somebody else's and refuse
+them all. With a single agent configured the option is decoration and never refuses anything.
+
 Two more things follow from it:
 
 - **`🔒 busy elsewhere`** — with several agents configured, `griglia:check` prints what the others have in

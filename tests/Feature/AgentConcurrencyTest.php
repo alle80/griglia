@@ -93,4 +93,67 @@ class AgentConcurrencyTest extends TestCase
             ->doesntExpectOutputToContain('🔒 busy elsewhere')
             ->assertSuccessful();
     }
+
+    /**
+     * Task 652: a name is not a key. `--agent=Claude` (or «Claude Code», or CLAUDE) is the same agent as
+     * `claude`, and the guard must not read it as somebody else — the report was «belongs to agent «Claude»,
+     * you are «claude»: refusing to take it», two spellings of the same agent refusing each other.
+     */
+    public function test_the_agent_option_accepts_the_label_and_any_case(): void
+    {
+        $t = $this->todo('For claude', ['agent' => 'claude']);
+
+        foreach (['Claude Code', 'CLAUDE', 'Claude', 'claude code'] as $spelling) {
+            $this->artisan('griglia:check', ['--take' => $t->id, '--agent' => $spelling])
+                ->expectsOutputToContain('taken in charge')
+                ->assertSuccessful();
+        }
+
+        // …and it still is not a way into somebody else's task
+        $other = $this->todo('For codex', ['agent' => 'codex']);
+        $this->artisan('griglia:check', ['--take' => $other->id, '--agent' => 'Claude Code'])
+            ->expectsOutputToContain('belongs to agent «Codex CLI»')
+            ->assertFailed();
+    }
+
+    /** A label stored where a key belongs (older board, hand-edited row) still points at its agent. */
+    public function test_a_label_stored_on_the_task_resolves_to_its_key(): void
+    {
+        $t = $this->todo('Mislabelled', ['agent' => 'Codex CLI']);
+
+        $this->assertSame('codex', \Alle80\Griglia\Agent::effective($t));
+        $this->artisan('griglia:check', ['--take' => $t->id, '--agent' => 'claude'])
+            ->expectsOutputToContain('belongs to agent «Codex CLI»')
+            ->assertFailed();
+        $this->artisan('griglia:check', ['--take' => $t->id, '--agent' => 'codex'])
+            ->expectsOutputToContain('taken in charge')
+            ->assertSuccessful();
+    }
+
+    /** An agent key nobody configured must stop the command, not run as nobody and refuse every task. */
+    public function test_an_unknown_agent_key_is_reported(): void
+    {
+        $t = $this->todo('For claude', ['agent' => 'claude']);
+
+        $this->artisan('griglia:check', ['--take' => $t->id, '--agent' => 'gemini'])
+            ->expectsOutputToContain('Unknown agent «gemini»: configured agents are claude (Claude Code), codex (Codex CLI)')
+            ->assertFailed();
+        $this->assertFalse($t->fresh()->working, 'the task must stay untouched');
+
+        $this->artisan('griglia:watch', ['--agent' => 'gemini', '--once' => true])
+            ->expectsOutputToContain('Unknown agent «gemini»')
+            ->assertFailed();
+    }
+
+    /** One agent configured: `--agent=claude` from a worker is just decoration, never a refusal (task 652). */
+    public function test_a_single_agent_board_ignores_the_agent_option(): void
+    {
+        config(['griglia.agents' => null, 'griglia.agent_key' => null, 'griglia.agent_name' => 'Claude']);
+        $t = $this->todo('Sei pronto?');
+
+        $this->artisan('griglia:check', ['--take' => $t->id, '--agent' => 'claude'])
+            ->expectsOutputToContain('taken in charge')
+            ->assertSuccessful();
+        $this->assertTrue($t->fresh()->working);
+    }
 }

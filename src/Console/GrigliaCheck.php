@@ -43,7 +43,7 @@ class GrigliaCheck extends Command
         {--choices=* : Pipe-separated closed choices for the corresponding --q, repeatable; free text remains available}
         {--tokens-in= : Input tokens spent since the last --take (with any task action)}
         {--tokens-out= : Output tokens spent since the last --take (with any task action)}
-        {--agent= : Only the tasks of this agent key (multi-agent; default: GRIGLIA_AGENT_KEY, or every task when one agent)}
+        {--agent= : Only the tasks of this agent — its key or its label, any case (multi-agent; default: GRIGLIA_AGENT_KEY, or every task when one agent)}
         {--force : Act on a task that belongs to another agent, or take again a task the user stopped (--take/--done/--ask refuse it otherwise)}';
 
     protected $aliases = ['sviluppo:check'];
@@ -69,8 +69,16 @@ class GrigliaCheck extends Command
         $scopeIds = $planLists->pluck('id')->concat($otherLists->pluck('id'))->push($list->id)->all();
         $find = fn (int $id) => Todo::whereIn('checklist_id', $scopeIds)->findOrFail($id);
 
-        // Multi-agent: which agent am I? (option, else config key); with several agents only my tasks are listed
-        $me = (string) ($this->option('agent') ?: (Agent::many() ? Agent::defaultKey() : ''));
+        // Multi-agent: which agent am I? (option, else config key); with several agents only my tasks are listed.
+        // The option is matched against the configured agents by key OR label, in any case: a name is not a
+        // key, and running as an unknown key makes every task look like somebody else's (task 652).
+        $me = Agent::fromOption($this->option('agent'));
+        if ($me === null) {
+            $this->error(sprintf('Unknown agent «%s»: configured agents are %s (config griglia.agents / GRIGLIA_AGENTS).',
+                trim((string) $this->option('agent')), Agent::listing()));
+
+            return self::FAILURE;
+        }
 
         // Several agents at once must not step on each other: every task belongs to ONE agent (task override,
         // else list default, else the default agent). Acting on somebody else's task is refused, so a wrong id

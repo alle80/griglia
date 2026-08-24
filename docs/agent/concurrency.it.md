@@ -25,6 +25,12 @@ Quella guardia copre `--take`, `--done` e `--ask`, così un id vecchio dentro un
 con la chiave sbagliata) non può rubare, chiudere o mettere in pausa in silenzio il lavoro di un altro agente.
 `--force` è la strada dichiarata — usala quando stai *davvero* subentrando.
 
+**La chiave o il nome, in qualsiasi forma.** `--agent` riconosce gli agenti configurati sia per chiave sia per
+etichetta: `--agent="Claude Code"`, `--agent=Claude` e `--agent=CLAUDE` sono tutti l'agente `claude`. Un testo
+che non corrisponde a nessuno — un refuso, una chiave tolta da `GRIGLIA_AGENTS` — ferma il comando e stampa gli
+agenti davvero configurati: girare come un agente che nessuno conosce farebbe sembrare ogni task di qualcun
+altro, e li rifiuterebbe tutti. Con un solo agente configurato l'opzione è decorativa e non rifiuta nulla.
+
 Da qui discendono altre due cose:
 
 - **`🔒 busy elsewhere`** — con più agenti configurati, `griglia:check` stampa quello che gli altri hanno in

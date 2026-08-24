@@ -60,7 +60,7 @@ php artisan griglia:check [--all] [--json] [--worker-json] [--take [TAKE]] [--pa
 | `--choices` | Scelte chiuse separate da \| per il --q corrispondente, ripetibile; il testo libero resta disponibile | _array_ |
 | `--tokens-in` | Token in ingresso spesi dall'ultimo --take (con qualsiasi azione sul task) | — |
 | `--tokens-out` | Token in uscita spesi dall'ultimo --take (con qualsiasi azione sul task) | — |
-| `--agent` | Solo i task di questa chiave d'agente (più agenti; default: GRIGLIA_AGENT_KEY, oppure tutti i task quando l'agente è uno solo) | — |
+| `--agent` | Solo i task di questo agente — la sua chiave o la sua etichetta, in qualsiasi forma (più agenti; default: GRIGLIA_AGENT_KEY, oppure tutti i task quando l'agente è uno solo) | — |
 | `--force` | Agisci su un task che appartiene a un altro agente, oppure riprendi un task fermato dall'utente (--take/--done/--ask altrimenti lo rifiutano) | flag |
 
 ## `griglia:context`
@@ -186,7 +186,7 @@ php artisan griglia:watch [--interval [INTERVAL]] [--list [LIST]] [--agent [AGEN
 |---|---|---|
 | `--interval` | Secondi fra un controllo e il successivo | `10` |
 | `--list` | Nome della lista da sorvegliare (default: la config griglia.agent_list) | — |
-| `--agent` | Solo gli eventi di questa chiave d'agente (default: GRIGLIA_AGENT_KEY, oppure l'agente predefinito configurato) | — |
+| `--agent` | Solo gli eventi di questo agente — la sua chiave o la sua etichetta, in qualsiasi forma (default: GRIGLIA_AGENT_KEY, oppure l'agente predefinito configurato) | — |
 | `--once` | Controlla una volta sola ed esce (per prove e cron) | flag |
 | `--no-initial` | Non elencare, alla partenza, gli elementi già open to work | flag |
 

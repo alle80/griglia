@@ -21,7 +21,7 @@ class Watch extends Command
     protected $signature = 'griglia:watch
         {--interval=10 : Seconds between polls}
         {--list= : List name to watch (default: config griglia.agent_list)}
-        {--agent= : Only events for this agent key (default: GRIGLIA_AGENT_KEY, or the default configured agent)}
+        {--agent= : Only events for this agent — its key or its label, any case (default: GRIGLIA_AGENT_KEY, or the default configured agent)}
         {--once : Poll once and exit (for testing/cron)}
         {--no-initial : Do not list the items already open to work when starting}';
 
@@ -30,7 +30,13 @@ class Watch extends Command
     public function handle(): int
     {
         $name = (string) ($this->option('list') ?: config('griglia.agent_list', 'dev'));
-        $agent = (string) ($this->option('agent') ?: (Agent::many() ? Agent::defaultKey() : ''));
+        $agent = Agent::fromOption($this->option('agent'));   // key or label, any case (task 652)
+        if ($agent === null) {
+            $this->error(sprintf('Unknown agent «%s»: configured agents are %s (config griglia.agents / GRIGLIA_AGENTS).',
+                trim((string) $this->option('agent')), Agent::listing()));
+
+            return self::FAILURE;
+        }
         $interval = max(2, (int) $this->option('interval'));
 
         if (! Checklist::where('name', $name)->exists()) {

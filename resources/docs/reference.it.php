@@ -71,7 +71,7 @@ return [
         'Pipe-separated closed choices for the corresponding --q, repeatable; free text remains available' => 'Scelte chiuse separate da | per il --q corrispondente, ripetibile; il testo libero resta disponibile',
         'Input tokens spent on the todo since the last --take (added to its stats; with --take/--done/--ask)' => "Token in ingresso spesi sul todo dall'ultimo --take (sommati alle sue statistiche; con --take/--done/--ask)",
         'Output tokens spent on the todo since the last --take (added to its stats; with --take/--done/--ask)' => "Token in uscita spesi sul todo dall'ultimo --take (sommati alle sue statistiche; con --take/--done/--ask)",
-        'Only the tasks of this agent key (multi-agent; default: GRIGLIA_AGENT_KEY, or every task when one agent)' => "Solo i task di questa chiave d'agente (più agenti; default: GRIGLIA_AGENT_KEY, oppure tutti i task quando l'agente è uno solo)",
+        'Only the tasks of this agent — its key or its label, any case (multi-agent; default: GRIGLIA_AGENT_KEY, or every task when one agent)' => "Solo i task di questo agente — la sua chiave o la sua etichetta, in qualsiasi forma (più agenti; default: GRIGLIA_AGENT_KEY, oppure tutti i task quando l'agente è uno solo)",
         'Input tokens spent since the last --take (with any task action)' => "Token in ingresso spesi dall'ultimo --take (con qualsiasi azione sul task)",
         'Output tokens spent since the last --take (with any task action)' => "Token in uscita spesi dall'ultimo --take (con qualsiasi azione sul task)",
         'Act on a task that belongs to another agent, or take again a task the user stopped (--take/--done/--ask refuse it otherwise)' => "Agisci su un task che appartiene a un altro agente, oppure riprendi un task fermato dall'utente (--take/--done/--ask altrimenti lo rifiutano)",
@@ -119,7 +119,7 @@ return [
         'Watch the agent list and print only changes (open-to-work, answers, stops)' => "Sorveglia la lista dell'agente e stampa solo i cambiamenti (open to work, risposte, stop)",
         'Seconds between polls' => 'Secondi fra un controllo e il successivo',
         'List name to watch (default: config griglia.agent_list)' => 'Nome della lista da sorvegliare (default: la config griglia.agent_list)',
-        'Only events for this agent key (default: GRIGLIA_AGENT_KEY, or the default configured agent)' => "Solo gli eventi di questa chiave d'agente (default: GRIGLIA_AGENT_KEY, oppure l'agente predefinito configurato)",
+        'Only events for this agent — its key or its label, any case (default: GRIGLIA_AGENT_KEY, or the default configured agent)' => "Solo gli eventi di questo agente — la sua chiave o la sua etichetta, in qualsiasi forma (default: GRIGLIA_AGENT_KEY, oppure l'agente predefinito configurato)",
         'Poll once and exit (for testing/cron)' => 'Controlla una volta sola ed esce (per prove e cron)',
         'Do not list the items already open to work when starting' => 'Non elencare, alla partenza, gli elementi già open to work',
 
