@@ -206,8 +206,8 @@ Use `systemctl --user restart` only when interrupting the running sessions is ac
 Check configuration without launching an agent:
 
 ```bash
-scripts/griglia-agent-worker.py --agent=codex --driver=codex --once --dry-run
-scripts/griglia-agent-worker.py --agent=codex --transport=local --php=/usr/bin/php8.4 \
+python3 scripts/griglia-agent-worker.py --agent=codex --driver=codex --once --dry-run
+python3 scripts/griglia-agent-worker.py --agent=codex --transport=local --php=/usr/bin/php8.4 \
   --repo=/srv/my-project --once --dry-run
 ```
 

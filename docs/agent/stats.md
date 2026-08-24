@@ -29,7 +29,7 @@ Each window carries a `key` and a `label`. When the key is one the board knows (
 speaks the board's language; any other key falls back to the label in the snapshot.
 
 The package ships `scripts/agent-status.py` for Claude Code and Codex CLI: it reads Claude OAuth usage and Codex local rollout telemetry **on the host** and
-sends only percentages (cron every 5 minutes). Same for the tokens of a task: `scripts/claude-tokens.py --todo=ID
+sends only percentages (cron every 5 minutes). Same for the tokens of a task: `python3 scripts/claude-tokens.py --todo=ID
 --args`. See [the scripts](scripts.md).
 
 ## See also

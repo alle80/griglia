@@ -95,7 +95,7 @@ php artisan vendor:publish --tag=griglia-agents
 
 Griglia can also **generate** those instruction files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) from the context
 you manage on `/context`. Generation overwrites them, so back up hand-written ones first — publish the host
-scripts and run `scripts/sync-context.py --backup`; `--restore` undoes everything. See the
+scripts and run `python3 scripts/sync-context.py --backup`; `--restore` undoes everything. See the
 [installation tutorial](docs/getting-started/installation.md#5-the-files-the-agent-reads).
 
 Create or rename a list to match `GRIGLIA_AGENT_LIST` (`dev` by default), open a terminal in the project root

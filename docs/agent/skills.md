@@ -13,7 +13,7 @@ machine the agent runs on and imports them.
 
 ```bash
 php artisan vendor:publish --tag=griglia-scripts   # → scripts/ in your project
-scripts/sync-skills.py                             # host: reads the folders and imports (--print to just look)
+python3 scripts/sync-skills.py                             # host: reads the folders and imports (--print to just look)
 ```
 
 These helpers run **on the host**, not in the container: they read files that only exist there (skills, agent
@@ -28,7 +28,7 @@ to Codex CLI, and the built-in skills of a CLI cannot be installed anywhere at a
 skills of [its agent](concurrency.md) plus the ones with no `agents` at all — shared, or imported before this
 field existed. A skill already ticked stays visible even if the task changes agent, so you can untick it.
 
-`scripts/sync-skills.py` fills the field from the folder it read the skill from: `~/.claude/skills`, project
+`sync-skills.py` fills the field from the folder it read the skill from: `~/.claude/skills`, project
 `.claude/skills`, plugins and built-ins → `claude`; `~/.codex/skills` and project `.codex/skills` → `codex`;
 `~/.gemini/skills` → `gemini`; the shared `~/.agents/skills` → no constraint. The same skill found in two folders
 is available to both agents.

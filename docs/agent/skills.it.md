@@ -13,7 +13,7 @@ Codex e Gemini sulla macchina dove gira l'agente e le importa.
 
 ```bash
 php artisan vendor:publish --tag=griglia-scripts   # → scripts/ nel tuo progetto
-scripts/sync-skills.py                             # host: legge le cartelle e importa (--print per solo guardare)
+python3 scripts/sync-skills.py                             # host: legge le cartelle e importa (--print per solo guardare)
 ```
 
 Questi script girano **sull'host**, non nel container: leggono file che esistono solo lì (skill, credenziali
@@ -29,7 +29,7 @@ usarla, e il modale di un task propone solo le skill del [suo agente](concurrenc
 alcun `agents` — condivise, o importate prima che questo campo esistesse. Una skill già spuntata resta
 visibile anche se il task cambia agente, così puoi toglierla.
 
-`scripts/sync-skills.py` riempie il campo in base alla cartella da cui ha letto la skill: `~/.claude/skills`,
+`sync-skills.py` riempie il campo in base alla cartella da cui ha letto la skill: `~/.claude/skills`,
 `.claude/skills` di progetto, plugin e skill integrate → `claude`; `~/.codex/skills` e `.codex/skills` di
 progetto → `codex`; `~/.gemini/skills` → `gemini`; la cartella condivisa `~/.agents/skills` → nessun vincolo.
 La stessa skill trovata in due cartelle è disponibile per entrambi gli agenti.

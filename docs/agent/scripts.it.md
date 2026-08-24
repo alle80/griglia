@@ -41,16 +41,16 @@ la cartella che contiene `scripts/`, oppure quella che contiene `vendor/` quando
 `vendor/alle80/griglia/scripts/`. Quindi funzionano tutte e due queste forme:
 
 ```bash
-scripts/sync-skills.py                              # copia pubblicata
-vendor/alle80/griglia/scripts/sync-skills.py        # direttamente dal package
-GRIGLIA_PROJECT_ROOT=/srv/app scripts/sync-skills.py  # da qualunque altro posto
+python3 scripts/sync-skills.py                              # copia pubblicata
+python3 vendor/alle80/griglia/scripts/sync-skills.py        # direttamente dal package
+GRIGLIA_PROJECT_ROOT=/srv/app python3 scripts/sync-skills.py  # da qualunque altro posto
 ```
 
 Un cron tipico sull'host:
 
 ```cron
-* * * * * cd /srv/app && scripts/sync-context.py >/dev/null 2>&1
-*/5 * * * * cd /srv/app && scripts/agent-status.py >/dev/null 2>&1
+* * * * * cd /srv/app && python3 scripts/sync-context.py >/dev/null 2>&1
+*/5 * * * * cd /srv/app && python3 scripts/agent-status.py >/dev/null 2>&1
 ```
 
 ## Vedi anche

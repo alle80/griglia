@@ -38,16 +38,16 @@ or the folder containing `vendor/` when you run it straight from `vendor/alle80/
 these work:
 
 ```bash
-scripts/sync-skills.py                              # published copy
-vendor/alle80/griglia/scripts/sync-skills.py        # straight from the package
-GRIGLIA_PROJECT_ROOT=/srv/app scripts/sync-skills.py  # anywhere else
+python3 scripts/sync-skills.py                              # published copy
+python3 vendor/alle80/griglia/scripts/sync-skills.py        # straight from the package
+GRIGLIA_PROJECT_ROOT=/srv/app python3 scripts/sync-skills.py  # anywhere else
 ```
 
 Typical cron on the host:
 
 ```cron
-* * * * * cd /srv/app && scripts/sync-context.py >/dev/null 2>&1
-*/5 * * * * cd /srv/app && scripts/agent-status.py >/dev/null 2>&1
+* * * * * cd /srv/app && python3 scripts/sync-context.py >/dev/null 2>&1
+*/5 * * * * cd /srv/app && python3 scripts/agent-status.py >/dev/null 2>&1
 ```
 
 ## See also

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.91.4] - 2026-08-24
+
+### Changed
+- Host-side Python helpers are now invoked explicitly with `python3` throughout agent instructions, installation guides, worker examples and cron snippets, so commands do not depend on executable file permissions.
+
 ## [0.91.3] - 2026-08-24
 
 ### Changed
@@ -2356,7 +2361,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.3...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.4...HEAD
+[0.91.4]: https://github.com/alle80/griglia/compare/v0.91.3...v0.91.4
 [0.91.3]: https://github.com/alle80/griglia/compare/v0.91.2...v0.91.3
 [0.91.2]: https://github.com/alle80/griglia/compare/v0.91.1...v0.91.2
 [0.91.1]: https://github.com/alle80/griglia/compare/v0.91.0...v0.91.1

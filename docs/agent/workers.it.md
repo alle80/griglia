@@ -205,8 +205,8 @@ Usa `systemctl --user restart` solo quando interrompere le sessioni in corso è 
 Per controllare la configurazione senza lanciare un agente:
 
 ```bash
-scripts/griglia-agent-worker.py --agent=codex --driver=codex --once --dry-run
-scripts/griglia-agent-worker.py --agent=codex --transport=local --php=/usr/bin/php8.4 \
+python3 scripts/griglia-agent-worker.py --agent=codex --driver=codex --once --dry-run
+python3 scripts/griglia-agent-worker.py --agent=codex --transport=local --php=/usr/bin/php8.4 \
   --repo=/srv/my-project --once --dry-run
 ```
 
