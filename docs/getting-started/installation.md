@@ -173,21 +173,30 @@ file. Keep it up to date without thinking about it:
 through `docker exec` by default; when Laravel runs directly on the machine, set `GRIGLIA_TRANSPORT=local` —
 see [host scripts](../agent/scripts.md) and [agent context](../agent/context.md).
 
-## 6. Connect the agent
+## 6. Start the agent
 
-Create or rename a list to match `GRIGLIA_AGENT_LIST` (`dev` by default), start the coding agent in the project
-directory, then run:
+Create or rename a list to match `GRIGLIA_AGENT_LIST` (`dev` by default), add a request to it and click its
+state control once, so the task is **open to work**.
+
+Then open a terminal in the project root — the directory with `artisan` and the instruction file — and start
+your agent CLI **there**:
 
 ```bash
-php artisan griglia:check
+cd /srv/my-project
+claude            # Claude Code · `codex` for Codex CLI · `gemini` for Gemini CLI
 ```
 
-Expected result: the command prints behaviour settings and the open/working items for the agent list.
+Give it the first message:
 
-Installing Griglia does **not** start a coding agent: choose how it will run after connecting it. For an
-interactive session, start the agent yourself in the project directory and follow [the agent-side
-workflow](../agent/index.md). For unattended operation, install a [persistent worker](../agent/workers.md),
-which watches the board and starts a new agent session when work is ready.
+> Read AGENTS.md and work on the Griglia board as agent `claude`: run `php artisan griglia:check
+> --agent=claude`, take the first task that is open to work, and follow the workflow through to closing it.
+
+Expected result: `griglia:check` prints the behaviour settings and the queue of the agent list, and the task dot
+turns to **working** on the board. You can run the same command yourself at any time to see what the agent sees.
+
+That interactive session is the first of three ways to run an agent — the other two are a single
+non-interactive command and a service that starts sessions by itself. All three are in [start the
+agent](../agent/running.md).
 
 ## Verify the installation
 

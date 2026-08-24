@@ -40,6 +40,7 @@ You have completed the full Griglia request lifecycle.
 
 ## Next steps
 
+- [Start the agent](../agent/running.md) - the three ways to launch a session: terminal, one command, worker.
 - [The agent side](../agent/index.md) - connect the lifecycle to Codex, Claude Code, or another CLI agent.
 - [Using the board](../board/usage.md) - add notes, sub-tasks and images; ask questions; archive completed work.
 - [Persistent workers](../agent/workers.md) - keep an agent waiting for new work and stop requests.

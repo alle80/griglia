@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.91.2] - 2026-08-24
+
+### Added
+- **A page on how to actually start an agent**: [Start the agent](https://alle80.github.io/griglia/agent/running/) lists the three
+  ways to run one, in order — a terminal opened in the project directory, a single non-interactive CLI
+  command (`claude -p …`, `codex exec …`) for scripts and cron, and a persistent worker — with what all
+  three need and why the working directory decides whether the agent sees the board.
+
+### Changed
+- The installation tutorial no longer says «start the coding agent» and leaves you there: step 6 gives the
+  `cd` + CLI command and the first message to send, then points at the new page for the other two ways.
+
 ## [0.91.1] - 2026-08-24
 
 ### Fixed
@@ -2337,7 +2349,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.1...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.2...HEAD
+[0.91.2]: https://github.com/alle80/griglia/compare/v0.91.1...v0.91.2
 [0.91.1]: https://github.com/alle80/griglia/compare/v0.91.0...v0.91.1
 [0.91.0]: https://github.com/alle80/griglia/compare/v0.90.1...v0.91.0
 [0.90.1]: https://github.com/alle80/griglia/compare/v0.90.0...v0.90.1

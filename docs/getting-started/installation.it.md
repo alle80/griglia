@@ -174,22 +174,31 @@ non il file. Per tenerlo aggiornato senza pensarci:
 raggiungono Artisan via `docker exec` per default; se Laravel gira direttamente sulla macchina, impostare
 `GRIGLIA_TRANSPORT=local` — vedi [script sull'host](../agent/scripts.md) e [contesto dell'agente](../agent/context.md).
 
-## 6. Collegare l'agente
+## 6. Avviare l'agente
 
-Creare o rinominare una lista in modo che corrisponda a `GRIGLIA_AGENT_LIST` (`dev` per default), avviare
-l'agente in quella directory, poi eseguire:
+Creare o rinominare una lista in modo che corrisponda a `GRIGLIA_AGENT_LIST` (`dev` per default), aggiungere una
+richiesta e cliccare una volta sul suo pallino di stato, così il task diventa **open to work**.
+
+Poi aprire un terminale nella radice del progetto — la directory con `artisan` e il file di istruzioni — e
+avviare **lì** il CLI dell'agente:
 
 ```bash
-php artisan griglia:check
+cd /srv/mio-progetto
+claude            # Claude Code · `codex` per Codex CLI · `gemini` per Gemini CLI
 ```
 
-Risultato atteso: il comando stampa le impostazioni di comportamento e gli elementi aperti o in lavorazione.
+Mandargli il primo messaggio:
 
-Installare Griglia **non** avvia un agente di coding: dopo averlo collegato, scegliere come eseguirlo. Per una
-sessione interattiva, avviare manualmente l'agente nella directory del progetto e seguire il [workflow lato
-agente](../agent/index.md). Per lavorare senza supervisione, installare un [worker
-persistente](../agent/workers.md), che sorveglia la board e avvia una nuova sessione dell'agente quando un task
-è pronto.
+> Leggi AGENTS.md e lavora sulla board Griglia come agente `claude`: esegui `php artisan griglia:check
+> --agent=claude`, prendi in carico il primo task open to work e segui il workflow fino alla chiusura.
+
+Risultato atteso: `griglia:check` stampa le impostazioni di comportamento e la coda della lista dell'agente, e il
+pallino del task diventa **working** sulla board. Lo stesso comando si può lanciare a mano in qualsiasi momento
+per vedere quello che vede l'agente.
+
+Quella sessione interattiva è il primo dei tre modi di far lavorare un agente — gli altri due sono un singolo
+comando non interattivo e un servizio che avvia le sessioni da solo. Sono tutti in [avviare
+l'agente](../agent/running.md).
 
 ## Verificare l'installazione
 

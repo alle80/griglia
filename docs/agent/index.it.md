@@ -34,6 +34,8 @@ php artisan griglia:check --agent=codex --ask=42 \
 L’utente risponde nel modale e riapre il task. `--pause=42` registra una pausa temporanea dal lato agente,
 per esempio quando raggiunge un limite di utilizzo.
 
+Non hai ancora un agente in funzione? [Avviare l'agente](running.it.md) mostra i tre modi di lanciarne uno: un
+terminale nella directory del progetto, un singolo comando non interattivo o un worker persistente.
 Per lavorare senza supervisione, avvia un [worker persistente](workers.it.md). Per reagire direttamente agli
 eventi della board usa `griglia:watch --agent=codex`; aggiungi `--once` per il polling da cron.
 
@@ -43,6 +45,7 @@ eventi della board usa `griglia:watch --agent=codex`; aggiungi `--once` per il p
 - [Primi cinque minuti](../getting-started/quickstart.it.md) — completa il primo task passo per passo.
 - [Reference dei comandi Artisan](../reference/commands.it.md) — tutti i comandi e le opzioni, comprese review ed esiti.
 - [Contesto dell'agente](context.it.md) — genera e mantieni i file di istruzioni.
+- [Avviare l'agente](running.it.md) — i tre modi di lanciare una sessione.
 - [Worker persistenti](workers.it.md) — avvia gli agenti automaticamente.
 - [Più agenti](concurrency.it.md) — assegnazioni e coordinamento delle risorse condivise.
 - [Skill](skills.it.md) · [Statistiche](stats.it.md) · [Script sull'host](scripts.it.md)

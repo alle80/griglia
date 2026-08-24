@@ -98,12 +98,16 @@ you manage on `/context`. Generation overwrites them, so back up hand-written on
 scripts and run `scripts/sync-context.py --backup`; `--restore` undoes everything. See the
 [installation tutorial](docs/getting-started/installation.md#5-the-files-the-agent-reads).
 
-Create or rename a list to match `GRIGLIA_AGENT_LIST` (`dev` by default), start the agent in the project
-directory, and inspect the queue:
+Create or rename a list to match `GRIGLIA_AGENT_LIST` (`dev` by default), open a terminal in the project root
+— the directory with `artisan` and the instruction file — start your agent CLI there (`claude`, `codex`,
+`gemini`, …) and inspect the queue:
 
 ```bash
 php artisan griglia:check
 ```
+
+A session can be started in three ways — that terminal, a single non-interactive command, or a service that
+starts sessions by itself: see [start the agent](docs/agent/running.md).
 
 The board workflow is `waiting -> open to work -> working -> done`. The agent's first action is
 `griglia:check --take=ID`; it uses `--ask=ID` to pause for an answer and `--done=ID` to return its result.
@@ -138,6 +142,7 @@ are in [front-end assets](docs/getting-started/assets.md).
 | [Documentation site](https://alle80.github.io/griglia/) | Everything below, in English and Italian |
 | [Quickstart](docs/getting-started/quickstart.md) | The first five minutes after installing |
 | [Using the board](docs/board/usage.md) | States, modal, filters, archive |
+| [Start the agent](docs/agent/running.md) | The three ways to run a session: terminal, one command, worker |
 | [The agent side](docs/agent/index.md) | The command contract, workers, statistics |
 | [Features](docs/features/index.md) | Plans, notifications, themes, AI |
 | [Extending Griglia](docs/configuration/extending.md) | Views, strings and languages, themes and styles, events, access hooks |

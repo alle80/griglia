@@ -4,6 +4,9 @@ Griglia works with any coding agent that can run shell commands. Give the agent 
 (`AGENTS.md` for Codex, `CLAUDE.md` for Claude Code or `GEMINI.md` for Gemini CLI), then let it use the board
 through Artisan.
 
+No agent running yet? [Start the agent](running.md) shows the three ways to launch one: a terminal in the
+project directory, a single non-interactive command, or a persistent worker.
+
 ## Work on a task
 
 ```bash
@@ -42,6 +45,7 @@ For unattended operation, run a [persistent worker](workers.md). To react to boa
 - [Architecture](../architecture.md) — the state machine these commands move, and the tables behind it.
 - [Quickstart](../getting-started/quickstart.md) — complete the first task step by step.
 - [Artisan command reference](../reference/commands.md) — all commands and options, including reviews and outcomes.
+- [Start the agent](running.md) — the three ways to launch a session.
 - [Agent context](context.md) — generate and maintain the instruction files.
 - [Persistent workers](workers.md) — run agents automatically.
 - [Several agents](concurrency.md) — assignments and shared-resource coordination.

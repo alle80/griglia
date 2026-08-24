@@ -41,6 +41,7 @@ Hai completato l'intero ciclo di una richiesta Griglia.
 
 ## Passi successivi
 
+- [Avviare l'agente](../agent/running.md) - i tre modi di lanciare una sessione: terminale, un comando, worker.
 - [Il lato agente](../agent/index.md) - collega il ciclo a Codex, Claude Code o un altro agente CLI.
 - [Usare la board](../board/usage.md) - aggiungi note, sotto-task e immagini; poni domande; archivia il lavoro.
 - [Worker persistenti](../agent/workers.md) - lascia un agente in attesa di nuovo lavoro e richieste di stop.

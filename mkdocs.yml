@@ -89,6 +89,7 @@ plugins:
             Front-end assets: Asset front-end
             Using the board: Usare la board
             The agent side: Il lato agente
+            Start the agent: Avviare l'agente
             Skills: Skill
             Agent context: Contesto dell'agente
             Statistics & agents status: Statistiche e stato degli agenti
@@ -165,6 +166,7 @@ nav:
   - Using the board: board/usage.md
   - The agent side:
       - agent/index.md
+      - Start the agent: agent/running.md
       - Skills: agent/skills.md
       - Agent context: agent/context.md
       - Statistics & agents status: agent/stats.md
