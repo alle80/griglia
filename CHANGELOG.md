@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.90.1] - 2026-08-24
+
+### Documentation
+- **The installation tutorial now covers a whole installation, not just `composer require`.** It opens with a
+  copy-paste short version, then explains the two steps that were missing: publishing `config/griglia.php`
+  with a table of the keys that matter on day one (`table_prefix` — to be decided *before* the first
+  `migrate` — `user_model`, `mode`, `route_prefix`, `dashboard_route`, `agent_list`, `agent_name`,
+  `agents`/`agent_key`, `attachments_disk`), with two ready `.env` blocks and the cached-configuration
+  gotcha, and generating the instruction files the agent reads (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`).
+- **A warning before anything overwrites your Markdown.** The instruction-file section opens with the backup
+  procedure — `vendor:publish --tag=griglia-scripts`, `scripts/sync-context.py --backup` (originals kept in
+  `docs/context-originals/`) — and how to undo: `--restore` and the «Generate instruction files from the
+  board» switch on `/context`.
+- Inbound links to the removed *Live updates (optional)* / *Web Push (optional)* headings now point at the
+  optional-integrations section; the switch on `/context` is named as the UI names it.
+
 ## [0.90.0] - 2026-08-24
 
 ### Changed
@@ -2285,7 +2301,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.90.0...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.90.1...HEAD
+[0.90.1]: https://github.com/alle80/griglia/compare/v0.90.0...v0.90.1
 [0.90.0]: https://github.com/alle80/griglia/compare/v0.89.21...v0.90.0
 [0.89.21]: https://github.com/alle80/griglia/compare/v0.89.20...v0.89.21
 [0.89.20]: https://github.com/alle80/griglia/compare/v0.89.19...v0.89.20

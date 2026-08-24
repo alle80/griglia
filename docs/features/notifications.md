@@ -21,5 +21,5 @@ Deep links `?list=ID&open=ID` open a task from a notification.
 
 ## See also
 
-- [Installation](../getting-started/installation.md#web-push-optional) — VAPID keys and the user model.
+- [Installation](../getting-started/installation.md#optional-integrations) — VAPID keys and the user model.
 - [Troubleshooting](../operations/troubleshooting.md) — when a push never arrives.

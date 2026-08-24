@@ -23,5 +23,5 @@ I link diretti `?list=ID&open=ID` aprono un task partendo da una notifica.
 
 ## Vedi anche
 
-- [Installazione](../getting-started/installation.md#web-push-facoltativo) — chiavi VAPID e modello utente.
+- [Installazione](../getting-started/installation.md#integrazioni-opzionali) — chiavi VAPID e modello utente.
 - [Se qualcosa non va](../operations/troubleshooting.md) — quando una push non arriva mai.

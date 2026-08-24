@@ -72,12 +72,14 @@ From the root of the host Laravel application:
 
 ```bash
 composer require alle80/griglia -W
+php artisan vendor:publish --tag=griglia-config
 php artisan migrate
 ```
 
 `-W` allows Composer to resolve the Web Push dependency tree in a fresh Laravel application. The default
-precompiled asset mode requires no Node build. Open `/` while authenticated: the board should load and create
-the first list for the user.
+precompiled asset mode requires no Node build. Publishing the config is optional but shows the keys worth
+deciding before the first `migrate` — starting with `GRIGLIA_TABLE_PREFIX`. Open `/` while authenticated: the
+board should load and create the first list for the user.
 
 For access gates, local mode, optional integrations, asset alternatives and a complete verification, follow
 the [installation tutorial](docs/getting-started/installation.md). Then complete the
@@ -90,6 +92,11 @@ Publish the portable instructions from the host application root:
 ```bash
 php artisan vendor:publish --tag=griglia-agents
 ```
+
+Griglia can also **generate** those instruction files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`) from the context
+you manage on `/context`. Generation overwrites them, so back up hand-written ones first — publish the host
+scripts and run `scripts/sync-context.py --backup`; `--restore` undoes everything. See the
+[installation tutorial](docs/getting-started/installation.md#5-the-files-the-agent-reads).
 
 Create or rename a list to match `GRIGLIA_AGENT_LIST` (`dev` by default), start the agent in the project
 directory, and inspect the queue:
