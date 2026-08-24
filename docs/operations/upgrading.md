@@ -22,6 +22,20 @@ php artisan vendor:publish --tag=griglia-assets --force # only in precompiled mo
 If the host uses `vite` mode, rebuild its Vite/Tailwind bundle instead of publishing precompiled assets. If it
 published package views, compare those overrides with the new package sources before returning traffic.
 
+## Upgrading to 0.90 — the tables are renamed
+
+`0.90.0` moves every table the package owns behind the `griglia_` prefix (`checklists` → `griglia_checklists`,
+`todos` → `griglia_todos`, and so on). `php artisan migrate` renames them in place, data and foreign keys
+included, so the normal procedure above is enough. Two things to check before the window:
+
+- **anything that reads the tables by name** — raw SQL, reporting views, dumps restored into another schema,
+  BI tools — has to follow the new names;
+- **to keep the old names**, publish the config and set `griglia.table_prefix` to `''`
+  (`GRIGLIA_TABLE_PREFIX=`) *before* running `migrate`.
+
+The tables of the libraries the package installs (`settings`, `notifications`, push subscriptions) are not
+touched: they belong to spatie/laravel-settings, Laravel and webpush.
+
 ## Versioning
 
 While the package is on `0.x`, the **minor** number is where breaking changes may appear: pin what you are

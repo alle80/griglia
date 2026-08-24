@@ -1,5 +1,6 @@
 <?php
 
+use Alle80\Griglia\Support\Tables;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +13,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (Schema::hasTable('context_blocks') && ! Schema::hasColumn('context_blocks', 'key')) {
-            Schema::table('context_blocks', function (Blueprint $table) {
+        if (Schema::hasTable(Tables::name('context_blocks')) && ! Schema::hasColumn(Tables::name('context_blocks'), 'key')) {
+            Schema::table(Tables::name('context_blocks'), function (Blueprint $table) {
                 $table->string('key', 64)->nullable()->unique()->after('group_id');
             });
         }
@@ -21,8 +22,8 @@ return new class extends Migration
 
     public function down(): void
     {
-        if (Schema::hasColumn('context_blocks', 'key')) {
-            Schema::table('context_blocks', function (Blueprint $table) {
+        if (Schema::hasColumn(Tables::name('context_blocks'), 'key')) {
+            Schema::table(Tables::name('context_blocks'), function (Blueprint $table) {
                 $table->dropColumn('key');
             });
         }

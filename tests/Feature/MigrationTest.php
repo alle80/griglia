@@ -4,6 +4,7 @@ namespace Alle80\Griglia\Tests\Feature;
 
 use Alle80\Griglia\Settings\AgentSettings;
 use Alle80\Griglia\Settings\AppSettings;
+use Alle80\Griglia\Support\Tables;
 use Alle80\Griglia\Tests\TestCase;
 use Illuminate\Support\Facades\Schema;
 
@@ -11,12 +12,12 @@ class MigrationTest extends TestCase
 {
     public function test_tables_and_settings_are_created(): void
     {
-        foreach (['checklists', 'todos', 'ingredients', 'attachments', 'questions', 'settings'] as $table) {
+        foreach ([...array_values(Tables::map()), 'settings'] as $table) {
             $this->assertTrue(Schema::hasTable($table), "table {$table}");
         }
-        $this->assertTrue(Schema::hasColumn('questions', 'choices'));
-        $this->assertTrue(Schema::hasColumn('context_blocks', 'key'));
-        $this->assertTrue(Schema::hasColumns('todos', ['open_to_work', 'working', 'paused', 'stopped_at', 'question', 'claude_comment', 'result_summary', 'archived_at', 'parent_id']));
+        $this->assertTrue(Schema::hasColumn(Tables::name('questions'), 'choices'));
+        $this->assertTrue(Schema::hasColumn(Tables::name('context_blocks'), 'key'));
+        $this->assertTrue(Schema::hasColumns(Tables::name('todos'), ['open_to_work', 'working', 'paused', 'stopped_at', 'question', 'claude_comment', 'result_summary', 'archived_at', 'parent_id']));
 
         $this->assertTrue(app(AgentSettings::class)->commit_after_task);
         $this->assertSame('ask', app(AgentSettings::class)->autonomy);
@@ -31,7 +32,7 @@ class MigrationTest extends TestCase
         $migration = require __DIR__.'/../../database/migrations/2026_08_15_000000_create_todolist_tables.php';
         $migration->up();
         $migration->up();
-        $this->assertTrue(Schema::hasTable('todos'));
+        $this->assertTrue(Schema::hasTable(Tables::name('todos')));
 
         $this->artisan('migrate')->assertSuccessful(); // nothing left to migrate
         $this->assertTrue(app(AgentSettings::class)->commit_after_task);

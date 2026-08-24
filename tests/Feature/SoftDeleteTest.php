@@ -5,6 +5,7 @@ namespace Alle80\Griglia\Tests\Feature;
 use Alle80\Griglia\Models\Checklist;
 use Alle80\Griglia\Models\Todo;
 use Alle80\Griglia\Support\Stats;
+use Alle80\Griglia\Support\Tables;
 use Alle80\Griglia\Tests\TestCase;
 
 /** Task 298: deleting a list/task is a soft delete — the statistics survive; the trash can be emptied. */
@@ -29,7 +30,7 @@ class SoftDeleteTest extends TestCase
     {
         $this->todo->delete();
 
-        $this->assertSoftDeleted('todos', ['id' => $this->todo->id]);
+        $this->assertSoftDeleted(Tables::name('todos'), ['id' => $this->todo->id]);
         $this->assertSame(0, $this->list->todos()->count(), 'gone from the board scope');
 
         $rows = Stats::history($this->list);
@@ -42,8 +43,8 @@ class SoftDeleteTest extends TestCase
     {
         $this->list->delete();
 
-        $this->assertSoftDeleted('checklists', ['id' => $this->list->id]);
-        $this->assertSoftDeleted('todos', ['id' => $this->todo->id]);
+        $this->assertSoftDeleted(Tables::name('checklists'), ['id' => $this->list->id]);
+        $this->assertSoftDeleted(Tables::name('todos'), ['id' => $this->todo->id]);
         $this->assertSame(0, Checklist::mine()->count(), 'gone from the menus');
 
         $trashed = Checklist::withTrashed()->find($this->list->id);

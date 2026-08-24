@@ -3,6 +3,7 @@
 namespace Alle80\Griglia\Models;
 
 use Alle80\Griglia\Database\Factories\IngredientFactory;
+use Alle80\Griglia\Models\Concerns\HasPrefixedTable;
 use Alle80\Griglia\Support\Live;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Ingredient extends Model
 {
     /** @use HasFactory<IngredientFactory> */
-    use HasFactory;
+    use HasFactory, HasPrefixedTable;
 
     protected static function newFactory(): IngredientFactory
     {

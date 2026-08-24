@@ -4,6 +4,7 @@ namespace Alle80\Griglia\Tests\Feature;
 
 use Alle80\Griglia\Models\Checklist;
 use Alle80\Griglia\Models\Todo;
+use Alle80\Griglia\Support\Tables;
 use Alle80\Griglia\Tests\Support\User;
 use Alle80\Griglia\Tests\TestCase;
 
@@ -46,12 +47,12 @@ class ChecklistScopingTest extends TestCase
         $todo->questions()->create(['question' => 'q?', 'order' => 1]);
 
         $todo->delete(); // soft: the row (and its children) survive so the statistics keep reading it
-        $this->assertSoftDeleted('todos', ['id' => $todo->id]);
-        $this->assertDatabaseCount('ingredients', 1);
+        $this->assertSoftDeleted(Tables::name('todos'), ['id' => $todo->id]);
+        $this->assertDatabaseCount(Tables::name('ingredients'), 1);
 
         $todo->forceDelete();
-        $this->assertDatabaseCount('todos', 0);
-        $this->assertDatabaseCount('ingredients', 0);
-        $this->assertDatabaseCount('questions', 0);
+        $this->assertDatabaseCount(Tables::name('todos'), 0);
+        $this->assertDatabaseCount(Tables::name('ingredients'), 0);
+        $this->assertDatabaseCount(Tables::name('questions'), 0);
     }
 }

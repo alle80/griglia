@@ -5,6 +5,7 @@ namespace Alle80\Griglia\Tests\Feature;
 use Alle80\Griglia\Livewire\TodoList;
 use Alle80\Griglia\Models\Checklist;
 use Alle80\Griglia\Models\Todo;
+use Alle80\Griglia\Support\Tables;
 use Alle80\Griglia\Tests\Support\User;
 use Alle80\Griglia\Tests\TestCase;
 use Livewire\Livewire;
@@ -36,7 +37,7 @@ class TodoListComponentTest extends TestCase
         $this->assertSame('Buy oat milk', $todo->fresh()->title);
 
         Livewire::test(TodoList::class)->call('delete', $todo->id);
-        $this->assertSoftDeleted('todos', ['id' => $todo->id]); // soft: statistics survive (task 298)
+        $this->assertSoftDeleted(Tables::name('todos'), ['id' => $todo->id]); // soft: statistics survive (task 298)
         $this->assertSame(0, Todo::count(), 'gone from the board scope');
     }
 
@@ -116,10 +117,10 @@ class TodoListComponentTest extends TestCase
     {
         Livewire::test(TodoList::class)->call('startInsert', 1)->set('newTitle', str_repeat('x', 51))->call('saveInsert')
             ->assertDispatched('toast');
-        $this->assertDatabaseCount('todos', 0);
+        $this->assertDatabaseCount(Tables::name('todos'), 0);
 
         $this->add(str_repeat('y', 50));
-        $this->assertDatabaseCount('todos', 1);
+        $this->assertDatabaseCount(Tables::name('todos'), 1);
     }
 
     public function test_archive_compacts_order_and_unarchive_appends(): void

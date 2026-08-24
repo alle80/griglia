@@ -5,6 +5,13 @@ return [
     // URL prefix of the package pages ('' = site root: /, /settings, /dashboard)
     'route_prefix' => env('GRIGLIA_ROUTE_PREFIX', ''),
 
+    // Prefix of the database tables owned by the package (checklists, todos, ingredients, attachments,
+    // questions, context_groups, context_blocks): keeps them together and out of the way of the host
+    // app's own tables. '' = the historical unprefixed names. Changing it on a live database means
+    // renaming the tables yourself. The tables of third-party libraries (settings, notifications,
+    // push_subscriptions) are never prefixed.
+    'table_prefix' => env('GRIGLIA_TABLE_PREFIX', 'griglia_'),
+
     // How the UI calls the coding agent (Claude, Codex, Gemini, …): labels like «Claude's answer», «Claude's skills»
     'agent_name' => env('GRIGLIA_AGENT_NAME', 'Agent'),
 

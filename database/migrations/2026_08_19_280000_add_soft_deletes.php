@@ -1,5 +1,6 @@
 <?php
 
+use Alle80\Griglia\Support\Tables;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        foreach (['checklists', 'todos'] as $table) {
+        foreach ([Tables::name('checklists'), Tables::name('todos')] as $table) {
             if (Schema::hasTable($table) && ! Schema::hasColumn($table, 'deleted_at')) {
                 Schema::table($table, fn (Blueprint $t) => $t->softDeletes());
             }
@@ -18,7 +19,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        foreach (['checklists', 'todos'] as $table) {
+        foreach ([Tables::name('checklists'), Tables::name('todos')] as $table) {
             if (Schema::hasColumn($table, 'deleted_at')) {
                 Schema::table($table, fn (Blueprint $t) => $t->dropSoftDeletes());
             }

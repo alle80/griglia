@@ -1,5 +1,6 @@
 <?php
 
+use Alle80\Griglia\Support\Tables;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,20 +10,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (! Schema::hasTable('todos')) {
+        if (! Schema::hasTable(Tables::name('todos'))) {
             return;
         }
-        Schema::table('todos', function (Blueprint $table) {
-            if (! Schema::hasColumn('todos', 'working_since')) {
+        Schema::table(Tables::name('todos'), function (Blueprint $table) {
+            if (! Schema::hasColumn(Tables::name('todos'), 'working_since')) {
                 $table->timestamp('working_since')->nullable()->after('progress');
             }
-            if (! Schema::hasColumn('todos', 'work_seconds')) {
+            if (! Schema::hasColumn(Tables::name('todos'), 'work_seconds')) {
                 $table->unsignedInteger('work_seconds')->default(0)->after('working_since');
             }
-            if (! Schema::hasColumn('todos', 'tokens_in')) {
+            if (! Schema::hasColumn(Tables::name('todos'), 'tokens_in')) {
                 $table->unsignedBigInteger('tokens_in')->default(0)->after('work_seconds');
             }
-            if (! Schema::hasColumn('todos', 'tokens_out')) {
+            if (! Schema::hasColumn(Tables::name('todos'), 'tokens_out')) {
                 $table->unsignedBigInteger('tokens_out')->default(0)->after('tokens_in');
             }
         });
@@ -30,9 +31,9 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('todos', function (Blueprint $table) {
+        Schema::table(Tables::name('todos'), function (Blueprint $table) {
             foreach (['working_since', 'work_seconds', 'tokens_in', 'tokens_out'] as $col) {
-                if (Schema::hasColumn('todos', $col)) {
+                if (Schema::hasColumn(Tables::name('todos'), $col)) {
                     $table->dropColumn($col);
                 }
             }

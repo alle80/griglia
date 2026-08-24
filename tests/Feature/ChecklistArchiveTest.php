@@ -5,6 +5,7 @@ namespace Alle80\Griglia\Tests\Feature;
 use Alle80\Griglia\Livewire\ChecklistSwitcher;
 use Alle80\Griglia\Models\Checklist;
 use Alle80\Griglia\Models\Todo;
+use Alle80\Griglia\Support\Tables;
 use Alle80\Griglia\Tests\TestCase;
 use Livewire\Livewire;
 
@@ -22,7 +23,7 @@ class ChecklistArchiveTest extends TestCase
         $this->assertNotNull($list->fresh()->archived_at);
         $this->assertFalse(Checklist::mine()->whereKey($list->id)->exists());
         $this->assertTrue(Checklist::mineArchived()->whereKey($list->id)->exists());
-        $this->assertDatabaseHas('todos', ['checklist_id' => $list->id, 'title' => 'T']);
+        $this->assertDatabaseHas(Tables::name('todos'), ['checklist_id' => $list->id, 'title' => 'T']);
         $this->assertSame($keep, Checklist::currentId());
     }
 

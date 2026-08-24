@@ -1,5 +1,6 @@
 <?php
 
+use Alle80\Griglia\Support\Tables;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,15 +10,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (Schema::hasTable('checklists') && ! Schema::hasColumn('checklists', 'plan_paused')) {
-            Schema::table('checklists', fn (Blueprint $table) => $table->boolean('plan_paused')->default(false)->after('plan_prompt'));
+        if (Schema::hasTable(Tables::name('checklists')) && ! Schema::hasColumn(Tables::name('checklists'), 'plan_paused')) {
+            Schema::table(Tables::name('checklists'), fn (Blueprint $table) => $table->boolean('plan_paused')->default(false)->after('plan_prompt'));
         }
     }
 
     public function down(): void
     {
-        if (Schema::hasColumn('checklists', 'plan_paused')) {
-            Schema::table('checklists', fn (Blueprint $table) => $table->dropColumn('plan_paused'));
+        if (Schema::hasColumn(Tables::name('checklists'), 'plan_paused')) {
+            Schema::table(Tables::name('checklists'), fn (Blueprint $table) => $table->dropColumn('plan_paused'));
         }
     }
 };

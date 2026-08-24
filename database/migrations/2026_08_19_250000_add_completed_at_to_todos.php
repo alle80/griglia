@@ -1,5 +1,6 @@
 <?php
 
+use Alle80\Griglia\Support\Tables;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -10,19 +11,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (! Schema::hasTable('todos')) {
+        if (! Schema::hasTable(Tables::name('todos'))) {
             return;
         }
-        if (! Schema::hasColumn('todos', 'completed_at')) {
-            Schema::table('todos', fn (Blueprint $table) => $table->timestamp('completed_at')->nullable()->index()->after('completed'));
+        if (! Schema::hasColumn(Tables::name('todos'), 'completed_at')) {
+            Schema::table(Tables::name('todos'), fn (Blueprint $table) => $table->timestamp('completed_at')->nullable()->index()->after('completed'));
         }
-        DB::table('todos')->where('completed', true)->whereNull('completed_at')->update(['completed_at' => DB::raw('updated_at')]);
+        DB::table(Tables::name('todos'))->where('completed', true)->whereNull('completed_at')->update(['completed_at' => DB::raw('updated_at')]);
     }
 
     public function down(): void
     {
-        if (Schema::hasColumn('todos', 'completed_at')) {
-            Schema::table('todos', fn (Blueprint $table) => $table->dropColumn('completed_at'));
+        if (Schema::hasColumn(Tables::name('todos'), 'completed_at')) {
+            Schema::table(Tables::name('todos'), fn (Blueprint $table) => $table->dropColumn('completed_at'));
         }
     }
 };

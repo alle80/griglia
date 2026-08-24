@@ -1,5 +1,6 @@
 <?php
 
+use Alle80\Griglia\Support\Tables;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +13,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (! Schema::hasTable('checklists')) {
-            Schema::create('checklists', function (Blueprint $table) {
+        if (! Schema::hasTable(Tables::name('checklists'))) {
+            Schema::create(Tables::name('checklists'), function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
                 $table->string('name');
@@ -24,8 +25,8 @@ return new class extends Migration
             });
         }
 
-        if (! Schema::hasTable('todos')) {
-            Schema::create('todos', function (Blueprint $table) {
+        if (! Schema::hasTable(Tables::name('todos'))) {
+            Schema::create(Tables::name('todos'), function (Blueprint $table) {
                 $table->id();
                 $table->string('title');
                 $table->unsignedInteger('order')->index();
@@ -50,17 +51,17 @@ return new class extends Migration
                 $table->string('agent', 40)->nullable();             // agent override for this task (multi-agent)
                 $table->timestamp('archived_at')->nullable()->index();
                 $table->timestamps();
-                $table->foreignId('checklist_id')->nullable()->constrained()->cascadeOnDelete();
-                $table->foreignId('parent_id')->nullable()->constrained('todos')->nullOnDelete();
-                $table->foreignId('depends_on_id')->nullable()->constrained('todos')->nullOnDelete(); // chained tasks (plan): opens when this one is done
+                $table->foreignId('checklist_id')->nullable()->constrained(Tables::name('checklists'))->cascadeOnDelete();
+                $table->foreignId('parent_id')->nullable()->constrained(Tables::name('todos'))->nullOnDelete();
+                $table->foreignId('depends_on_id')->nullable()->constrained(Tables::name('todos'))->nullOnDelete(); // chained tasks (plan): opens when this one is done
             });
         }
 
-        if (! Schema::hasTable('ingredients')) {
+        if (! Schema::hasTable(Tables::name('ingredients'))) {
             // Sub-tasks: historically named "ingredients" (the app started as a barbecue list). Do not rename.
-            Schema::create('ingredients', function (Blueprint $table) {
+            Schema::create(Tables::name('ingredients'), function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('todo_id')->constrained()->cascadeOnDelete();
+                $table->foreignId('todo_id')->constrained(Tables::name('todos'))->cascadeOnDelete();
                 $table->string('name');
                 $table->unsignedInteger('order')->default(0);
                 $table->boolean('checked')->default(false);
@@ -68,10 +69,10 @@ return new class extends Migration
             });
         }
 
-        if (! Schema::hasTable('attachments')) {
-            Schema::create('attachments', function (Blueprint $table) {
+        if (! Schema::hasTable(Tables::name('attachments'))) {
+            Schema::create(Tables::name('attachments'), function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('todo_id')->constrained()->cascadeOnDelete();
+                $table->foreignId('todo_id')->constrained(Tables::name('todos'))->cascadeOnDelete();
                 $table->string('path');
                 $table->string('original_name');
                 $table->text('description')->nullable();   // AI description, used by the search
@@ -83,10 +84,10 @@ return new class extends Migration
             });
         }
 
-        if (! Schema::hasTable('questions')) {
-            Schema::create('questions', function (Blueprint $table) {
+        if (! Schema::hasTable(Tables::name('questions'))) {
+            Schema::create(Tables::name('questions'), function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('todo_id')->constrained()->cascadeOnDelete();
+                $table->foreignId('todo_id')->constrained(Tables::name('todos'))->cascadeOnDelete();
                 $table->text('question');
                 $table->text('answer')->nullable();
                 $table->unsignedInteger('order')->default(0);
@@ -110,10 +111,10 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('questions');
-        Schema::dropIfExists('attachments');
-        Schema::dropIfExists('ingredients');
-        Schema::dropIfExists('todos');
-        Schema::dropIfExists('checklists');
+        Schema::dropIfExists(Tables::name('questions'));
+        Schema::dropIfExists(Tables::name('attachments'));
+        Schema::dropIfExists(Tables::name('ingredients'));
+        Schema::dropIfExists(Tables::name('todos'));
+        Schema::dropIfExists(Tables::name('checklists'));
     }
 };

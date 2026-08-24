@@ -6,6 +6,7 @@ use Alle80\Griglia\Agent;
 use Alle80\Griglia\Database\Factories\TodoFactory;
 use Alle80\Griglia\Domain\ReviewOutcome;
 use Alle80\Griglia\Domain\ReviewStatus;
+use Alle80\Griglia\Models\Concerns\HasPrefixedTable;
 use Alle80\Griglia\Support\Live;
 use Alle80\Griglia\Support\Stats;
 use DomainException;
@@ -19,7 +20,7 @@ use Illuminate\Support\Collection;
 class Todo extends Model
 {
     /** @use HasFactory<TodoFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory, HasPrefixedTable, SoftDeletes;
 
     protected static function newFactory(): TodoFactory
     {

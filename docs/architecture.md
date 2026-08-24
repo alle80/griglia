@@ -78,20 +78,26 @@ migrations, settings, commands and the publish tags. Everything it exposes on pu
 ## The data
 
 These are the tables the package migrations create — the notification ones only if your application has
-none. `todos` carries the state machine in plain columns: there is no status string to keep in sync.
+none. Every table the package owns carries the `griglia_` prefix, so it never squats a generic name in your
+database. `griglia_todos` carries the state machine in plain columns: there is no status string to keep in sync.
 
 | Table | Holds | Notes |
 |---|---|---|
-| `checklists` | lists | `user_id` owner, `agent` default agent, `plan_prompt` + `plan_paused` for plans |
-| `todos` | tasks | state, progress, agent, statistics, chains — see below |
-| `ingredients` | sub-tasks | historical name, kept on purpose ([glossary](glossary.md)) |
-| `questions` | agent questions | `question`, `answer`, optional `choices` |
-| `attachments` | images on a task | file on a private disk, `description` filled by the AI and searched |
-| `context_groups`, `context_blocks` | the agent instruction file, in pieces | what `griglia:context` writes out |
+| `griglia_checklists` | lists | `user_id` owner, `agent` default agent, `plan_prompt` + `plan_paused` for plans |
+| `griglia_todos` | tasks | state, progress, agent, statistics, chains — see below |
+| `griglia_ingredients` | sub-tasks | historical name, kept on purpose ([glossary](glossary.md)) |
+| `griglia_questions` | agent questions | `question`, `answer`, optional `choices` |
+| `griglia_attachments` | images on a task | file on a private disk, `description` filled by the AI and searched |
+| `griglia_context_groups`, `griglia_context_blocks` | the agent instruction file, in pieces | what `griglia:context` writes out |
 | `settings` | the three settings groups | one row per key, `payload` as JSON |
 | `notifications`, push subscriptions | Laravel notifications and Web Push endpoints | created only if your app has none |
 
-The columns of `todos` that matter, grouped by who writes them:
+The prefix is [`griglia.table_prefix`](reference/config.md) (`GRIGLIA_TABLE_PREFIX`). Set it to `''` to keep
+the historical unprefixed names; on an existing database the migration renames the tables for you, data and
+foreign keys included. The last three rows belong to spatie/laravel-settings, Laravel and webpush, which look
+their tables up through their own configuration: they are never prefixed.
+
+The columns of `griglia_todos` that matter, grouped by who writes them:
 
 | Written by | Columns |
 |---|---|

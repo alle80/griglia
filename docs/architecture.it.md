@@ -78,21 +78,27 @@ traduzioni, migrazioni, settings, comandi e i tag di publish. Tutto ciò che esp
 ## I dati
 
 Queste sono le tabelle create dalle migrazioni del package — quelle delle notifiche solo se la tua
-applicazione non le ha già. `todos` porta la macchina a stati in colonne normali: non c'è nessuna stringa di
-stato da tenere allineata.
+applicazione non le ha già. Ogni tabella di proprietà del package porta il prefisso `griglia_`, così non
+occupa mai un nome generico nel tuo database. `griglia_todos` porta la macchina a stati in colonne normali:
+non c'è nessuna stringa di stato da tenere allineata.
 
 | Tabella | Contiene | Note |
 |---|---|---|
-| `checklists` | le liste | `user_id` proprietario, `agent` agente di default, `plan_prompt` + `plan_paused` per i piani |
-| `todos` | i task | stato, percentuale, agente, statistiche, catene — vedi sotto |
-| `ingredients` | i sotto-task | nome storico, tenuto di proposito ([glossario](glossary.md)) |
-| `questions` | le domande dell'agente | `question`, `answer`, `choices` opzionali |
-| `attachments` | le immagini di un task | file su un disco privato, `description` scritta dall'AI e cercata dalla ricerca |
-| `context_groups`, `context_blocks` | il file di istruzioni dell'agente, a pezzi | ciò che `griglia:context` scrive su disco |
+| `griglia_checklists` | le liste | `user_id` proprietario, `agent` agente di default, `plan_prompt` + `plan_paused` per i piani |
+| `griglia_todos` | i task | stato, percentuale, agente, statistiche, catene — vedi sotto |
+| `griglia_ingredients` | i sotto-task | nome storico, tenuto di proposito ([glossario](glossary.md)) |
+| `griglia_questions` | le domande dell'agente | `question`, `answer`, `choices` opzionali |
+| `griglia_attachments` | le immagini di un task | file su un disco privato, `description` scritta dall'AI e cercata dalla ricerca |
+| `griglia_context_groups`, `griglia_context_blocks` | il file di istruzioni dell'agente, a pezzi | ciò che `griglia:context` scrive su disco |
 | `settings` | i tre gruppi di impostazioni | una riga per chiave, `payload` in JSON |
 | `notifications`, sottoscrizioni push | notifiche Laravel ed endpoint Web Push | create solo se la tua app non le ha già |
 
-Le colonne di `todos` che contano, raggruppate per chi le scrive:
+Il prefisso è [`griglia.table_prefix`](reference/config.md) (`GRIGLIA_TABLE_PREFIX`). Mettilo a `''` per
+tenere i vecchi nomi senza prefisso; su un database già in uso la migrazione rinomina le tabelle da sé, dati
+e chiavi esterne compresi. Le ultime tre righe appartengono a spatie/laravel-settings, a Laravel e a webpush,
+che cercano le loro tabelle con la propria configurazione: non hanno mai il prefisso.
+
+Le colonne di `griglia_todos` che contano, raggruppate per chi le scrive:
 
 | Scritte da | Colonne |
 |---|---|

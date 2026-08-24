@@ -8,6 +8,7 @@ Decided by whoever installs the package; the run-time options live in [Settings]
 | Key | Environment variable | Default | What it is |
 |---|---|---|---|
 | `route_prefix` | `GRIGLIA_ROUTE_PREFIX` | `''` | URL prefix of the package pages ('' = site root: /, /settings, /dashboard) |
+| `table_prefix` | `GRIGLIA_TABLE_PREFIX` | `'griglia_'` | Prefix of the database tables owned by the package (checklists, todos, ingredients, attachments, questions, context_groups, context_blocks): keeps them together and out of the way of the host app's own tables. '' = the historical unprefixed names. Changing it on a live database means renaming the tables yourself. The tables of third-party libraries (settings, notifications, push_subscriptions) are never prefixed. |
 | `agent_name` | `GRIGLIA_AGENT_NAME` | `'Agent'` | How the UI calls the coding agent (Claude, Codex, Gemini, …): labels like «Claude's answer», «Claude's skills» |
 | `agents` | `GRIGLIA_AGENTS` | — | Several agents at once (key => label), e.g. GRIGLIA_AGENTS="claude:Claude Code,codex:Codex CLI". A list (project) chooses its default agent, a task may override it. Empty = a single agent named `agent_name`. |
 | `agent_key` | `GRIGLIA_AGENT_KEY` | — | Which of those agents is running here: the key `griglia:check` assumes when `--agent=<key>` is omitted, so that this installation sees only its own tasks. Empty = the agent must pass `--agent=` itself. |

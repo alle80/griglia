@@ -1,5 +1,6 @@
 <?php
 
+use Alle80\Griglia\Support\Tables;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,9 +9,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('todos', function (Blueprint $table) {
+        Schema::table(Tables::name('todos'), function (Blueprint $table) {
             $table->string('reviewer_agent', 40)->nullable()->after('agent');
-            $table->foreignId('review_of_id')->nullable()->after('depends_on_id')->constrained('todos')->restrictOnDelete();
+            $table->foreignId('review_of_id')->nullable()->after('depends_on_id')->constrained(Tables::name('todos'))->restrictOnDelete();
             $table->unsignedInteger('review_round')->nullable()->after('review_of_id');
             $table->string('review_status', 24)->nullable()->after('review_round');
             $table->string('review_outcome', 24)->nullable()->after('review_status');
@@ -21,7 +22,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('todos', function (Blueprint $table) {
+        Schema::table(Tables::name('todos'), function (Blueprint $table) {
             $table->dropForeign(['review_of_id']);
             $table->dropUnique('todos_review_round_unique');
             $table->dropIndex('todos_pending_review_index');

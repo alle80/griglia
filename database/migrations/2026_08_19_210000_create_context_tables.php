@@ -1,5 +1,6 @@
 <?php
 
+use Alle80\Griglia\Support\Tables;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,8 +10,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (! Schema::hasTable('context_groups')) {
-            Schema::create('context_groups', function (Blueprint $table) {
+        if (! Schema::hasTable(Tables::name('context_groups'))) {
+            Schema::create(Tables::name('context_groups'), function (Blueprint $table) {
                 $table->id();
                 $table->string('title');
                 $table->unsignedInteger('order')->default(0);
@@ -18,10 +19,10 @@ return new class extends Migration
                 $table->timestamps();
             });
         }
-        if (! Schema::hasTable('context_blocks')) {
-            Schema::create('context_blocks', function (Blueprint $table) {
+        if (! Schema::hasTable(Tables::name('context_blocks'))) {
+            Schema::create(Tables::name('context_blocks'), function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('group_id')->constrained('context_groups')->cascadeOnDelete();
+                $table->foreignId('group_id')->constrained(Tables::name('context_groups'))->cascadeOnDelete();
                 $table->string('title')->nullable();
                 $table->text('body');
                 $table->unsignedInteger('order')->default(0);
@@ -33,7 +34,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('context_blocks');
-        Schema::dropIfExists('context_groups');
+        Schema::dropIfExists(Tables::name('context_blocks'));
+        Schema::dropIfExists(Tables::name('context_groups'));
     }
 };

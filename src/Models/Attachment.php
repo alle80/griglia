@@ -2,6 +2,7 @@
 
 namespace Alle80\Griglia\Models;
 
+use Alle80\Griglia\Models\Concerns\HasPrefixedTable;
 use Alle80\Griglia\Support\Live;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Attachment extends Model
 {
+    use HasPrefixedTable;
+
     protected $fillable = ['todo_id', 'path', 'original_name', 'description', 'mime', 'size', 'width', 'height'];
 
     protected static function booted(): void

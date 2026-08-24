@@ -8,6 +8,7 @@ La decide chi installa il package; le opzioni che si cambiano a runtime stanno n
 | Chiave | Variabile d'ambiente | Default | Cos'è |
 |---|---|---|---|
 | `route_prefix` | `GRIGLIA_ROUTE_PREFIX` | `''` | Prefisso URL delle pagine del package ('' = radice del sito: /, /settings, /dashboard) |
+| `table_prefix` | `GRIGLIA_TABLE_PREFIX` | `'griglia_'` | Prefisso delle tabelle del database di proprietà del package (checklists, todos, ingredients, attachments, questions, context_groups, context_blocks): le tiene insieme e fuori dai piedi delle tabelle dell'app ospite. '' = i vecchi nomi senza prefisso. Cambiarlo su un database in uso significa rinominare le tabelle a mano. Le tabelle delle librerie di terze parti (settings, notifications, push_subscriptions) non hanno mai il prefisso. |
 | `agent_name` | `GRIGLIA_AGENT_NAME` | `'Agent'` | Come l'interfaccia chiama l'agente (Claude, Codex, Gemini, …): etichette come «la risposta di Claude», «le skill di Claude» |
 | `agents` | `GRIGLIA_AGENTS` | — | Più agenti insieme (chiave => etichetta), per esempio GRIGLIA_AGENTS="claude:Claude Code,codex:Codex CLI". Una lista (progetto) sceglie il proprio agente di default, un task può cambiarlo. Vuoto = un agente solo, chiamato `agent_name`. |
 | `agent_key` | `GRIGLIA_AGENT_KEY` | — | Quale di quegli agenti gira qui: la chiave che `griglia:check` assume quando `--agent=<chiave>` non è indicato, così questa installazione vede solo i propri task. Vuoto = l'agente deve passare `--agent=` da sé. |

@@ -1,5 +1,6 @@
 <?php
 
+use Alle80\Griglia\Support\Tables;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,11 +9,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('questions', fn (Blueprint $table) => $table->json('choices')->nullable()->after('question'));
+        Schema::table(Tables::name('questions'), fn (Blueprint $table) => $table->json('choices')->nullable()->after('question'));
     }
 
     public function down(): void
     {
-        Schema::table('questions', fn (Blueprint $table) => $table->dropColumn('choices'));
+        Schema::table(Tables::name('questions'), fn (Blueprint $table) => $table->dropColumn('choices'));
     }
 };

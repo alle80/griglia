@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.90.0] - 2026-08-24
+
+### Changed
+- **The tables owned by the package now carry a prefix.** `checklists`, `todos`, `ingredients`,
+  `attachments`, `questions`, `context_groups` and `context_blocks` become `griglia_checklists`,
+  `griglia_todos`, … so an installation no longer squats generic names in the host database. `migrate`
+  renames the existing tables in place, data and foreign keys included; nothing else to do.
+- New config `griglia.table_prefix` (`GRIGLIA_TABLE_PREFIX`, default `griglia_`): set it to `''` to keep the
+  historical unprefixed names. `Alle80\Griglia\Support\Tables` resolves every table through it, and the
+  models follow via the `HasPrefixedTable` trait.
+- The tables of third-party libraries the package installs — `settings` (spatie/laravel-settings),
+  `notifications` (Laravel) and the push subscriptions (webpush) — are deliberately **not** prefixed: those
+  libraries look their tables up through their own configuration.
+
+### Upgrade notes
+- Code that queried the tables by name (raw SQL, dumps, BI tools, `assertDatabaseHas('todos', …)`) must use
+  the new names, or `Tables::name('todos')`. Eloquent, the components and the commands need no change.
+
 ## [0.89.21] - 2026-08-23
 
 ### Fixed
@@ -2267,7 +2285,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.89.21...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.90.0...HEAD
+[0.90.0]: https://github.com/alle80/griglia/compare/v0.89.21...v0.90.0
 [0.89.21]: https://github.com/alle80/griglia/compare/v0.89.20...v0.89.21
 [0.89.20]: https://github.com/alle80/griglia/compare/v0.89.19...v0.89.20
 [0.89.19]: https://github.com/alle80/griglia/compare/v0.89.18...v0.89.19

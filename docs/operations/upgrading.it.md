@@ -21,6 +21,20 @@ php artisan vendor:publish --tag=griglia-assets --force # solo in modalità prec
 In modalità `vite`, ricompilare il bundle Vite/Tailwind dell'applicazione invece di pubblicare gli asset. Se
 sono state pubblicate viste, confrontare gli override con i nuovi sorgenti prima di riaprire il traffico.
 
+## Aggiornare a 0.90 — le tabelle vengono rinominate
+
+`0.90.0` sposta tutte le tabelle di proprietà del package dietro il prefisso `griglia_` (`checklists` →
+`griglia_checklists`, `todos` → `griglia_todos`, e così via). `php artisan migrate` le rinomina sul posto,
+dati e chiavi esterne compresi: la procedura qui sopra basta. Due cose da controllare prima della finestra:
+
+- **tutto ciò che legge le tabelle per nome** — SQL scritto a mano, viste di reporting, dump ripristinati in
+  un altro schema, strumenti di BI — deve seguire i nomi nuovi;
+- **per tenere i vecchi nomi**, pubblica la config e metti `griglia.table_prefix` a `''`
+  (`GRIGLIA_TABLE_PREFIX=`) *prima* di lanciare `migrate`.
+
+Le tabelle delle librerie che il package installa (`settings`, `notifications`, sottoscrizioni push) non
+vengono toccate: appartengono a spatie/laravel-settings, a Laravel e a webpush.
+
 ## Versioni
 
 Finché il package resta sullo `0.x`, è il numero **minor** il posto dove possono comparire cambiamenti che

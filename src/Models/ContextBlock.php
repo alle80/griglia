@@ -2,12 +2,15 @@
 
 namespace Alle80\Griglia\Models;
 
+use Alle80\Griglia\Models\Concerns\HasPrefixedTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /** One switchable piece of the agent's context (a bullet / paragraph / sub-section in markdown). */
 class ContextBlock extends Model
 {
+    use HasPrefixedTable;
+
     protected $fillable = ['group_id', 'key', 'title', 'body', 'order', 'enabled'];
 
     protected function casts(): array
