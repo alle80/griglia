@@ -45,11 +45,13 @@ Due motivi consueti, entrambi voluti:
 
 - **Il task è ancora *in attesa***. L'agente vede solo ciò che gli hai passato: tocca una volta il pallino di
   stato, così diventa *da lavorare*. Tutto il resto della board resta tuo, e l'agente non lo tocca.
-- **Il task è in un'altra lista**. L'agente legge una lista sola, la **lista dell'agente** — `agent_list`
-  nella configurazione, `dev` di default, cambiabile con `GRIGLIA_AGENT_LIST` o dalle impostazioni. Sposta lì
-  il task, oppure punta l'impostazione sulla lista che usi davvero.
+- **Il task è ancora *in attesa* in un'altra lista**. Solo la **lista dell'agente** — `agent_list` nella
+  configurazione, `dev` di default, cambiabile con `GRIGLIA_AGENT_LIST` o dalle impostazioni — è il canale che
+  l'agente legge dall'alto in basso. Nelle altre tue liste non succede niente finché non passi un task:
+  mettilo *da lavorare* e `griglia:check` lo mostra sotto `📋 List «…»`, dopo la lista dell'agente e dopo i
+  piani. Per le richieste di tutti i giorni usa la lista dell'agente: lì decidi la priorità col trascinamento.
 
-I piani sono l'eccezione: i loro task compaiono accanto alla lista dell'agente quando avvii il piano. Vedi
+I piani funzionano allo stesso modo: i loro task compaiono dopo la lista dell'agente. Vedi
 [usare la board](board/usage.md) e [piani](features/plans.md).
 
 ### Posso usarla senza login?

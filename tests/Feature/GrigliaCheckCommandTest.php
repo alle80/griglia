@@ -125,6 +125,37 @@ class GrigliaCheckCommandTest extends TestCase
         $this->assertNull($this->todo->fresh()->phase, 'done clears the phase');
     }
 
+    public function test_a_task_opened_in_another_list_is_listed_and_takeable(): void
+    {
+        // The user marks 🟢 a task in one of their own lists, outside the agent list and outside a plan:
+        // the agent must see it (last in priority) instead of leaving it there for ever (task 651).
+        $other = Checklist::create(['name' => 'Styles', 'user_id' => $this->todo->checklist->user_id]);
+        $done = Todo::create(['title' => 'Old style', 'order' => 1, 'checklist_id' => $other->id, 'completed' => true]);
+        $waiting = Todo::create(['title' => 'Style waiting', 'order' => 2, 'checklist_id' => $other->id]);
+        $open = Todo::create(['title' => 'Napster style', 'order' => 3, 'checklist_id' => $other->id, 'open_to_work' => true]);
+
+        $this->artisan('griglia:check')
+            ->expectsOutputToContain('Add dark mode')          // the agent list keeps the priority
+            ->expectsOutputToContain('List «Styles» (list id:'.$other->id.')')
+            ->expectsOutputToContain('Napster style')
+            ->doesntExpectOutputToContain('Style waiting')     // ⚪ stays untouched
+            ->assertSuccessful();
+
+        // --all does not dump the whole foreign list: only what was opened for the agent
+        $this->artisan('griglia:check', ['--all' => true])->doesntExpectOutputToContain('Old style')->assertSuccessful();
+
+        // and the task can be worked on from end to end
+        $this->artisan('griglia:check', ['--take' => $open->id])->expectsOutputToContain('taken in charge')->assertSuccessful();
+        $this->assertTrue($open->fresh()->working);
+        $this->artisan('griglia:check', ['--done' => $open->id, '--comment' => 'done'])->assertSuccessful();
+        $this->assertTrue($open->fresh()->completed);
+
+        // with nothing open there any more, that list disappears from the output
+        $this->artisan('griglia:check')->doesntExpectOutputToContain('List «Styles»')->assertSuccessful();
+        $this->assertFalse($waiting->fresh()->completed);
+        $this->assertTrue($done->fresh()->completed);
+    }
+
     public function test_alias_and_missing_list(): void
     {
         $this->artisan('sviluppo:check')->assertSuccessful();

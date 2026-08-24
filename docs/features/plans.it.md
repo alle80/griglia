@@ -35,7 +35,8 @@ Da lì puoi:
   successivo.
 - I task nuovi aggiunti a una lista-piano entrano nella catena da soli; a piano finito puoi aggiungere task e
   riprendere.
-- `griglia:check` / `griglia:watch` coprono anche i piani avviati (dopo la lista dell'agente).
+- `griglia:check` / `griglia:watch` coprono anche i piani avviati (dopo la lista dell'agente, prima dei task
+  aperti nelle liste normali).
 - Se un piano ha ancora del lavoro ma non c'è niente open to work, `griglia:check` lo dice: è l'unico stato in
   cui potresti star aspettando un agente che sta aspettando te.
 

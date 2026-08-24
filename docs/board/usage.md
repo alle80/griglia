@@ -4,7 +4,8 @@
 
 The lists menu (top left) switches between your lists, creates new ones, renames or deletes them. A plan is
 written on its own page — **New plan…** in the same menu, see [Plans](../features/plans.md). The **agent list** (config `agent_list`) is the channel with the
-coding agent; any other list is yours (or a plan).
+coding agent; any other list is yours (or a plan). The dot rules everywhere: a task you mark *open to work*
+in one of your own lists reaches the agent too, after the agent list and the plans.
 
 ## Tasks and states
 

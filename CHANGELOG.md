@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.92.0] - 2026-08-24
+
+### Added
+- **A task opened outside the agent list reaches the agent**: `griglia:check` and `griglia:watch` now cover
+  every list of the agent-list owner that holds a task marked open to work (or working, or waiting for an
+  answer). Those tasks are listed last, under `📋 List «…»`, after the agent list and the started plans, and
+  `--take` / `--done` / `--ask` accept their ids. Before, a green dot outside the agent list and outside a
+  plan was invisible to the agent: the user waited for work nobody could see. Foreign lists never show more
+  than what was opened for the agent, `--all` included, and a list with nothing open stays out of the output.
+
 ## [0.91.4] - 2026-08-24
 
 ### Changed
@@ -2361,7 +2371,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.4...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.92.0...HEAD
+[0.92.0]: https://github.com/alle80/griglia/compare/v0.91.4...v0.92.0
 [0.91.4]: https://github.com/alle80/griglia/compare/v0.91.3...v0.91.4
 [0.91.3]: https://github.com/alle80/griglia/compare/v0.91.2...v0.91.3
 [0.91.2]: https://github.com/alle80/griglia/compare/v0.91.1...v0.91.2

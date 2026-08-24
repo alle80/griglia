@@ -24,7 +24,8 @@ php artisan griglia:check --agent=codex --done=42 --comment="Implemented and tes
 ```
 
 Replace `codex` with the key configured for your agent. `check` shows only that agent's available and active
-tasks, including tasks from started plans. It also prints the settings that shape the agent workflow; the
+tasks: the agent list first, then the started plans, then — under `📋 List «…»` — any task you marked
+*open to work* in another of your lists, which the agent works last. It also prints the settings that shape the agent workflow; the
 generated repository instructions explain how the agent applies them.
 
 Questions can be attached to the task from the same command:

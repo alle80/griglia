@@ -5,6 +5,7 @@ namespace Alle80\Griglia\Console;
 use Alle80\Griglia\Agent;
 use Alle80\Griglia\Models\Checklist;
 use Alle80\Griglia\Models\Todo;
+use Alle80\Griglia\Support\AgentScope;
 use Illuminate\Console\Command;
 
 /**
@@ -77,10 +78,8 @@ class Watch extends Command
             return [];
         }
 
-        // Agent list + the owner's plan lists (same scope as griglia:check)
-        $ids = Checklist::where('user_id', $list->user_id)->whereKeyNot($list->id)->whereNull('archived_at')
-            ->where(fn ($q) => $q->whereNotNull('plan_prompt')->orWhereHas('todos', fn ($t) => $t->whereNotNull('depends_on_id')))
-            ->pluck('id')->push($list->id)->all();
+        // Agent list + plans + lists with a task already opened for the agent (same scope as griglia:check)
+        $ids = AgentScope::ids($list);
         $out = [];
         foreach (Todo::whereIn('checklist_id', $ids)->whereNull('archived_at')->where('completed', false)->with(['questions', 'checklist'])->get() as $t) {
             if ($agent !== '' && Agent::effective($t) !== $agent) {

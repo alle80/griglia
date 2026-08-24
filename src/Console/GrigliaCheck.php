@@ -8,6 +8,7 @@ use Alle80\Griglia\Models\Checklist;
 use Alle80\Griglia\Models\Todo;
 use Alle80\Griglia\Settings\AgentSettings;
 use Alle80\Griglia\Settings\OptimizationSettings;
+use Alle80\Griglia\Support\AgentScope;
 use Alle80\Griglia\Support\AgentStatus;
 use Alle80\Griglia\Support\Markdown;
 use Alle80\Griglia\Support\Notify;
@@ -60,12 +61,12 @@ class GrigliaCheck extends Command
             return self::SUCCESS;
         }
 
-        // Scope: the agent list + the owner's PLAN lists (built from a prompt / chained tasks): starting a plan
-        // means the agent works on that list too, after the agent list
-        $planLists = Checklist::where('user_id', $list->user_id)->whereKeyNot($list->id)->whereNull('archived_at')
-            ->where(fn ($q) => $q->whereNotNull('plan_prompt')->orWhereHas('todos', fn ($t) => $t->whereNotNull('depends_on_id')))
-            ->orderBy('id')->get();
-        $scopeIds = $planLists->pluck('id')->push($list->id)->all();
+        // Scope: the agent list, then the owner's PLAN lists (built from a prompt / chained tasks), then the
+        // other lists where the user already marked a task 🟢 — a 🟢 nobody can see is a task that waits for
+        // ever (task 651). See Support\AgentScope.
+        $planLists = AgentScope::plans($list);
+        $otherLists = AgentScope::others($list, $planLists->modelKeys());
+        $scopeIds = $planLists->pluck('id')->concat($otherLists->pluck('id'))->push($list->id)->all();
         $find = fn (int $id) => Todo::whereIn('checklist_id', $scopeIds)->findOrFail($id);
 
         // Multi-agent: which agent am I? (option, else config key); with several agents only my tasks are listed
@@ -269,9 +270,11 @@ class GrigliaCheck extends Command
         $marker = storage_path('app/griglia-last-check'.($me !== '' ? '-'.preg_replace('/[^A-Za-z0-9_-]+/', '', $me) : ''));
         $last = is_file($marker) ? (int) file_get_contents($marker) : 0;
 
-        $workable = function (Checklist $l) use ($me) {
+        // $onlyOpen: even with --all, a list that is not the agent list shows only its workable tasks —
+        // nobody needs the whole shopping list because one task in it was opened for the agent.
+        $workable = function (Checklist $l, bool $onlyOpen = false) use ($me) {
             $query = $l->todos()->whereNull('archived_at')->with(['ingredients', 'questions', 'parent.ingredients'])->orderBy('order');
-            if (! $this->option('all')) {
+            if ($onlyOpen || ! $this->option('all')) {
                 // Only what the user marked "open to work" 🟢 (or already in progress)
                 $query->where('completed', false)->where('question', false)->where(fn ($q) => $q->where('open_to_work', true)->orWhere('working', true));
             }
@@ -284,10 +287,11 @@ class GrigliaCheck extends Command
         };
         $todos = $workable($list);
         $planTodos = $planLists->mapWithKeys(fn ($l) => [$l->id => $workable($l)])->filter(fn ($c) => $c->isNotEmpty());
+        $otherTodos = $otherLists->mapWithKeys(fn ($l) => [$l->id => $workable($l, true)])->filter(fn ($c) => $c->isNotEmpty());
 
         if ($machine) {
             $all = $todos;
-            foreach ($planTodos as $c) {
+            foreach ($planTodos->concat($otherTodos) as $c) {
                 $all = $all->concat($c);
             }
             // Every task carries its full resume chain (oldest steps included): same history the human output prints
@@ -406,6 +410,14 @@ class GrigliaCheck extends Command
                 $pl = $planLists->firstWhere('id', $listId);
                 $this->info(sprintf('📐 Plan «%s» (list id:%d): %d items %s — follow the chain (next task opens when the previous is done)', $pl->name, $pl->id, $pt->count(), $this->option('all') ? 'in total' : 'open to work 🟢'));
                 $render($pt);
+            }
+
+            // Other lists: the user opened a task 🟢 outside the agent list and outside a plan. Last in priority,
+            // but visible and takeable — an unseen 🟢 is a task that waits forever (task 651).
+            foreach ($otherTodos as $listId => $ot) {
+                $ol = $otherLists->firstWhere('id', $listId);
+                $this->info(sprintf('📋 List «%s» (list id:%d): %d items open to work 🟢 — opened outside the "%s" list: work them last', $ol->name, $ol->id, $ot->count(), $name));
+                $render($ot);
             }
         }
 

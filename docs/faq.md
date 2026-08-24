@@ -44,11 +44,13 @@ Two usual reasons, both by design:
 
 - **The task is still *waiting***. The agent only sees what you have released: tap the state dot once, so it
   becomes *open to work*. Everything else on the board is yours to edit while the agent stays out of it.
-- **The task is in another list**. The agent reads one list only, the **agent list** — `agent_list` in the
-  configuration, `dev` by default, changeable with `GRIGLIA_AGENT_LIST` or in Settings. Move the task there,
-  or point the setting at the list you actually use.
+- **The task is still *waiting* in another list**. Only the **agent list** — `agent_list` in the
+  configuration, `dev` by default, changeable with `GRIGLIA_AGENT_LIST` or in Settings — is the channel the
+  agent reads top to bottom. In any other list of yours nothing happens until you release a task: mark it
+  *open to work* and `griglia:check` shows it under `📋 List «…»`, after the agent list and after the plans.
+  For everyday requests, keep using the agent list: that is where priority is set by drag and drop.
 
-Plans are the exception: their tasks show up under the agent list once you start the plan. See
+Started plans work the same way: their tasks show up after the agent list. See
 [using the board](board/usage.md) and [plans](features/plans.md).
 
 ### Can I run it without logging in?

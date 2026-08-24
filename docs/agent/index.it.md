@@ -21,7 +21,8 @@ php artisan griglia:check --agent=codex --done=42 --comment="Implementato e test
 ```
 
 Sostituisci `codex` con la chiave configurata per il tuo agente. `check` mostra soltanto i task disponibili e
-attivi di quell’agente, compresi quelli dei piani avviati. Stampa anche le impostazioni che regolano il flusso
+attivi di quell’agente: prima la lista dell’agente, poi i piani avviati, poi — sotto `📋 List «…»` — i task che
+hai messo *da lavorare* in un’altra delle tue liste, che l’agente lavora per ultimi. Stampa anche le impostazioni che regolano il flusso
 dell’agente; le istruzioni generate del repository spiegano come applicarle.
 
 Lo stesso comando può collegare una domanda al task:

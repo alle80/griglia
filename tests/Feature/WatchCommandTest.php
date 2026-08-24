@@ -38,6 +38,20 @@ class WatchCommandTest extends TestCase
             ->assertSuccessful();
     }
 
+    public function test_once_covers_a_task_opened_in_another_list_of_the_owner(): void
+    {
+        $user = $this->actingAsUser();
+        Checklist::create(['name' => 'dev', 'user_id' => $user->id]);
+        $other = Checklist::create(['name' => 'Styles', 'user_id' => $user->id]);
+        Todo::create(['title' => 'Napster style', 'order' => 1, 'open_to_work' => true, 'checklist_id' => $other->id]);
+        Todo::create(['title' => 'Style waiting', 'order' => 2, 'checklist_id' => $other->id]);
+
+        $this->artisan('griglia:watch', ['--once' => true])
+            ->expectsOutputToContain('Napster style')
+            ->doesntExpectOutputToContain('Style waiting')
+            ->assertSuccessful();
+    }
+
     public function test_detects_open_to_work(): void
     {
         $prev = [7 => ['title' => 'X', 'otw' => false, 'working' => false, 'question' => false, 'stopped' => null, 'answered' => 0]];

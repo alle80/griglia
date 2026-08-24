@@ -5,7 +5,8 @@
 Il menu delle liste (in alto a sinistra) passa da una lista all'altra, ne crea di nuove, le rinomina o le
 cancella. Un piano si scrive in una pagina tutta sua — **Nuovo piano…** nello stesso menu, vedi
 [Piani](../features/plans.md). La **lista dell'agente** (config `agent_list`) è il canale con l'agente; ogni
-altra lista è tua (o è un piano).
+altra lista è tua (o è un piano). Il pallino però vale ovunque: un task che metti *da lavorare* in una tua
+lista arriva all'agente, dopo la lista dell'agente e i piani.
 
 ## Task e stati
 
