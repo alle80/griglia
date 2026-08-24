@@ -28,6 +28,16 @@ return [
     // Empty = no effort picker.
     'agent_efforts' => env('GRIGLIA_AGENT_EFFORTS'),
 
+    // Which model the agent CLI (or the worker: GRIGLIA_WORKER_MODEL) already starts with, same shape as
+    // `agent_models`: GRIGLIA_AGENT_DEFAULT_MODEL="claude:opus;codex:gpt-5", or a bare «opus» for every
+    // agent. The board only NAMES it, so that a list or a task that chose nothing reads «Default (opus)»
+    // instead of a bare «CLI default»; it never sends it, so each worker keeps its own default.
+    'agent_default_model' => env('GRIGLIA_AGENT_DEFAULT_MODEL'),
+
+    // Reasoning effort the agent CLI already starts with (GRIGLIA_WORKER_EFFORT), same shape and same use:
+    // named in the pickers, never sent, e.g. GRIGLIA_AGENT_DEFAULT_EFFORT="claude:high;codex:medium".
+    'agent_default_effort' => env('GRIGLIA_AGENT_DEFAULT_EFFORT'),
+
     // Which of those agents is running here: the key `griglia:check` assumes when `--agent=<key>` is omitted,
     // so that this installation sees only its own tasks. Empty = the agent must pass `--agent=` itself.
     'agent_key' => env('GRIGLIA_AGENT_KEY'),

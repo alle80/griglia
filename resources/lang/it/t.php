@@ -239,12 +239,17 @@ return [
     'agent_set_task' => '«:title» → :agent',
 
     // Modello ed effort della sessione dell'agente (task 641)
-    'model_of_list' => 'Modello',
-    'effort_of_list' => 'Effort',
+    // Le tre tendine hanno ognuna la sua etichetta: agente, modello, effort (task 659)
+    'label_agent' => 'Agente',
+    'label_model' => 'Modello',
+    'label_effort' => 'Effort',
+    'model_of_list' => 'Modello per questa lista',
+    'effort_of_list' => 'Effort di ragionamento per questa lista',
     'model_of_task' => 'Modello per questo task',
     'effort_of_task' => 'Effort di ragionamento per questo task',
-    'model_default' => 'Modello: :model',
-    'effort_default' => 'Effort: :effort',
+    // Il valore usato quando qui non si sceglie niente, nominato fra parentesi: «Predefinito (opus)» (task 659)
+    'preset_default' => 'Predefinito (:value)',
+    'preset_inherited' => '(:value)',
     'model_none' => 'modello',
     'effort_none' => 'effort',
     'preset_cli_default' => 'Predefinito CLI',

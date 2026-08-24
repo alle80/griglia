@@ -166,38 +166,45 @@
                     @php($todoModels = \Alle80\Griglia\Agent::models($todoAgent))
                     @php($todoEfforts = \Alle80\Griglia\Agent::efforts($todoAgent))
                     @if (\Alle80\Griglia\Agent::many() || $todoModels || $todoEfforts)
+                        {{-- Each chip carries its own label — agent, model, effort — otherwise three words in a row
+                             («claude opus high») say nothing about which is which (task 659). The label is decorative:
+                             the control already names itself through its aria-label. --}}
                         <div class="db-agent-row mt-1 flex flex-wrap items-center gap-1">
                             @if (\Alle80\Griglia\Agent::many())
                                 @include('griglia::livewire.partials.agent-select', [
                                     'todo' => $todo,
+                                    'fieldLabel' => __('griglia::t.label_agent'),
                                     'change' => 'setTodoAgent('.$todo->id.', $event.target.value)',
                                     'inheritLabel' => \Alle80\Griglia\Agent::label($todo->agent ?: ($listAgent ?: \Alle80\Griglia\Agent::defaultKey())),
                                     'class' => 'db-agent-chip rounded border border-current/40 px-1 text-[10px] uppercase '.($todo->agent ? 'opacity-75' : 'opacity-50'),
                                 ])
                             @endif
-                            {{-- Model and reasoning effort of the session (task 641): same badge, same gesture. The
-                                 chip shows the effective value — the task's, else the list's — and «—» when neither
-                                 is set, because then the CLI keeps its own default. --}}
-                            @php($todoModel = \Alle80\Griglia\Agent::effectiveModel($todo))
+                            {{-- Model and reasoning effort of the session (task 641): same badge, same gesture. A value
+                                 chosen on the task is written plain; the default it would otherwise run on — the list's,
+                                 else the one the CLI starts with (config agent_default_model) — stands in brackets, so
+                                 «(opus)» reads as «not chosen here, and it will be opus» (task 659). --}}
+                            @php($modelFallback = $todoModels[$listModel ?? ''] ?? $todoModels[\Alle80\Griglia\Agent::defaultModel($todoAgent) ?? ''] ?? null)
                             @include('griglia::livewire.partials.preset-select', [
                                 'todo' => $todo,
                                 'field' => 'model',
                                 'options' => $todoModels,
                                 'current' => $todo->model,
-                                'badge' => $todoModel ? $todoModels[$todoModel] : '',
+                                'badge' => $todo->model ? $todoModels[$todo->model] : ($modelFallback ? __('griglia::t.preset_inherited', ['value' => $modelFallback]) : ''),
                                 'change' => 'setTodoModel('.$todo->id.', $event.target.value)',
-                                'inheritLabel' => $todoModel ? $todoModels[$todoModel] : __('griglia::t.model_none'),
+                                'inheritLabel' => $modelFallback ? __('griglia::t.preset_inherited', ['value' => $modelFallback]) : __('griglia::t.model_none'),
+                                'fieldLabel' => __('griglia::t.label_model'),
                                 'class' => 'db-agent-chip rounded border border-current/40 px-1 text-[10px] uppercase '.($todo->model ? 'opacity-75' : 'opacity-50'),
                             ])
-                            @php($todoEffort = \Alle80\Griglia\Agent::effectiveEffort($todo))
+                            @php($effortFallback = $todoEfforts[$listEffort ?? ''] ?? $todoEfforts[\Alle80\Griglia\Agent::defaultEffort($todoAgent) ?? ''] ?? null)
                             @include('griglia::livewire.partials.preset-select', [
                                 'todo' => $todo,
                                 'field' => 'effort',
                                 'options' => $todoEfforts,
                                 'current' => $todo->effort,
-                                'badge' => $todoEffort ? $todoEfforts[$todoEffort] : '',
+                                'badge' => $todo->effort ? $todoEfforts[$todo->effort] : ($effortFallback ? __('griglia::t.preset_inherited', ['value' => $effortFallback]) : ''),
                                 'change' => 'setTodoEffort('.$todo->id.', $event.target.value)',
-                                'inheritLabel' => $todoEffort ? $todoEfforts[$todoEffort] : __('griglia::t.effort_none'),
+                                'inheritLabel' => $effortFallback ? __('griglia::t.preset_inherited', ['value' => $effortFallback]) : __('griglia::t.effort_none'),
+                                'fieldLabel' => __('griglia::t.label_effort'),
                                 'class' => 'db-agent-chip rounded border border-current/40 px-1 text-[10px] uppercase '.($todo->effort ? 'opacity-75' : 'opacity-50'),
                             ])
                         </div>

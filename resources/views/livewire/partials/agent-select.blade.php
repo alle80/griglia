@@ -5,8 +5,10 @@
       $todo           il todo
       $change         espressione per wire:change (es. "setTodoAgent(12, $event.target.value)")
       $inheritLabel   testo dell'opzione «eredita» (nella riga è il nome dell'agente effettivo: il badge si vede sempre)
+      $fieldLabel     etichetta visibile accanto alla tendina (task 659; opzionale)
       $class          classi aggiuntive del select (opzionale)
 --}}
+@if ($fieldLabel ?? '')<span class="db-preset-label" aria-hidden="true">{{ $fieldLabel }}</span>@endif
 @if ($todo->working)
 <span class="db-agent-select {{ $class ?? '' }}" title="{{ __('griglia::t.agent_of_task') }}" aria-label="{{ __('griglia::t.agent_of_task') }}">{{ \Alle80\Griglia\Agent::label(\Alle80\Griglia\Agent::effective($todo)) }}</span>
 @else

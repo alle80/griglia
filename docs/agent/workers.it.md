@@ -162,9 +162,26 @@ Un gruppo per agente (`chiave:valori`), separati da `;`; un elenco senza agente 
 rinomina una voce nell'interfaccia. Senza queste variabili non cambia niente: nessuna tendina, e ogni sessione
 usa il default del worker.
 
+Ogni tendina ha la sua etichetta — *Agente*, *Modello*, *Effort* — nella barra della lista, sotto il titolo del
+task e fra i comandi del modale.
+
+Dichiara alla board con quale valore parte già la CLI e la board lo nomina, invece di scrivere un generico
+*Predefinito CLI*:
+
+```dotenv
+GRIGLIA_AGENT_DEFAULT_MODEL="claude:opus;codex:gpt-5-codex"
+GRIGLIA_AGENT_DEFAULT_EFFORT=high
+```
+
+Stessa forma del catalogo. Dove non si è scelto niente la board legge allora **Predefinito (opus)** nelle
+tendine e **(opus)** sulla targhetta: le parentesi dicono «qui non l'ha scelto nessuno, e girerà così». Le due
+variabili sono solo una didascalia: la board non le invia mai, quindi ogni worker tiene il suo
+`GRIGLIA_WORKER_MODEL` (mettici gli stessi valori perché la didascalia resti vera).
+
 Un task usa il proprio valore, altrimenti quello della lista, altrimenti quello del worker. La targhetta mostra
 il valore effettivo, il modale lo ripete fra i comandi, `griglia:check` lo stampa accanto al titolo
-(`{agent: claude, model: opus, effort: high}`) e il worker lo legge da `--worker-json` quando lancia la sessione.
+(`{agent: claude, model: opus, effort: high}`, oppure `model: (opus)` per un default dichiarato che nessuno ha
+cambiato) e il worker lo legge da `--worker-json` quando lancia la sessione.
 I valori che l'agente non offre vengono ignorati: riassegnare un task a un altro agente lascia cadere un modello
 che quell'agente non conosce, invece di far fallire la sua CLI. Mentre il task è *in lavorazione* le tendine sono
 bloccate: la sessione è già partita.

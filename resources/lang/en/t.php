@@ -245,12 +245,17 @@ return [
     'agent_set_task' => '«:title» → :agent',
 
     // Model and reasoning effort of the agent session (task 641)
-    'model_of_list' => 'Model',
-    'effort_of_list' => 'Effort',
+    // The three pickers carry a visible label each — agent, model, effort (task 659)
+    'label_agent' => 'Agent',
+    'label_model' => 'Model',
+    'label_effort' => 'Effort',
+    'model_of_list' => 'Model for this list',
+    'effort_of_list' => 'Reasoning effort for this list',
     'model_of_task' => 'Model for this task',
     'effort_of_task' => 'Reasoning effort for this task',
-    'model_default' => 'Model: :model',
-    'effort_default' => 'Effort: :effort',
+    // The value used when nothing is chosen here, named in brackets: «Default (opus)» (task 659)
+    'preset_default' => 'Default (:value)',
+    'preset_inherited' => '(:value)',
     'model_none' => 'model',
     'effort_none' => 'effort',
     'preset_cli_default' => 'CLI default',

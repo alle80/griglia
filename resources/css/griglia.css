@@ -468,6 +468,19 @@ select.setting-input { appearance: auto; }
 }
 .db-agent-select option { color: CanvasText; background: Canvas; text-transform: none; }
 
+/* The three pickers of a session — agent, model, effort — each carry their own label (task 659): three bare
+   words in a row («claude opus high») said nothing about which was which. Decorative (aria-hidden): every
+   control already names itself through its aria-label. */
+.db-preset-label {
+    font-size: .625rem; line-height: 1; letter-spacing: .04em; text-transform: uppercase;
+    white-space: nowrap; opacity: .5;
+}
+.db-agent-row .db-preset-label:not(:first-child) { margin-left: .35rem; }
+.modal-cmds-agent .db-preset-label { font-size: .7rem; }
+@media (min-width: 768px) {
+    .db-agent-row .db-preset-label { font-size: .7rem; }
+}
+
 /* Task id (task 510): the same «id:N» the agent prints in griglia:check, last badge of the title row
    (on the right) and in the modal header next to ‹ 3/7 › (on the phone at the start of the command row, .modal-cmds-id).
    A tap copies the number (copy.js, data-copy) and for

@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.95.0] - 2026-08-24
+
+### Added
+- **The three session pickers say what they are, and name the default they fall back on** (task 659). *Agent*,
+  *Model* and *Effort* now carry a visible label in the list toolbar, under the task title and among the
+  commands of the modal. Where nothing was chosen the selector reads *Default (opus)* and the badge shows
+  `(opus)` in brackets, instead of a bare *CLI default*: brackets mean «nobody chose it here, and this is what
+  the session will run on». `griglia:check` prints it the same way (`{agent: claude, model: (opus)}`).
+- Config `agent_default_model` / `agent_default_effort` (`GRIGLIA_AGENT_DEFAULT_MODEL`,
+  `GRIGLIA_AGENT_DEFAULT_EFFORT`, same shape as `agent_models`): tell the board which value the agent CLI —
+  or the worker, through `GRIGLIA_WORKER_MODEL`/`GRIGLIA_WORKER_EFFORT` — already starts with, and it names it
+  everywhere. A caption only: the board never sends it, so each worker keeps its own default. A value the
+  agent no longer offers is ignored.
+
 ## [0.94.0] - 2026-08-24
 
 ### Changed
@@ -2409,7 +2423,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.94.0...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.95.0...HEAD
+[0.95.0]: https://github.com/alle80/griglia/compare/v0.94.0...v0.95.0
 [0.94.0]: https://github.com/alle80/griglia/compare/v0.93.0...v0.94.0
 [0.93.0]: https://github.com/alle80/griglia/compare/v0.92.1...v0.93.0
 [0.92.1]: https://github.com/alle80/griglia/compare/v0.92.0...v0.92.1

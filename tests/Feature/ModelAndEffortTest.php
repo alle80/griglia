@@ -140,6 +140,69 @@ class ModelAndEffortTest extends TestCase
         $this->assertNull($item['model'], 'the raw column stays the task\'s own value');
     }
 
+    /**
+     * The default the agent CLI starts with, declared in config, is NAMED in brackets wherever nothing is
+     * chosen — list toolbar, task badge, modal — instead of a bare «CLI default» (task 659). The board never
+     * sends it: `effective_model` stays empty, so each worker keeps its own `GRIGLIA_WORKER_MODEL`.
+     */
+    public function test_the_declared_cli_default_is_named_but_never_sent(): void
+    {
+        [, $todo] = $this->board();
+        config([
+            'griglia.agent_default_model' => 'claude:sonnet;codex:gpt-5',
+            'griglia.agent_default_effort' => 'medium',
+        ]);
+
+        $this->assertSame('sonnet', Agent::defaultModel('claude'));
+        $this->assertSame('gpt-5', Agent::defaultModel('codex'));
+        $this->assertSame('medium', Agent::defaultEffort('claude'));
+        $this->assertNull(Agent::effectiveModel($todo), 'a declared default is not a choice of the board');
+
+        // Not offered any more (catalogue changed, task reassigned) = nothing to name
+        config(['griglia.agent_default_model' => 'claude:o3']);
+        $this->assertNull(Agent::defaultModel('claude'));
+        config(['griglia.agent_default_model' => 'claude:sonnet;codex:gpt-5']);
+
+        Livewire::test(TodoList::class)
+            ->assertSeeHtml('(sonnet)')          // task badge: the default it will run on, in brackets
+            ->assertSeeHtml('Default (sonnet)')  // list toolbar: «nothing chosen» names it
+            ->assertSeeHtml('Default (medium)')
+            ->assertDontSeeHtml('CLI default');
+
+        Livewire::test(IngredientModal::class)->call('openFor', $todo->id)
+            ->assertSeeHtml('Default (sonnet)')
+            ->assertSeeHtml('Default (medium)');
+
+        // …and the agent reads it in the same shape
+        $this->artisan('griglia:check')
+            ->expectsOutputToContain('{agent: claude, model: (sonnet), effort: (medium)}')
+            ->assertSuccessful();
+
+        $this->artisan('griglia:check', ['--worker-json' => true])->assertSuccessful();
+        $item = collect(json_decode($this->workerJson(), true)['items'])->firstWhere('id', $todo->id);
+        $this->assertNull($item['effective_model'], 'the worker keeps its own default');
+        $this->assertNull($item['effective_effort']);
+    }
+
+    /** Every picker says what it is: agent, model, effort (task 659). */
+    public function test_the_three_pickers_carry_their_label(): void
+    {
+        [, $todo] = $this->board();
+
+        Livewire::test(TodoList::class)
+            ->assertSeeHtml('>Agent</span>')   // task row, next to its chip
+            ->assertSeeHtml('>Model</span>')
+            ->assertSeeHtml('>Effort</span>')
+            ->assertSeeHtml('>Agent</label>')  // list toolbar
+            ->assertSeeHtml('>Model</label>')
+            ->assertSeeHtml('>Effort</label>');
+
+        Livewire::test(IngredientModal::class)->call('openFor', $todo->id)
+            ->assertSeeHtml('>Agent</span>')
+            ->assertSeeHtml('>Model</span>')
+            ->assertSeeHtml('>Effort</span>');
+    }
+
     /** The board output of `griglia:check --worker-json`, captured as the worker reads it. */
     private function workerJson(): string
     {

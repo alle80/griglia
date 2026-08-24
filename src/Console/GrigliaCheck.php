@@ -489,11 +489,18 @@ class GrigliaCheck extends Command
         if (Agent::many()) {
             $parts[] = 'agent: '.Agent::effective($todo);
         }
+        // A value nobody chose here still runs on the one the CLI starts with, when it is declared
+        // (config agent_default_model/effort): printed between brackets, like on the board (task 659).
+        $agentKey = Agent::effective($todo);
         if ($model = Agent::effectiveModel($todo)) {
             $parts[] = 'model: '.$model;
+        } elseif ($model = Agent::defaultModel($agentKey)) {
+            $parts[] = 'model: ('.$model.')';
         }
         if ($effort = Agent::effectiveEffort($todo)) {
             $parts[] = 'effort: '.$effort;
+        } elseif ($effort = Agent::defaultEffort($agentKey)) {
+            $parts[] = 'effort: ('.$effort.')';
         }
 
         return $parts === [] ? '' : ' {'.implode(', ', $parts).'}';

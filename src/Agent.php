@@ -158,6 +158,35 @@ class Agent
     }
 
     /**
+     * The model the agent CLI already starts with (config `griglia.agent_default_model`, mirroring the
+     * worker's own `GRIGLIA_WORKER_MODEL`): what a list or a task that chose nothing will run on. The board
+     * only names it in the UI — «Default (opus)» instead of a bare «CLI default» (task 659) — and never
+     * sends it, so that each worker keeps its own default. Null when unset or no longer offered.
+     */
+    public static function defaultModel(?string $agentKey = null): ?string
+    {
+        return self::declaredDefault(config('griglia.agent_default_model'), $agentKey, self::models($agentKey));
+    }
+
+    /** Reasoning effort the agent CLI already starts with (config `griglia.agent_default_effort`). */
+    public static function defaultEffort(?string $agentKey = null): ?string
+    {
+        return self::declaredDefault(config('griglia.agent_default_effort'), $agentKey, self::efforts($agentKey));
+    }
+
+    /** First declared default the agent still offers: naming a value that is not in the picker would lie. */
+    private static function declaredDefault(mixed $raw, ?string $agentKey, array $catalogue): ?string
+    {
+        foreach (array_keys(self::catalogue($raw, $agentKey)) as $value) {
+            if (isset($catalogue[$value])) {
+                return (string) $value;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Parses a catalogue shared by models and efforts: a string ("claude:a,b;codex:c" or just "a,b"), or an
      * array (['claude' => ['a', 'b']] / ['a', 'b']). Returns the entries of one agent, value => label.
      */

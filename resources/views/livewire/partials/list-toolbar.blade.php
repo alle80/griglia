@@ -11,8 +11,9 @@
     {{-- Multi-agent: default agent of this list --}}
     @if (\Alle80\Griglia\Agent::many())
         <div class="db-list-agent flex flex-wrap items-center gap-2 text-sm">
-            <label class="font-bold" for="list-agent">{{ __('griglia::t.agent_of_list') }}</label>
-            <select id="list-agent" class="{{ $inputClass }} text-xs" wire:change="setListAgent($event.target.value)">
+            <label class="font-bold" for="list-agent">{{ __('griglia::t.label_agent') }}</label>
+            <select id="list-agent" class="{{ $inputClass }} text-xs" wire:change="setListAgent($event.target.value)"
+                    title="{{ __('griglia::t.agent_of_list') }}">
                 <option value="" @selected(($listAgent ?? '') === '')>{{ __('griglia::t.agent_default', ['agent' => \Alle80\Griglia\Agent::label(\Alle80\Griglia\Agent::defaultKey())]) }}</option>
                 @foreach (\Alle80\Griglia\Agent::all() as $k => $label)
                     <option value="{{ $k }}" @selected(($listAgent ?? '') === $k)>{{ $label }}</option>
@@ -28,20 +29,26 @@
     @php($toolbarModels = \Alle80\Griglia\Agent::models($toolbarAgent))
     @php($toolbarEfforts = \Alle80\Griglia\Agent::efforts($toolbarAgent))
     @if ($toolbarModels || $toolbarEfforts)
+        {{-- «Nothing chosen» names the value the session will run on anyway — the one the agent CLI starts with
+             (config agent_default_model/effort) — instead of a bare «CLI default» (task 659). --}}
+        @php($toolbarModelDefault = $toolbarModels[\Alle80\Griglia\Agent::defaultModel($toolbarAgent) ?? ''] ?? null)
+        @php($toolbarEffortDefault = $toolbarEfforts[\Alle80\Griglia\Agent::defaultEffort($toolbarAgent) ?? ''] ?? null)
         <div class="db-list-preset flex flex-wrap items-center gap-2 text-sm">
             @if ($toolbarModels)
-                <label class="font-bold" for="list-model">{{ __('griglia::t.model_of_list') }}</label>
-                <select id="list-model" class="{{ $inputClass }} text-xs" wire:change="setListModel($event.target.value)">
-                    <option value="" @selected(($listModel ?? '') === '')>{{ __('griglia::t.preset_cli_default') }}</option>
+                <label class="font-bold" for="list-model">{{ __('griglia::t.label_model') }}</label>
+                <select id="list-model" class="{{ $inputClass }} text-xs" wire:change="setListModel($event.target.value)"
+                        title="{{ __('griglia::t.model_of_list') }}">
+                    <option value="" @selected(($listModel ?? '') === '')>{{ $toolbarModelDefault ? __('griglia::t.preset_default', ['value' => $toolbarModelDefault]) : __('griglia::t.preset_cli_default') }}</option>
                     @foreach ($toolbarModels as $value => $label)
                         <option value="{{ $value }}" @selected(($listModel ?? '') === $value)>{{ $label }}</option>
                     @endforeach
                 </select>
             @endif
             @if ($toolbarEfforts)
-                <label class="font-bold" for="list-effort">{{ __('griglia::t.effort_of_list') }}</label>
-                <select id="list-effort" class="{{ $inputClass }} text-xs" wire:change="setListEffort($event.target.value)">
-                    <option value="" @selected(($listEffort ?? '') === '')>{{ __('griglia::t.preset_cli_default') }}</option>
+                <label class="font-bold" for="list-effort">{{ __('griglia::t.label_effort') }}</label>
+                <select id="list-effort" class="{{ $inputClass }} text-xs" wire:change="setListEffort($event.target.value)"
+                        title="{{ __('griglia::t.effort_of_list') }}">
+                    <option value="" @selected(($listEffort ?? '') === '')>{{ $toolbarEffortDefault ? __('griglia::t.preset_default', ['value' => $toolbarEffortDefault]) : __('griglia::t.preset_cli_default') }}</option>
                     @foreach ($toolbarEfforts as $value => $label)
                         <option value="{{ $value }}" @selected(($listEffort ?? '') === $value)>{{ $label }}</option>
                     @endforeach

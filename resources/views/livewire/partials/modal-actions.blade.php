@@ -110,29 +110,34 @@
                 'todo' => $todo,
                 'change' => 'setAgent($event.target.value)',
                 'inheritLabel' => __('griglia::t.agent_default', ['agent' => \Alle80\Griglia\Agent::label($todo->checklist?->agent ?: \Alle80\Griglia\Agent::defaultKey())]),
+                'fieldLabel' => __('griglia::t.label_agent'),
                 'class' => 'db-cmd min-w-0 text-xs',
             ])
         @endif
-        @php($modalModel = \Alle80\Griglia\Agent::effectiveModel($todo))
+        {{-- «Eredita» names the value it would fall back to — the list's, else the one the CLI starts with
+             (config agent_default_model/effort): «Default (opus)», never a bare «CLI default» (task 659). --}}
+        @php($modalModelDefault = $modalModels[$todo->checklist?->model ?? ''] ?? $modalModels[\Alle80\Griglia\Agent::defaultModel($modalAgent) ?? ''] ?? null)
         @include('griglia::livewire.partials.preset-select', [
             'todo' => $todo,
             'field' => 'model',
             'options' => $modalModels,
             'current' => $todo->model,
-            'badge' => $modalModel ? $modalModels[$modalModel] : '',
+            'badge' => $todo->model ? $modalModels[$todo->model] : ($modalModelDefault ? __('griglia::t.preset_inherited', ['value' => $modalModelDefault]) : ''),
             'change' => 'setModel($event.target.value)',
-            'inheritLabel' => __('griglia::t.model_default', ['model' => $modalModels[$todo->checklist?->model] ?? __('griglia::t.preset_cli_default')]),
+            'inheritLabel' => $modalModelDefault ? __('griglia::t.preset_default', ['value' => $modalModelDefault]) : __('griglia::t.preset_cli_default'),
+            'fieldLabel' => __('griglia::t.label_model'),
             'class' => 'db-cmd min-w-0 text-xs',
         ])
-        @php($modalEffort = \Alle80\Griglia\Agent::effectiveEffort($todo))
+        @php($modalEffortDefault = $modalEfforts[$todo->checklist?->effort ?? ''] ?? $modalEfforts[\Alle80\Griglia\Agent::defaultEffort($modalAgent) ?? ''] ?? null)
         @include('griglia::livewire.partials.preset-select', [
             'todo' => $todo,
             'field' => 'effort',
             'options' => $modalEfforts,
             'current' => $todo->effort,
-            'badge' => $modalEffort ? $modalEfforts[$modalEffort] : '',
+            'badge' => $todo->effort ? $modalEfforts[$todo->effort] : ($modalEffortDefault ? __('griglia::t.preset_inherited', ['value' => $modalEffortDefault]) : ''),
             'change' => 'setEffort($event.target.value)',
-            'inheritLabel' => __('griglia::t.effort_default', ['effort' => $modalEfforts[$todo->checklist?->effort] ?? __('griglia::t.preset_cli_default')]),
+            'inheritLabel' => $modalEffortDefault ? __('griglia::t.preset_default', ['value' => $modalEffortDefault]) : __('griglia::t.preset_cli_default'),
+            'fieldLabel' => __('griglia::t.label_effort'),
             'class' => 'db-cmd min-w-0 text-xs',
         ])
     </div>

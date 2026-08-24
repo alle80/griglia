@@ -157,9 +157,25 @@ One group per agent (`key:values`), separated by `;`; a bare list is offered to 
 renames an option in the interface. Without these variables nothing changes: no selector, and every session
 uses the worker's default.
 
+Each picker carries its label — *Agent*, *Model*, *Effort* — in the list toolbar, under the task title and
+among the commands of the modal.
+
+Tell the board which value the CLI already starts with and it names it instead of writing a bare *CLI default*:
+
+```dotenv
+GRIGLIA_AGENT_DEFAULT_MODEL="claude:opus;codex:gpt-5-codex"
+GRIGLIA_AGENT_DEFAULT_EFFORT=high
+```
+
+Same shape as the catalogue. Where nothing is chosen the board then reads **Default (opus)** in the selectors
+and **(opus)** on the badge — brackets mean «nobody chose it here, and this is what it will run on». These two
+variables are a caption only: the board never sends them, so each worker keeps its own `GRIGLIA_WORKER_MODEL`
+(set them to the same values to keep the caption honest).
+
 A task uses its own value, else its list's, else the worker's. The badge shows the effective one, the modal
 shows it among the commands, `griglia:check` prints it next to the title (`{agent: claude, model: opus,
-effort: high}`), and the worker reads it from `--worker-json` when it dispatches the session. Values the agent
+effort: high}`, or `model: (opus)` for a declared default nobody overrode), and the worker reads it from
+`--worker-json` when it dispatches the session. Values the agent
 does not offer are ignored — reassigning a task to another agent drops a model that agent knows nothing about
 instead of failing inside its CLI. While a task is *working* the selectors are frozen: its session already
 started.

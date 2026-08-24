@@ -222,7 +222,9 @@ class TodoList extends Component
             return;
         }
         $list->update([$field => $value ?: null]);
-        $this->dispatch('toast', message: __('griglia::t.'.$field.'_set', [$field => $value !== '' ? $catalogue[$value] : __('griglia::t.preset_cli_default')]));
+        $this->dispatch('toast', message: __('griglia::t.'.$field.'_set', [
+            $field => $value !== '' ? $catalogue[$value] : self::presetDefaultLabel($field, $list->agent ?: Agent::defaultKey(), $catalogue),
+        ]));
     }
 
     /** Model/effort of a task from its row: only values the task's agent offers, and never while it works. */
@@ -241,8 +243,21 @@ class TodoList extends Component
         $effective = $field === 'model' ? Agent::effectiveModel($todo->fresh()) : Agent::effectiveEffort($todo->fresh());
         $this->dispatch('toast', message: __('griglia::t.'.$field.'_set_task', [
             'title' => $todo->title,
-            $field => $effective ? ($catalogue[$effective] ?? $effective) : __('griglia::t.preset_cli_default'),
+            $field => $effective ? ($catalogue[$effective] ?? $effective) : self::presetDefaultLabel($field, Agent::effective($todo->fresh()), $catalogue),
         ]));
+    }
+
+    /**
+     * How the toast names «nothing chosen»: the value the agent CLI starts with when it is declared
+     * (config agent_default_model/effort), «CLI default» when it is not (task 659).
+     */
+    private static function presetDefaultLabel(string $field, string $agentKey, array $catalogue): string
+    {
+        $default = $field === 'model' ? Agent::defaultModel($agentKey) : Agent::defaultEffort($agentKey);
+
+        return $default
+            ? __('griglia::t.preset_default', ['value' => $catalogue[$default] ?? $default])
+            : __('griglia::t.preset_cli_default');
     }
 
     /* ---------- Plan mode: start / status ---------- */

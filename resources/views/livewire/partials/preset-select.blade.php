@@ -9,15 +9,18 @@
       $badge          testo mostrato quando il task è in lavorazione (o vuoto: niente badge)
       $change         espressione per wire:change (es. "setTodoModel(12, $event.target.value)")
       $inheritLabel   testo dell'opzione «eredita»
+      $fieldLabel     etichetta visibile accanto alla tendina (task 659; opzionale)
       $class          classi aggiuntive del select (opzionale)
 --}}
 @if ($options)
     @php($label = __('griglia::t.'.$field.'_of_task'))
     @if ($todo->working)
         @if ($badge ?? '')
+            @if ($fieldLabel ?? '')<span class="db-preset-label" aria-hidden="true">{{ $fieldLabel }}</span>@endif
             <span class="db-agent-select db-preset-{{ $field }} {{ $class ?? '' }}" title="{{ $label }}" aria-label="{{ $label }}">{{ $badge }}</span>
         @endif
     @else
+        @if ($fieldLabel ?? '')<span class="db-preset-label" aria-hidden="true">{{ $fieldLabel }}</span>@endif
         <select
             class="db-agent-select db-preset-{{ $field }} cursor-pointer bg-transparent {{ $class ?? '' }}"
             wire:change="{{ $change }}"
