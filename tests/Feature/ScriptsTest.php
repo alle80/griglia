@@ -64,8 +64,10 @@ class ScriptsTest extends TestCase
         foreach (['GRIGLIA_WORKER_MODEL', 'GRIGLIA_WORKER_EFFORT'] as $variable) {
             $this->assertStringContainsString('os.getenv("'.$variable.'")', $worker, "the worker must read $variable");
         }
-        $this->assertStringContainsString('command += ["--model", args.model]', $worker);
-        $this->assertStringContainsString('command += ["--effort", args.effort]', $worker);
+        $this->assertStringContainsString('command += ["--model", model]', $worker);
+        $this->assertStringContainsString('command += ["--effort", effort]', $worker);
+        // …and a task that picked its own on the board wins over the worker's default (task 641)
+        $this->assertStringContainsString('task.get("effective_model") or args.model', $worker);
         $this->assertStringContainsString('model_reasoning_effort=', $worker);
         // Per-instance variables win, but the shared ones configure the whole machine at once
         foreach (['GRIGLIA_TRANSPORT', 'GRIGLIA_PHP', 'GRIGLIA_CONTAINER'] as $shared) {

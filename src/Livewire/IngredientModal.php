@@ -458,6 +458,33 @@ class IngredientModal extends Component
         $this->dispatch('ingredients-updated');
     }
 
+    /** Model of this task's session ('' = the list's default). Same catalogue as the row select (task 641). */
+    public function setModel(string $model): void
+    {
+        $this->setPreset('model', $model);
+    }
+
+    /** Reasoning effort of this task's session ('' = the list's default). */
+    public function setEffort(string $effort): void
+    {
+        $this->setPreset('effort', $effort);
+    }
+
+    private function setPreset(string $field, string $value): void
+    {
+        $todo = $this->todo();
+        if (! $todo || $todo->working) {
+            return;
+        }
+        $value = trim($value);
+        $catalogue = $field === 'model' ? Agent::models(Agent::effective($todo)) : Agent::efforts(Agent::effective($todo));
+        if ($value !== '' && ! isset($catalogue[$value])) {
+            return;
+        }
+        $todo->update([$field => $value ?: null]);
+        $this->dispatch('ingredients-updated');
+    }
+
     public function setReviewer(string $agent): void
     {
         $todo = $this->todo();

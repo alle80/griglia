@@ -27,7 +27,7 @@ class Todo extends Model
         return TodoFactory::new();
     }
 
-    protected $fillable = ['title', 'order', 'completed', 'completed_at', 'open_to_work', 'working', 'paused', 'stopped_at', 'question', 'notes', 'claude_comment', 'result_summary', 'result_seen', 'outcome', 'progress', 'phase', 'working_since', 'work_seconds', 'tokens_in', 'tokens_out', 'skills', 'agent', 'reviewer_agent', 'review_of_id', 'review_round', 'review_status', 'review_outcome', 'archived_at', 'checklist_id', 'parent_id', 'depends_on_id'];
+    protected $fillable = ['title', 'order', 'completed', 'completed_at', 'open_to_work', 'working', 'paused', 'stopped_at', 'question', 'notes', 'claude_comment', 'result_summary', 'result_seen', 'outcome', 'progress', 'phase', 'working_since', 'work_seconds', 'tokens_in', 'tokens_out', 'skills', 'agent', 'model', 'effort', 'reviewer_agent', 'review_of_id', 'review_round', 'review_status', 'review_outcome', 'archived_at', 'checklist_id', 'parent_id', 'depends_on_id'];
 
     protected function casts(): array
     {

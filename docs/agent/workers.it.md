@@ -147,6 +147,28 @@ Il driver `claude` li passa come `--model` e `--effort` (`low`, `medium`, `high`
 `{model}` e `{effort}` (stringa vuota se non impostati), quindi è il template argv a decidere dove finiscono.
 Il worker non valida i valori: un modello o un livello sconosciuto fallisce dentro la CLI dell'agente.
 
+#### Sceglierli dalla board
+
+I valori del worker sono il default: la board può cambiarli **per lista e per task**. Dichiara quali modelli ed
+effort offre ogni agente e compaiono due tendine — una nella barra della lista, una nella targhetta sotto il
+titolo del task (e fra i comandi del modale):
+
+```dotenv
+GRIGLIA_AGENT_MODELS="claude:opus=Opus,sonnet=Sonnet;codex:gpt-5,gpt-5-codex"
+GRIGLIA_AGENT_EFFORTS="low,medium,high,xhigh,max"
+```
+
+Un gruppo per agente (`chiave:valori`), separati da `;`; un elenco senza agente vale per tutti; `valore=Etichetta`
+rinomina una voce nell'interfaccia. Senza queste variabili non cambia niente: nessuna tendina, e ogni sessione
+usa il default del worker.
+
+Un task usa il proprio valore, altrimenti quello della lista, altrimenti quello del worker. La targhetta mostra
+il valore effettivo, il modale lo ripete fra i comandi, `griglia:check` lo stampa accanto al titolo
+(`{agent: claude, model: opus, effort: high}`) e il worker lo legge da `--worker-json` quando lancia la sessione.
+I valori che l'agente non offre vengono ignorati: riassegnare un task a un altro agente lascia cadere un modello
+che quell'agente non conosce, invece di far fallire la sua CLI. Mentre il task è *in lavorazione* le tendine sono
+bloccate: la sessione è già partita.
+
 Le variabili si leggono all'avvio del worker. Per applicare una modifica senza interrompere le sessioni in
 corso, svuota il worker invece di riavviarlo — vedi [Aggiornare un worker in esecuzione](#aggiornare-un-worker-in-esecuzione).
 

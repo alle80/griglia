@@ -162,13 +162,43 @@
                     {{-- Multi-agent: who works this task. The badge sits on a row of its own, BELOW the title
                          (task 427): among the commands it was squeezed between the icons. The name is ALWAYS visible,
                          even when the task inherits the agent of the list (empty option = inherit). --}}
-                    @if (\Alle80\Griglia\Agent::many())
-                        <div class="db-agent-row mt-1 flex items-center">
-                            @include('griglia::livewire.partials.agent-select', [
+                    @php($todoAgent = \Alle80\Griglia\Agent::effective($todo))
+                    @php($todoModels = \Alle80\Griglia\Agent::models($todoAgent))
+                    @php($todoEfforts = \Alle80\Griglia\Agent::efforts($todoAgent))
+                    @if (\Alle80\Griglia\Agent::many() || $todoModels || $todoEfforts)
+                        <div class="db-agent-row mt-1 flex flex-wrap items-center gap-1">
+                            @if (\Alle80\Griglia\Agent::many())
+                                @include('griglia::livewire.partials.agent-select', [
+                                    'todo' => $todo,
+                                    'change' => 'setTodoAgent('.$todo->id.', $event.target.value)',
+                                    'inheritLabel' => \Alle80\Griglia\Agent::label($todo->agent ?: ($listAgent ?: \Alle80\Griglia\Agent::defaultKey())),
+                                    'class' => 'db-agent-chip rounded border border-current/40 px-1 text-[10px] uppercase '.($todo->agent ? 'opacity-75' : 'opacity-50'),
+                                ])
+                            @endif
+                            {{-- Model and reasoning effort of the session (task 641): same badge, same gesture. The
+                                 chip shows the effective value — the task's, else the list's — and «—» when neither
+                                 is set, because then the CLI keeps its own default. --}}
+                            @php($todoModel = \Alle80\Griglia\Agent::effectiveModel($todo))
+                            @include('griglia::livewire.partials.preset-select', [
                                 'todo' => $todo,
-                                'change' => 'setTodoAgent('.$todo->id.', $event.target.value)',
-                                'inheritLabel' => \Alle80\Griglia\Agent::label($todo->agent ?: ($listAgent ?: \Alle80\Griglia\Agent::defaultKey())),
-                                'class' => 'db-agent-chip rounded border border-current/40 px-1 text-[10px] uppercase '.($todo->agent ? 'opacity-75' : 'opacity-50'),
+                                'field' => 'model',
+                                'options' => $todoModels,
+                                'current' => $todo->model,
+                                'badge' => $todoModel ? $todoModels[$todoModel] : '',
+                                'change' => 'setTodoModel('.$todo->id.', $event.target.value)',
+                                'inheritLabel' => $todoModel ? $todoModels[$todoModel] : __('griglia::t.model_none'),
+                                'class' => 'db-agent-chip rounded border border-current/40 px-1 text-[10px] uppercase '.($todo->model ? 'opacity-75' : 'opacity-50'),
+                            ])
+                            @php($todoEffort = \Alle80\Griglia\Agent::effectiveEffort($todo))
+                            @include('griglia::livewire.partials.preset-select', [
+                                'todo' => $todo,
+                                'field' => 'effort',
+                                'options' => $todoEfforts,
+                                'current' => $todo->effort,
+                                'badge' => $todoEffort ? $todoEfforts[$todoEffort] : '',
+                                'change' => 'setTodoEffort('.$todo->id.', $event.target.value)',
+                                'inheritLabel' => $todoEffort ? $todoEfforts[$todoEffort] : __('griglia::t.effort_none'),
+                                'class' => 'db-agent-chip rounded border border-current/40 px-1 text-[10px] uppercase '.($todo->effort ? 'opacity-75' : 'opacity-50'),
                             ])
                         </div>
                     @endif

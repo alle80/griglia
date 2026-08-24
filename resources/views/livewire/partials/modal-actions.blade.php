@@ -97,14 +97,42 @@
     </div>
 </div>
 
-@if (\Alle80\Griglia\Agent::many())
-    {{-- Multi-agent: which agent handles this task. Own full-width row under the commands, aligned left:
-         squeezed among the icons the label «Default (Claude Code)» ended up clipped, on a phone above all. --}}
-    <div class="modal-cmds-agent flex min-w-0 items-center" style="font-size: 1rem; font-weight: 400; letter-spacing: normal; text-transform: none;">
-        @include('griglia::livewire.partials.agent-select', [
+@php($modalAgent = \Alle80\Griglia\Agent::effective($todo))
+@php($modalModels = \Alle80\Griglia\Agent::models($modalAgent))
+@php($modalEfforts = \Alle80\Griglia\Agent::efforts($modalAgent))
+@if (\Alle80\Griglia\Agent::many() || $modalModels || $modalEfforts)
+    {{-- Multi-agent: which agent handles this task, and with which model and reasoning effort (task 641).
+         Own full-width row under the commands, aligned left: squeezed among the icons the label
+         «Default (Claude Code)» ended up clipped, on a phone above all. --}}
+    <div class="modal-cmds-agent flex min-w-0 flex-wrap items-center gap-2" style="font-size: 1rem; font-weight: 400; letter-spacing: normal; text-transform: none;">
+        @if (\Alle80\Griglia\Agent::many())
+            @include('griglia::livewire.partials.agent-select', [
+                'todo' => $todo,
+                'change' => 'setAgent($event.target.value)',
+                'inheritLabel' => __('griglia::t.agent_default', ['agent' => \Alle80\Griglia\Agent::label($todo->checklist?->agent ?: \Alle80\Griglia\Agent::defaultKey())]),
+                'class' => 'db-cmd min-w-0 text-xs',
+            ])
+        @endif
+        @php($modalModel = \Alle80\Griglia\Agent::effectiveModel($todo))
+        @include('griglia::livewire.partials.preset-select', [
             'todo' => $todo,
-            'change' => 'setAgent($event.target.value)',
-            'inheritLabel' => __('griglia::t.agent_default', ['agent' => \Alle80\Griglia\Agent::label($todo->checklist?->agent ?: \Alle80\Griglia\Agent::defaultKey())]),
+            'field' => 'model',
+            'options' => $modalModels,
+            'current' => $todo->model,
+            'badge' => $modalModel ? $modalModels[$modalModel] : '',
+            'change' => 'setModel($event.target.value)',
+            'inheritLabel' => __('griglia::t.model_default', ['model' => $modalModels[$todo->checklist?->model] ?? __('griglia::t.preset_cli_default')]),
+            'class' => 'db-cmd min-w-0 text-xs',
+        ])
+        @php($modalEffort = \Alle80\Griglia\Agent::effectiveEffort($todo))
+        @include('griglia::livewire.partials.preset-select', [
+            'todo' => $todo,
+            'field' => 'effort',
+            'options' => $modalEfforts,
+            'current' => $todo->effort,
+            'badge' => $modalEffort ? $modalEfforts[$modalEffort] : '',
+            'change' => 'setEffort($event.target.value)',
+            'inheritLabel' => __('griglia::t.effort_default', ['effort' => $modalEfforts[$todo->checklist?->effort] ?? __('griglia::t.preset_cli_default')]),
             'class' => 'db-cmd min-w-0 text-xs',
         ])
     </div>

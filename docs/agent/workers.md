@@ -142,6 +142,28 @@ The `claude` driver passes them as `--model` and `--effort` (`low`, `medium`, `h
 `{model}` and `{effort}` placeholders (empty strings when unset), so an argv template decides where they go.
 Values are not validated by the worker: an unknown model or effort level fails inside the agent CLI.
 
+#### Choosing them on the board
+
+The worker values are the default; the board can override them **per list and per task**. Tell it which models
+and efforts each agent offers and two selectors appear — one in the list toolbar, one in the badge under the
+task title (and among the commands of the modal):
+
+```dotenv
+GRIGLIA_AGENT_MODELS="claude:opus=Opus,sonnet=Sonnet;codex:gpt-5,gpt-5-codex"
+GRIGLIA_AGENT_EFFORTS="low,medium,high,xhigh,max"
+```
+
+One group per agent (`key:values`), separated by `;`; a bare list is offered to every agent; `value=Label`
+renames an option in the interface. Without these variables nothing changes: no selector, and every session
+uses the worker's default.
+
+A task uses its own value, else its list's, else the worker's. The badge shows the effective one, the modal
+shows it among the commands, `griglia:check` prints it next to the title (`{agent: claude, model: opus,
+effort: high}`), and the worker reads it from `--worker-json` when it dispatches the session. Values the agent
+does not offer are ignored — reassigning a task to another agent drops a model that agent knows nothing about
+instead of failing inside its CLI. While a task is *working* the selectors are frozen: its session already
+started.
+
 The variables are read when the worker starts. To apply a change without interrupting the sessions that are
 running, drain the worker instead of restarting it — see [Updating a running worker](#updating-a-running-worker).
 

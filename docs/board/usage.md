@@ -28,6 +28,11 @@ When the agent has left a result, a very short automatic summary appears under t
 more precise one with `griglia:check --done --summary="…"`; otherwise Griglia derives it from the closing
 comment. It tells apart a sequence of resumed tasks that all share the same title.
 
+Under the title a row may carry a badge with **who** runs the task and **how**: the agent (with several
+configured), the model and the reasoning effort. Tap one to change it — the values come from what each agent
+offers, and the persistent worker uses them for that task's session. See
+[Model and reasoning effort](../agent/workers.md#model-and-reasoning-effort).
+
 At the right end of the title line every row shows the task **id** (`id:510`): the same `id:N` the agent prints
 in `griglia:check`, and the number you use with `--take` / `--done` or when you talk about a task. Tap it to
 copy the number (the chip says *copied* for a moment, and the modal does not open). The big number at the left

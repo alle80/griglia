@@ -22,7 +22,7 @@ class Checklist extends Model
         return ChecklistFactory::new();
     }
 
-    protected $fillable = ['name', 'user_id', 'plan_prompt', 'plan_paused', 'agent', 'archived_at'];
+    protected $fillable = ['name', 'user_id', 'plan_prompt', 'plan_paused', 'agent', 'model', 'effort', 'archived_at'];
 
     protected static function booted(): void
     {

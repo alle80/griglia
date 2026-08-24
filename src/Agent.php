@@ -141,6 +141,108 @@ class Agent
         return implode(', ', array_map(fn ($k, $l) => $k === $l ? $k : sprintf('%s (%s)', $k, $l), array_keys(self::all()), self::all()));
     }
 
+    /**
+     * Models the board may offer for an agent (value => label), from config `griglia.agent_models`:
+     * "claude:opus,sonnet;codex:gpt-5" per agent, a bare "opus,sonnet" for every agent, "value=Label" to
+     * rename one in the UI. Empty = no picker at all: the agent CLI keeps whatever default it has.
+     */
+    public static function models(?string $agentKey = null): array
+    {
+        return self::catalogue(config('griglia.agent_models'), $agentKey);
+    }
+
+    /** Reasoning efforts offered for an agent (value => label), from config `griglia.agent_efforts`. */
+    public static function efforts(?string $agentKey = null): array
+    {
+        return self::catalogue(config('griglia.agent_efforts'), $agentKey);
+    }
+
+    /**
+     * Parses a catalogue shared by models and efforts: a string ("claude:a,b;codex:c" or just "a,b"), or an
+     * array (['claude' => ['a', 'b']] / ['a', 'b']). Returns the entries of one agent, value => label.
+     */
+    private static function catalogue(mixed $raw, ?string $agentKey): array
+    {
+        $key = $agentKey !== null && $agentKey !== '' ? (self::resolve($agentKey) ?? $agentKey) : self::defaultKey();
+
+        if (is_string($raw)) {
+            $raw = trim($raw);
+            if ($raw === '') {
+                return [];
+            }
+            $groups = [];
+            foreach (explode(';', $raw) as $group) {
+                $group = trim($group);
+                if ($group === '') {
+                    continue;
+                }
+                // «claude:opus,sonnet» belongs to one agent; a bare «opus,sonnet» to every one of them.
+                if (str_contains($group, ':')) {
+                    [$owner, $values] = array_map('trim', explode(':', $group, 2));
+                    $groups[$owner !== '' ? $owner : '*'] = $values;
+                } else {
+                    $groups['*'] = $group;
+                }
+            }
+            $values = $groups[$key] ?? ($groups['*'] ?? '');
+
+            return self::entries(explode(',', (string) $values));
+        }
+
+        if (is_array($raw)) {
+            // Either a map agent => values, or a flat list shared by every agent.
+            $values = array_is_list($raw) ? $raw : ($raw[$key] ?? $raw['*'] ?? []);
+
+            return self::entries((array) $values);
+        }
+
+        return [];
+    }
+
+    /** value => label from a list of «value» or «value=Label» entries. */
+    private static function entries(array $items): array
+    {
+        $out = [];
+        foreach ($items as $item => $label) {
+            if (is_int($item)) {
+                [$item, $label] = array_pad(array_map('trim', explode('=', (string) $label, 2)), 2, null);
+            }
+            $item = trim((string) $item);
+            if ($item !== '') {
+                $out[$item] = trim((string) $label) !== '' ? trim((string) $label) : $item;
+            }
+        }
+
+        return $out;
+    }
+
+    /** Model of a todo: its own, else its list's, else null (the worker's own default). */
+    public static function effectiveModel(Todo $todo, ?Checklist $list = null): ?string
+    {
+        return self::inherited($todo->model, ($list ?? $todo->checklist)?->model, self::models(self::effective($todo, $list)));
+    }
+
+    /** Reasoning effort of a todo: its own, else its list's, else null (the worker's own default). */
+    public static function effectiveEffort(Todo $todo, ?Checklist $list = null): ?string
+    {
+        return self::inherited($todo->effort, ($list ?? $todo->checklist)?->effort, self::efforts(self::effective($todo, $list)));
+    }
+
+    /**
+     * First value the agent still offers: a task assigned to another agent (or a catalogue that changed) must
+     * not carry a model that agent knows nothing about — the worker would fail inside the CLI (task 641).
+     */
+    private static function inherited(?string $own, ?string $inherited, array $catalogue): ?string
+    {
+        foreach ([$own, $inherited] as $value) {
+            if ($value && isset($catalogue[$value])) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
+
     /** Effective agent key of a todo: its own, else its list's, else the default. */
     public static function effective(Todo $todo, ?Checklist $list = null): string
     {

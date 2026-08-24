@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.93.0] - 2026-08-24
+
+### Added
+- **The board chooses the model and the reasoning effort of a session** (and shows them). Declare what each
+  agent offers — `GRIGLIA_AGENT_MODELS="claude:opus,sonnet;codex:gpt-5"`, `GRIGLIA_AGENT_EFFORTS="low,medium,high"` —
+  and a list picks its default while any task overrides it, from the badge under its title or from the commands
+  of its modal, next to the agent. The effective value is always visible: on the row, in the modal, and next to
+  the title in `griglia:check` (`{agent: claude, model: opus, effort: high}`). The persistent worker reads it
+  from `--worker-json` and passes it to the CLI, falling back to its own `--model`/`--effort`. Without the two
+  variables nothing changes: no selector, and every session keeps the CLI's default.
+
 ## [0.92.1] - 2026-08-24
 
 ### Fixed
@@ -2382,7 +2393,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.92.1...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.93.0...HEAD
+[0.93.0]: https://github.com/alle80/griglia/compare/v0.92.1...v0.93.0
 [0.92.1]: https://github.com/alle80/griglia/compare/v0.92.0...v0.92.1
 [0.92.0]: https://github.com/alle80/griglia/compare/v0.91.4...v0.92.0
 [0.91.4]: https://github.com/alle80/griglia/compare/v0.91.3...v0.91.4

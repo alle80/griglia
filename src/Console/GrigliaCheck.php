@@ -305,6 +305,11 @@ class GrigliaCheck extends Command
             // Every task carries its full resume chain (oldest steps included): same history the human output prints
             $items = $all->map(function (Todo $t) {
                 $row = $t->toArray();
+                // What the session must run with (task 641): the task's own value, else its list's, else null
+                // (the CLI keeps its own default). The persistent worker reads these, not the raw columns.
+                $row['effective_agent'] = Agent::effective($t);
+                $row['effective_model'] = Agent::effectiveModel($t);
+                $row['effective_effort'] = Agent::effectiveEffort($t);
                 $row['resume_chain'] = $t->resumeChain()->map(fn (Todo $p) => [
                     'id' => $p->id,
                     'title' => $p->title,
@@ -356,7 +361,7 @@ class GrigliaCheck extends Command
             $render = function ($todos) use ($last, $opt) {
                 foreach ($todos as $t) {
                     $isNew = $t->updated_at->timestamp > $last;
-                    $this->line(sprintf('%s [%s] %s #%d %s%s%s  (id:%d)', $isNew ? '🆕' : '  ', $t->completed ? 'x' : ' ', $t->question ? '❓' : ($t->paused ? '⏸' : ($t->working ? '🔧' : ($t->open_to_work ? '🟢' : '⚪'))), $t->order, $t->title, $t->working && $t->progress !== null ? sprintf(' [%d%%%s]', $t->progress, $t->phase ? ' · '.$t->phase : '') : '', Agent::many() ? ' {agent: '.Agent::effective($t).'}' : '', $t->id));
+                    $this->line(sprintf('%s [%s] %s #%d %s%s%s  (id:%d)', $isNew ? '🆕' : '  ', $t->completed ? 'x' : ' ', $t->question ? '❓' : ($t->paused ? '⏸' : ($t->working ? '🔧' : ($t->open_to_work ? '🟢' : '⚪'))), $t->order, $t->title, $t->working && $t->progress !== null ? sprintf(' [%d%%%s]', $t->progress, $t->phase ? ' · '.$t->phase : '') : '', $this->presetTag($t), $t->id));
                     // Resume chain: a resumed task can itself be resumed — print the WHOLE history, newest first (task 416)
                     $chain = $t->resumeChain();
                     if ($chain->isNotEmpty()) {
@@ -472,5 +477,25 @@ class GrigliaCheck extends Command
         }
 
         return $attrs;
+    }
+
+    /**
+     * What runs this task, between braces after the title: the agent (only with several configured), the model
+     * and the reasoning effort when the board picked them (task 641). Empty when there is nothing to say.
+     */
+    private function presetTag(Todo $todo): string
+    {
+        $parts = [];
+        if (Agent::many()) {
+            $parts[] = 'agent: '.Agent::effective($todo);
+        }
+        if ($model = Agent::effectiveModel($todo)) {
+            $parts[] = 'model: '.$model;
+        }
+        if ($effort = Agent::effectiveEffort($todo)) {
+            $parts[] = 'effort: '.$effort;
+        }
+
+        return $parts === [] ? '' : ' {'.implode(', ', $parts).'}';
     }
 }

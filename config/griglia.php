@@ -19,6 +19,15 @@ return [
     // (project) chooses its default agent, a task may override it. Empty = a single agent named `agent_name`.
     'agents' => env('GRIGLIA_AGENTS'),
 
+    // Models the board may pick for a task, per agent: GRIGLIA_AGENT_MODELS="claude:opus,sonnet;codex:gpt-5"
+    // (a bare list «opus,sonnet» offers the same models to every agent; «alias=Label» renames one in the UI).
+    // Empty = no model picker: the agent CLI keeps its own default.
+    'agent_models' => env('GRIGLIA_AGENT_MODELS'),
+
+    // Reasoning efforts, same shape as `agent_models`, e.g. GRIGLIA_AGENT_EFFORTS="claude:low,medium,high,xhigh,max".
+    // Empty = no effort picker.
+    'agent_efforts' => env('GRIGLIA_AGENT_EFFORTS'),
+
     // Which of those agents is running here: the key `griglia:check` assumes when `--agent=<key>` is omitted,
     // so that this installation sees only its own tasks. Empty = the agent must pass `--agent=` itself.
     'agent_key' => env('GRIGLIA_AGENT_KEY'),

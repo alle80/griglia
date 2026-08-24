@@ -39,8 +39,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--container", default=os.getenv("GRIGLIA_WORKER_CONTAINER", os.getenv("GRIGLIA_CONTAINER", "laravel-dev-app")))
     parser.add_argument("--php", default=os.getenv("GRIGLIA_WORKER_PHP", os.getenv("GRIGLIA_PHP", "php")), help="PHP executable for local transport")
-    parser.add_argument("--model", default=os.getenv("GRIGLIA_WORKER_MODEL"), help="Model for the agent CLI (alias or full name, e.g. fable or claude-fable-5)")
-    parser.add_argument("--effort", default=os.getenv("GRIGLIA_WORKER_EFFORT"), help="Reasoning effort for the agent CLI (low, medium, high, xhigh, max)")
+    parser.add_argument("--model", default=os.getenv("GRIGLIA_WORKER_MODEL"), help="Default model for the agent CLI (alias or full name); a task that chose one on the board wins")
+    parser.add_argument("--effort", default=os.getenv("GRIGLIA_WORKER_EFFORT"), help="Default reasoning effort for the agent CLI; a task that chose one on the board wins")
     parser.add_argument("--interval", type=int, default=int(os.getenv("GRIGLIA_WORKER_INTERVAL", "10")))
     parser.add_argument("--retry-delay", type=int, default=int(os.getenv("GRIGLIA_WORKER_RETRY_DELAY", "30")))
     parser.add_argument("--max-parallel", type=int, default=int(os.getenv("GRIGLIA_WORKER_MAX_PARALLEL", "2")), help="Concurrent sessions in board multitasking mode (default: 2)")
@@ -142,28 +142,35 @@ def prompt(agent: str, task: dict) -> str:
     )
 
 
-def driver_command(args: argparse.Namespace, message: str) -> list[str]:
+def session_model(args: argparse.Namespace, task: dict) -> tuple[str | None, str | None]:
+    """Model and reasoning effort of one session: what the board picked for the task, else the worker's own."""
+    return (task.get("effective_model") or args.model, task.get("effective_effort") or args.effort)
+
+
+def driver_command(args: argparse.Namespace, message: str, model: str | None = None, effort: str | None = None) -> list[str]:
     """Build the argv of one agent session, adding model and effort when configured."""
     driver = args.driver or args.agent
+    model = model or args.model
+    effort = effort or args.effort
     if driver == "codex":
         command = ["codex", "exec", "--approve-for-me", "-C", str(args.repo)]
-        if args.model:
-            command += ["--model", args.model]
-        if args.effort:
-            command += ["-c", f'model_reasoning_effort="{args.effort}"']
+        if model:
+            command += ["--model", model]
+        if effort:
+            command += ["-c", f'model_reasoning_effort="{effort}"']
         return [*command, message]
     if driver == "claude":
         command = ["claude", "-p", "--permission-mode", "bypassPermissions"]
-        if args.model:
-            command += ["--model", args.model]
-        if args.effort:
-            command += ["--effort", args.effort]
+        if model:
+            command += ["--model", model]
+        if effort:
+            command += ["--effort", effort]
         return [*command, message]
     if driver == "custom":
         raw = os.getenv("GRIGLIA_WORKER_COMMAND_JSON")
         if not raw:
             raise RuntimeError("GRIGLIA_WORKER_COMMAND_JSON is required for the custom driver")
-        placeholders = {"prompt": message, "repo": args.repo, "agent": args.agent, "model": args.model or "", "effort": args.effort or ""}
+        placeholders = {"prompt": message, "repo": args.repo, "agent": args.agent, "model": model or "", "effort": effort or ""}
         return [str(part).format(**placeholders) for part in json.loads(raw)]
     raise RuntimeError(f"No driver for agent {args.agent!r}; set GRIGLIA_WORKER_DRIVER=custom")
 
@@ -253,14 +260,16 @@ def adopt(spec: str) -> dict[int, Session]:
 
 
 def start_agent(args: argparse.Namespace, task: dict) -> Session | None:
-    command = driver_command(args, prompt(args.agent, task))
+    model, effort = session_model(args, task)
+    command = driver_command(args, prompt(args.agent, task), model, effort)
     if args.dry_run:
         print(f"would claim and dispatch task {task['id']} to {args.driver or args.agent}", flush=True)
         print(json.dumps(command, ensure_ascii=False))
         return None
     if not claim(args, task):
         return None
-    print(f"dispatching task {task['id']} to {args.driver or args.agent}", flush=True)
+    chosen = ", ".join(part for part in (f"model {model}" if model else "", f"effort {effort}" if effort else "") if part)
+    print(f"dispatching task {task['id']} to {args.driver or args.agent}" + (f" ({chosen})" if chosen else ""), flush=True)
     process = subprocess.Popen(command, cwd=args.repo)
     return Session(int(task["id"]), process.pid, process)
 

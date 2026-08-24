@@ -21,6 +21,35 @@
         </div>
     @endif
 
+    {{-- Model and reasoning effort of the sessions of this list (task 641): the default of every task of the
+         list, which each task may override from its own badge. Shown only when the agent offers a catalogue
+         (config griglia.agent_models / agent_efforts); empty = the agent CLI keeps its own default. --}}
+    @php($toolbarAgent = ($listAgent ?? '') ?: \Alle80\Griglia\Agent::defaultKey())
+    @php($toolbarModels = \Alle80\Griglia\Agent::models($toolbarAgent))
+    @php($toolbarEfforts = \Alle80\Griglia\Agent::efforts($toolbarAgent))
+    @if ($toolbarModels || $toolbarEfforts)
+        <div class="db-list-preset flex flex-wrap items-center gap-2 text-sm">
+            @if ($toolbarModels)
+                <label class="font-bold" for="list-model">{{ __('griglia::t.model_of_list') }}</label>
+                <select id="list-model" class="{{ $inputClass }} text-xs" wire:change="setListModel($event.target.value)">
+                    <option value="" @selected(($listModel ?? '') === '')>{{ __('griglia::t.preset_cli_default') }}</option>
+                    @foreach ($toolbarModels as $value => $label)
+                        <option value="{{ $value }}" @selected(($listModel ?? '') === $value)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            @endif
+            @if ($toolbarEfforts)
+                <label class="font-bold" for="list-effort">{{ __('griglia::t.effort_of_list') }}</label>
+                <select id="list-effort" class="{{ $inputClass }} text-xs" wire:change="setListEffort($event.target.value)">
+                    <option value="" @selected(($listEffort ?? '') === '')>{{ __('griglia::t.preset_cli_default') }}</option>
+                    @foreach ($toolbarEfforts as $value => $label)
+                        <option value="{{ $value }}" @selected(($listEffort ?? '') === $value)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            @endif
+        </div>
+    @endif
+
     {{-- Plan mode: start the plan / progress --}}
     @if (! empty($plan))
         <div class="db-plan-bar flex flex-wrap items-center gap-2 text-sm">

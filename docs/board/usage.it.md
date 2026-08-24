@@ -28,6 +28,11 @@ commento di chiusura. Serve a distinguere una sequenza di task ripresi che hanno
 
 Tocca il pallino per passare fra *in attesa* e *open to work*, fermare l'agente o riaprire un task in pausa.
 
+Sotto il titolo la riga può mostrare una targhetta con **chi** lavora il task e **come**: l'agente (se ne hai
+più di uno), il modello e l'effort di ragionamento. Toccala per cambiarli — le voci sono quelle che offre
+l'agente, e il worker le usa per la sessione di quel task. Vedi
+[Modello e livello di ragionamento](../agent/workers.it.md#modello-e-livello-di-ragionamento).
+
 In fondo alla riga del titolo ogni riga mostra l'**id** del task (`id:510`): lo stesso `id:N` che l'agente stampa
 in `griglia:check`, e il numero che usi con `--take` / `--done` o quando parli di un task. Toccalo per copiare il
 numero (la targhetta dice *copiato* per un attimo, e il modale non si apre). Il numero grande a sinistra della

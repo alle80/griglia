@@ -147,7 +147,7 @@ class TodoList extends Component
     {
         return $this->applyFilters($this->scoped())
             ->when($this->showArchived, fn ($q) => $q->whereNotNull('archived_at')->orderByDesc('archived_at'), fn ($q) => $q->whereNull('archived_at')->orderBy('order'))
-            ->with(['checklist:id,name,agent', 'ingredients', 'dependsOn:id,title,completed,order'])->withCount('attachments')->get();
+            ->with(['checklist:id,name,agent,model,effort', 'ingredients', 'dependsOn:id,title,completed,order'])->withCount('attachments')->get();
     }
 
     /** Query of the active (not archived) todos of the current list: the `order` numbering lives only here. */
@@ -182,6 +182,66 @@ class TodoList extends Component
         $this->dispatch('toast', message: __('griglia::t.agent_set_task', [
             'title' => $todo->title,
             'agent' => Agent::label(Agent::effective($todo)),
+        ]));
+    }
+
+    /** Model of the sessions of the current list ('' = the CLI's own default). */
+    public function setListModel(string $model): void
+    {
+        $this->setListPreset('model', $model);
+    }
+
+    /** Reasoning effort of the sessions of the current list ('' = the CLI's own default). */
+    public function setListEffort(string $effort): void
+    {
+        $this->setListPreset('effort', $effort);
+    }
+
+    /** Model of a single task from the list row ('' = the list's default). */
+    public function setTodoModel(int $todoId, string $model): void
+    {
+        $this->setTodoPreset($todoId, 'model', $model);
+    }
+
+    /** Reasoning effort of a single task from the list row ('' = the list's default). */
+    public function setTodoEffort(int $todoId, string $effort): void
+    {
+        $this->setTodoPreset($todoId, 'effort', $effort);
+    }
+
+    /** Model/effort of the list: only values the list's agent offers (task 641). */
+    private function setListPreset(string $field, string $value): void
+    {
+        $list = Checklist::mine()->whereKey(Checklist::currentId())->first();
+        if (! $list) {
+            return;
+        }
+        $value = trim($value);
+        $catalogue = $field === 'model' ? Agent::models($list->agent ?: Agent::defaultKey()) : Agent::efforts($list->agent ?: Agent::defaultKey());
+        if ($value !== '' && ! isset($catalogue[$value])) {
+            return;
+        }
+        $list->update([$field => $value ?: null]);
+        $this->dispatch('toast', message: __('griglia::t.'.$field.'_set', [$field => $value !== '' ? $catalogue[$value] : __('griglia::t.preset_cli_default')]));
+    }
+
+    /** Model/effort of a task from its row: only values the task's agent offers, and never while it works. */
+    private function setTodoPreset(int $todoId, string $field, string $value): void
+    {
+        $todo = $this->scoped()->findOrFail($todoId);
+        if ($todo->working) {
+            return;
+        }
+        $value = trim($value);
+        $catalogue = $field === 'model' ? Agent::models(Agent::effective($todo)) : Agent::efforts(Agent::effective($todo));
+        if ($value !== '' && ! isset($catalogue[$value])) {
+            return;
+        }
+        $todo->update([$field => $value ?: null]);
+        $effective = $field === 'model' ? Agent::effectiveModel($todo->fresh()) : Agent::effectiveEffort($todo->fresh());
+        $this->dispatch('toast', message: __('griglia::t.'.$field.'_set_task', [
+            'title' => $todo->title,
+            $field => $effective ? ($catalogue[$effective] ?? $effective) : __('griglia::t.preset_cli_default'),
         ]));
     }
 
@@ -601,6 +661,7 @@ class TodoList extends Component
     {
         // Default: the generic themed view with the default theme (dedicated styles override render())
         $t = Themes::get(Themes::default());
+        $list = Checklist::find(Checklist::currentId());
 
         return view('griglia::livewire.todo-list', [
             'todos' => $this->todos(),
@@ -610,7 +671,9 @@ class TodoList extends Component
             'archivedCount' => $this->archivedCount(),
             'filtering' => $this->isFiltering(),
             'plan' => $this->planStatus(),
-            'listAgent' => (string) (Checklist::find(Checklist::currentId())?->agent ?? ''),
+            'listAgent' => (string) ($list?->agent ?? ''),
+            'listModel' => (string) ($list?->model ?? ''),
+            'listEffort' => (string) ($list?->effort ?? ''),
         ])->layout('griglia::layouts.themed', ['theme' => Themes::default()])->title($this->listName());
     }
 }

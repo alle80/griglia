@@ -500,7 +500,8 @@ select.setting-input { appearance: auto; }
     .list-toolbar button,
     .list-toolbar .db-agent-filter,
     .list-toolbar .db-status-filter { padding: .45rem .8rem; }
-    .db-list-agent select { min-height: 2.5rem; font-size: .875rem; line-height: 1.25rem; }
+    .db-list-agent select,
+    .db-list-preset select { min-height: 2.5rem; font-size: .875rem; line-height: 1.25rem; }
     .db-agent-filter select,
     .db-status-filter select { line-height: 1.25rem; }
 }

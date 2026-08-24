@@ -21,6 +21,7 @@ class ThemedTodoList extends TodoList
     public function render()
     {
         $t = Themes::get($this->theme);
+        $list = Checklist::find(Checklist::currentId());
 
         return view('griglia::livewire.todo-list', [
             'todos' => $this->todos(),
@@ -29,7 +30,9 @@ class ThemedTodoList extends TodoList
             'archivedCount' => $this->archivedCount(),
             'filtering' => $this->isFiltering(),
             'plan' => $this->planStatus(),
-            'listAgent' => (string) (Checklist::find(Checklist::currentId())?->agent ?? ''),
+            'listAgent' => (string) ($list?->agent ?? ''),
+            'listModel' => (string) ($list?->model ?? ''),
+            'listEffort' => (string) ($list?->effort ?? ''),
         ])->title($this->listName().' — '.$t['label']);
     }
 }
