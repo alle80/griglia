@@ -11,7 +11,9 @@
     } catch (\Throwable $e) {
         // settings not migrated yet — fall back
     }
-    $dash = $show ? config('griglia.dashboard_route') : null;
+    // The board's own route, never the raw `dashboard_route` path: a host application may own that
+    // path, and the tab has to frame the board, not the host's dashboard (task 646).
+    $dash = $show ? \Alle80\Griglia\Support\Board::url() : null;
     // No tab on the board itself: since task 617 every board route shows the same full-width page, so the
     // panel would only frame the page you are already on (and, inside the iframe, a tab within a tab).
     // Injected pages are never board pages (the middleware skips them), so there is nothing to check.

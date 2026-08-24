@@ -171,10 +171,10 @@ responsive di sempre: la regola dei 1200px si misura sull'iframe, non sulla fine
 lì il contenitore non è mai stato il limite.
 
 Non c'è un secondo indirizzo più largo dove andare. `/dashboard` lo era e ora **reindirizza alla board**, così
-vecchi link, segnalibri e linguetta laterale continuano a funzionare. Il percorso viene sempre dalla chiave di
-configurazione `dashboard_route` (`GRIGLIA_DASHBOARD_ROUTE`, default `/dashboard`): mettila a `null` e spariscono
-sia il redirect sia la linguetta qui sotto. Un'applicazione ospite che tiene `/` per sé e disattiva `home_route`
-trova la board su quel percorso, invece del redirect.
+vecchi link e segnalibri continuano a funzionare. Il percorso viene dalla chiave di configurazione
+`dashboard_route` (`GRIGLIA_DASHBOARD_ROUTE`, default `/dashboard`): mettila a `null` e sparisce il redirect.
+Un'applicazione ospite che tiene `/` per sé e disattiva `home_route` trova la board su quel percorso, invece
+del redirect.
 
 ### La linguetta laterale
 
@@ -182,7 +182,9 @@ Ogni pagina del sito — quelle della board e quelle della tua applicazione — 
 scomparsa attaccata a un bordo della finestra**: una maniglia, in stile debugbar, che apre un pannello con
 dentro la board. Clic sulla maniglia e il pannello esce;
 trascina il suo bordo interno per ridimensionarlo (da 300px fino al 70% della finestra); ⤢ apre la board
-intera nella scheda in cui sei; ✕ chiude il pannello. Se è aperto e quanto è largo se li ricorda il browser
+intera nella scheda in cui sei; ✕ chiude il pannello. Il pannello incornicia sempre la rotta della board, mai
+il percorso `dashboard_route`: se la tua applicazione ha già un suo `/dashboard`, quella pagina resta tua e
+nella linguetta vedi comunque la board. Se è aperto e quanto è largo se li ricorda il browser
 (`localStorage`), quindi il pannello torna come l'hai lasciato anche nella pagina successiva. Sulla board
 stessa non compare — incornicerebbe la pagina in cui sei già — ed è **solo desktop**: sotto il breakpoint `lg` non viene proprio disegnata, perché su un
 telefono non c'è spazio da regalare.

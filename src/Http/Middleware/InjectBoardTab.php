@@ -3,6 +3,7 @@
 namespace Alle80\Griglia\Http\Middleware;
 
 use Alle80\Griglia\Settings\AppSettings;
+use Alle80\Griglia\Support\Board;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -96,7 +97,7 @@ class InjectBoardTab
     /** The tab has somewhere to point to and /settings did not switch it off. */
     protected function tabIsEnabled(): bool
     {
-        if (! config('griglia.dashboard_route')) {
+        if (Board::url() === null) {
             return false;
         }
 

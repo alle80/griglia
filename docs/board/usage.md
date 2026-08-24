@@ -163,16 +163,17 @@ Inside the narrow side tab the same page keeps the ordinary responsive columns: 
 the iframe, not on the window. On a phone nothing changes: the container was never the limit there.
 
 There is no second, wider address to go to. `/dashboard` used to be one and now **redirects to the board**, so
-old links, bookmarks and the side tab keep working. The path still comes from the config key `dashboard_route`
-(`GRIGLIA_DASHBOARD_ROUTE`, default `/dashboard`); set it to `null` and both the redirect and the tab below
-disappear. A host application that owns `/` and turns `home_route` off keeps the board on that path instead of
-the redirect.
+old links and bookmarks keep working. The path comes from the config key `dashboard_route`
+(`GRIGLIA_DASHBOARD_ROUTE`, default `/dashboard`); set it to `null` and the redirect disappears. A host
+application that owns `/` and turns `home_route` off keeps the board on that path instead of the redirect.
 
 ### The side tab
 
 Every page of the site — the board's pages and your own application's — carries a **slide-out tab pinned to
 one edge of the window**: a handle, debugbar style, that opens a panel with the board inside it. Click the handle and the panel slides out; drag its inner edge to resize
 it (from 300px up to 70% of the window); ⤢ opens the whole board in the tab you are on; ✕ closes the panel.
+The panel always frames the board's own route, never the `dashboard_route` path: if your application already
+owns `/dashboard`, that page stays yours and the tab still shows the board.
 Whether it is open and how wide it is are remembered in the browser (`localStorage`), so the panel comes back
 the way you left it on the next page. It never appears on the board itself — there it would only frame the page
 you are already on — and it is **desktop only**:

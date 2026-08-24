@@ -56,8 +56,9 @@ return [
     // Register a home route (route_prefix + '/') showing the theme selected in /settings
     'home_route' => true,
 
-    // Legacy dashboard path: it redirects to the board (which is full width on every route) and feeds the
-    // slide-out board tab. Set to null/false to disable both. Without a home route it serves the board itself.
+    // Legacy dashboard path: it redirects to the board, which is full width on every route. Set to
+    // null/false to drop it. Without a home route it serves the board itself, and the slide-out board
+    // tab then points here — otherwise the tab always frames the home route, never this bare path.
     'dashboard_route' => env('GRIGLIA_DASHBOARD_ROUTE', '/dashboard'),
 
     // Paths where the board tab must NOT be injected (globs, `Request::is` style, matched on the path and

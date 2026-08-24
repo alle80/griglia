@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.91.1] - 2026-08-24
+
+### Fixed
+- **The side tab shows the board again, not your dashboard.** The panel used to load the raw
+  `dashboard_route` path (`/dashboard` by default) — the very path Breeze and Jetstream give their own
+  dashboard. In a host application that owns it, the package route never wins and the tab framed the
+  host's page. The URL is now built from the package's own board route (`griglia.home`, falling back to
+  `griglia.dashboard` when the home route is off), which no host path can shadow, and it is exposed as
+  `Alle80\Griglia\Support\Board::url()`.
+
+### Changed
+- `dashboard_route` no longer governs the side tab: setting it to `null` drops the legacy redirect only,
+  and the tab keeps pointing at the board. `show_dashboard_tab` in `/settings` remains its off switch;
+  with no board route at all there is nothing to frame and the tab is not rendered.
+
 ## [0.91.0] - 2026-08-24
 
 ### Added
@@ -2322,7 +2337,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.0...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.1...HEAD
+[0.91.1]: https://github.com/alle80/griglia/compare/v0.91.0...v0.91.1
 [0.91.0]: https://github.com/alle80/griglia/compare/v0.90.1...v0.91.0
 [0.90.1]: https://github.com/alle80/griglia/compare/v0.90.0...v0.90.1
 [0.90.0]: https://github.com/alle80/griglia/compare/v0.89.21...v0.90.0
