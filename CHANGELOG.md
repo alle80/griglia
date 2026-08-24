@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.91.0] - 2026-08-24
+
+### Added
+- **The board tab now reaches every page of the host application.** A new middleware,
+  `Alle80\Griglia\Http\Middleware\InjectBoardTab`, is pushed into the `web` group and splices the
+  slide-out tab into every HTML response just before `</body>`, the way laravel-debugbar injects its bar:
+  the board is one click away from anywhere in your app, with nothing to add to your layouts. It stays out
+  of everything that is not a full page (JSON/AJAX, redirects, downloads, streamed and binary responses,
+  Livewire `/livewire/update`, Turbo frames, Inertia visits), out of the package pages — whose layout
+  prints the tab already, so it is never doubled — and out of the pages of a visitor who may not open the
+  board (same verdict as the route guard, now readable as `GrigliaAccess::allows()`).
+- Config key `inject_tab_except`: paths where the tab must not be injected, as `Request::is` globs matched
+  against the path and against the route name (default: an empty list, i.e. inject everywhere). The
+  `show_dashboard_tab` switch in `/settings` still turns the tab off everywhere.
+
+### Changed
+- **The tab is self-contained**: its CSS is inline and its behaviour is plain JavaScript, so it works on
+  host pages that load neither `griglia.css` nor Alpine. Its rules left `resources/css/griglia.css` (they
+  had a single consumer) and the desktop-only rule is a media query instead of the Tailwind utilities
+  `hidden lg:block`, which a host app may not have built.
+
 ## [0.90.1] - 2026-08-24
 
 ### Documentation
@@ -2301,7 +2322,8 @@ monorepo into a standalone, installable Composer package.
 - Requires PHP 8.3+, Laravel 12 or 13, Livewire 4, Tailwind CSS 4 in the host app.
 - The full pre-extraction history lives in the origin monorepo linked above.
 
-[Unreleased]: https://github.com/alle80/griglia/compare/v0.90.1...HEAD
+[Unreleased]: https://github.com/alle80/griglia/compare/v0.91.0...HEAD
+[0.91.0]: https://github.com/alle80/griglia/compare/v0.90.1...v0.91.0
 [0.90.1]: https://github.com/alle80/griglia/compare/v0.90.0...v0.90.1
 [0.90.0]: https://github.com/alle80/griglia/compare/v0.89.21...v0.90.0
 [0.89.21]: https://github.com/alle80/griglia/compare/v0.89.20...v0.89.21

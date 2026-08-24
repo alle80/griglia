@@ -22,6 +22,7 @@ Decided by whoever installs the package; the run-time options live in [Settings]
 | `register_routes` | — | `true` | Register the package routes at all (set false to define your own routes with the components) |
 | `home_route` | — | `true` | Register a home route (route_prefix + '/') showing the theme selected in /settings |
 | `dashboard_route` | `GRIGLIA_DASHBOARD_ROUTE` | `'/dashboard'` | Legacy dashboard path: it redirects to the board (which is full width on every route) and feeds the slide-out board tab. Set to null/false to disable both. Without a home route it serves the board itself. |
+| `inject_tab_except` | — | _array_ | Paths where the board tab must NOT be injected (globs, `Request::is` style, matched on the path and on the route name). The tab is injected in every HTML page of the host application by default; the package pages are excluded anyway (their layout already prints it), as are AJAX/JSON responses, redirects, downloads and partial updates. Switch the tab off everywhere from /settings instead. |
 | `default_theme` | — | `'slate'` | Generic theme used by the home route and as fallback |
 | `themes` | — | _array_ | Extra generic themes (slug => definition, same keys as Alle80\Griglia\Themes::builtin(); a built-in slug is overridden key by key) |
 | `user_model` | `GRIGLIA_USER_MODEL` | `'App\\Models\\User'` | User model owning the lists |

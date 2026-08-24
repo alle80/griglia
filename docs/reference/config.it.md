@@ -22,6 +22,7 @@ La decide chi installa il package; le opzioni che si cambiano a runtime stanno n
 | `register_routes` | — | `true` | Registrare o no le rotte del package (metti false per definire rotte tue con i componenti) |
 | `home_route` | — | `true` | Registra una rotta home (route_prefix + '/') che mostra il tema selezionato nelle impostazioni |
 | `dashboard_route` | `GRIGLIA_DASHBOARD_ROUTE` | `'/dashboard'` | Vecchio percorso della dashboard: reindirizza alla board (che è a tutta larghezza su ogni rotta) e alimenta la linguetta laterale. Metti null/false per disattivare entrambe. Senza la rotta home serve la board lui stesso. |
+| `inject_tab_except` | — | _array_ | Percorsi in cui la linguetta della board NON va iniettata (glob in stile `Request::is`, confrontati con il percorso e con il nome della rotta). Di default la linguetta viene iniettata in ogni pagina HTML dell'applicazione ospite; le pagine del package sono comunque escluse (il loro layout la stampa già), come lo sono risposte AJAX/JSON, redirect, download e aggiornamenti parziali. Per spegnerla ovunque usa /settings. |
 | `default_theme` | — | `'slate'` | Tema generico usato dalla rotta home e come ripiego |
 | `themes` | — | _array_ | Temi generici aggiuntivi (slug => definizione, stesse chiavi di Alle80\Griglia\Themes::builtin(); uno slug integrato viene sovrascritto chiave per chiave) |
 | `user_model` | `GRIGLIA_USER_MODEL` | `'App\\Models\\User'` | Modello utente proprietario delle liste |

@@ -31,12 +31,33 @@ class GrigliaAccess
             throw new AuthenticationException('Unauthenticated.', ['web'], $login);
         }
 
-        if (method_exists($user, 'canAccessGriglia')) {
-            abort_unless((bool) $user->canAccessGriglia(), 403, __('griglia::t.errors.forbidden'));
-        } elseif ($gate = config('griglia.access_gate')) {
-            abort_unless(Gate::forUser($user)->allows($gate), 403, __('griglia::t.errors.forbidden'));
-        }
+        abort_unless(static::allows($user), 403, __('griglia::t.errors.forbidden'));
 
         return $next($request);
+    }
+
+    /**
+     * The same verdict as `handle()`, as a boolean and without exceptions: may this user open the board?
+     * Used where there is nothing to abort — e.g. deciding whether to show the board tab (InjectBoardTab).
+     */
+    public static function allows(mixed $user): bool
+    {
+        if (Mode::isLocal()) {
+            return true;
+        }
+
+        if (! $user) {
+            return false;
+        }
+
+        if (method_exists($user, 'canAccessGriglia')) {
+            return (bool) $user->canAccessGriglia();
+        }
+
+        if ($gate = config('griglia.access_gate')) {
+            return Gate::forUser($user)->allows($gate);
+        }
+
+        return true;
     }
 }

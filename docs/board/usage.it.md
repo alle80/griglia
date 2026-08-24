@@ -178,8 +178,9 @@ trova la board su quel percorso, invece del redirect.
 
 ### La linguetta laterale
 
-Ogni pagina si porta dietro una **linguetta a scomparsa attaccata a un bordo della finestra** — una maniglia,
-in stile debugbar, che apre un pannello con dentro la board. Clic sulla maniglia e il pannello esce;
+Ogni pagina del sito — quelle della board e quelle della tua applicazione — si porta dietro una **linguetta a
+scomparsa attaccata a un bordo della finestra**: una maniglia, in stile debugbar, che apre un pannello con
+dentro la board. Clic sulla maniglia e il pannello esce;
 trascina il suo bordo interno per ridimensionarlo (da 300px fino al 70% della finestra); ⤢ apre la board
 intera nella scheda in cui sei; ✕ chiude il pannello. Se è aperto e quanto è largo se li ricorda il browser
 (`localStorage`), quindi il pannello torna come l'hai lasciato anche nella pagina successiva. Sulla board
@@ -192,6 +193,21 @@ Due impostazioni in `/settings` la governano:
 |---|---|
 | **Linguetta laterale DASHBOARD** (`show_dashboard_tab`) | Mostra o nasconde la linguetta. Spenta, la board resta raggiungibile al suo indirizzo. |
 | **Lato del pannello dashboard** (`tab_side`) | Su quale bordo sta la linguetta — `right` (default) o `left`. |
+
+Non c'è niente da aggiungere ai tuoi layout: un middleware nel gruppo `web` innesta la linguetta in ogni pagina
+HTML che l'applicazione ospite restituisce, subito prima di `</body>` — lo stesso trucco di laravel-debugbar.
+Resta fuori da tutto ciò che non è una pagina intera (risposte JSON e AJAX, redirect, download, stream,
+aggiornamenti parziali di Livewire, Turbo e Inertia), fuori dalle pagine del package (il loro layout la stampa
+già, quindi non viene mai raddoppiata) e fuori dalle pagine di chi non può aprire la board. Per tenerla lontana
+da un angolo della tua applicazione, elenca i percorsi in `config/griglia.php`:
+
+```php
+'inject_tab_except' => ['admin/*', 'horizon/*'],
+```
+
+I pattern sono glob in stile `Request::is`, confrontati con il percorso e con il nome della rotta; di default
+la lista è vuota. La linguetta si porta dietro il proprio CSS e il proprio JavaScript senza framework, inline,
+quindi funziona anche nelle pagine che non caricano né il foglio di stile del package né Alpine.
 
 ## Mobile
 

@@ -60,6 +60,14 @@ return [
     // slide-out board tab. Set to null/false to disable both. Without a home route it serves the board itself.
     'dashboard_route' => env('GRIGLIA_DASHBOARD_ROUTE', '/dashboard'),
 
+    // Paths where the board tab must NOT be injected (globs, `Request::is` style, matched on the path and
+    // on the route name). The tab is injected in every HTML page of the host application by default; the
+    // package pages are excluded anyway (their layout already prints it), as are AJAX/JSON responses,
+    // redirects, downloads and partial updates. Switch the tab off everywhere from /settings instead.
+    'inject_tab_except' => [
+        // 'admin/*', 'horizon/*', 'telescope/*',
+    ],
+
     // Generic theme used by the home route and as fallback
     'default_theme' => 'slate',
 

@@ -16,6 +16,7 @@ use Alle80\Griglia\Console\ThemeImport;
 use Alle80\Griglia\Console\Watch;
 use Alle80\Griglia\Http\Middleware\GrigliaAccess;
 use Alle80\Griglia\Http\Middleware\GrigliaAdmin;
+use Alle80\Griglia\Http\Middleware\InjectBoardTab;
 use Alle80\Griglia\Http\Middleware\SetLocale;
 use Alle80\Griglia\Settings\AgentSettings;
 use Alle80\Griglia\Settings\AppSettings;
@@ -56,6 +57,10 @@ class GrigliaServiceProvider extends ServiceProvider
         // Security: GrigliaAccess replaces `auth` on the package routes, so it must also run on Livewire's
         // /livewire/update requests (only "persistent" middleware is re-applied there)
         Livewire::addPersistentMiddleware([GrigliaAccess::class, GrigliaAdmin::class, SetLocale::class]);
+
+        // Debugbar style: the slide-out board tab lands in every HTML page of the host app, without
+        // touching its layouts (the middleware itself decides when it is appropriate).
+        $this->app['router']->pushMiddlewareToGroup('web', InjectBoardTab::class);
 
         if (config('griglia.register_routes', true)) {
             // After the host app's routes, so host routes keep precedence over package pages

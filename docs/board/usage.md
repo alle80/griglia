@@ -170,8 +170,8 @@ the redirect.
 
 ### The side tab
 
-Every page carries a **slide-out tab pinned to one edge of the window** — a handle, debugbar style, that opens
-a panel with the board inside it. Click the handle and the panel slides out; drag its inner edge to resize
+Every page of the site — the board's pages and your own application's — carries a **slide-out tab pinned to
+one edge of the window**: a handle, debugbar style, that opens a panel with the board inside it. Click the handle and the panel slides out; drag its inner edge to resize
 it (from 300px up to 70% of the window); ⤢ opens the whole board in the tab you are on; ✕ closes the panel.
 Whether it is open and how wide it is are remembered in the browser (`localStorage`), so the panel comes back
 the way you left it on the next page. It never appears on the board itself — there it would only frame the page
@@ -184,6 +184,21 @@ Two settings in `/settings` govern it:
 |---|---|
 | **DASHBOARD side tab** (`show_dashboard_tab`) | Shows or hides the tab. Off, the board stays reachable at its own address. |
 | **Dashboard tab side** (`tab_side`) | Which edge the tab lives on — `right` (default) or `left`. |
+
+There is nothing to add to your layouts: a middleware in the `web` group splices the tab into every HTML page
+the host application returns, just before `</body>` — the same trick laravel-debugbar uses. It stays out of
+everything that is not a full page (JSON and AJAX responses, redirects, downloads, streams, Livewire, Turbo and
+Inertia partial updates), out of the package pages (whose layout prints it already, so it is never doubled) and
+out of the pages of a visitor who may not open the board. To keep it away from a corner of your application,
+list the paths in `config/griglia.php`:
+
+```php
+'inject_tab_except' => ['admin/*', 'horizon/*'],
+```
+
+Patterns are globs matched `Request::is` style, against the path and against the route name; the default is an
+empty list. The tab carries its own CSS and its own framework-free JavaScript inline, so it also works on pages
+that load neither the package stylesheet nor Alpine.
 
 ## Mobile
 
