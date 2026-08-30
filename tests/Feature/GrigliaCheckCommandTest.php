@@ -160,7 +160,10 @@ class GrigliaCheckCommandTest extends TestCase
     {
         $this->artisan('sviluppo:check')->assertSuccessful();
         config(['griglia.agent_list' => 'nope']);
-        $this->artisan('griglia:check')->expectsOutputToContain('No list named "nope"')->assertSuccessful();
+        $this->artisan('griglia:check')
+            ->expectsOutputToContain('No list named "nope"')
+            ->expectsOutputToContain('Create a list with that name on the board, or set GRIGLIA_AGENT_LIST to the name of an existing one.')
+            ->assertSuccessful();
     }
 
     public function test_json_output_stays_machine_readable_with_a_stuck_plan(): void
