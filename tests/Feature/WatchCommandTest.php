@@ -13,6 +13,7 @@ class WatchCommandTest extends TestCase
     {
         $this->artisan('griglia:watch', ['--once' => true, '--list' => 'nope'])
             ->expectsOutputToContain('No list named')
+            ->expectsOutputToContain('Create a list with that name on the board, or set GRIGLIA_AGENT_LIST to the name of an existing one.')
             ->assertFailed();
     }
 

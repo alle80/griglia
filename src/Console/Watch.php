@@ -41,6 +41,7 @@ class Watch extends Command
 
         if (! Checklist::where('name', $name)->exists()) {
             $this->warn(sprintf('No list named "%s" (config griglia.agent_list).', $name));
+            $this->line('Create a list with that name on the board, or set GRIGLIA_AGENT_LIST to the name of an existing one.');
 
             return self::FAILURE;
         }
